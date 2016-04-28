@@ -7,9 +7,9 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
+#include "libsensor.hh"
 
 
-#define ADC_BUFSIZE   128
 #define ADC_PKT_SZ     57
 #define ADC_MSG_LEN    52
 #define ADC_CKSUM_BYTE 54
@@ -21,12 +21,9 @@
 class ADC
 {
 public:
-    ADC(HardwareSerial &s, uint32_t baud);
-    ~ADC();
-    /* Start the serial port. */
-    void begin();
     /* Read sensor data. */
     void read();
+
     /* Output air data. */
     float airspeed(void) const;
     float alpha(void) const;
@@ -38,12 +35,6 @@ private:
     /* Parse the data. */
     bool parse(void);
 
-    /* Serial device the uADC is connected to. */
-    HardwareSerial *serial = NULL;
-    bool serial_is_active = false;
-    /* Buffer. */
-    uint8_t bufidx = 0;
-    uint8_t buf[ADC_BUFSIZE];
     /* Air data. */
     float _airspeed = 0;
     float _alpha = 0;

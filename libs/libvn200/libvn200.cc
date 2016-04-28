@@ -4,25 +4,6 @@
 #include "libvn200.hh"
 
 
-VN200::VN200(HardwareSerial &s, uint32_t b)
-{
-    /* Get serial communication parameters. */
-    serial = s;
-    baud = b;
-    /* Clear buffer. */
-    memset(&buf, 0, VN200_BUFSIZE);
-}
-
-
-void
-VN200::begin(void)
-{
-    /* Initialize serial device. */
-    serial->begin(baud);
-    serial_is_active = true;
-}
-
-
 void
 VN200::read(void)
 {
@@ -35,7 +16,7 @@ VN200::read(void)
     if (len > 0) {
         for (uint8_t i = 0; i < len; ++i) {
             uint8_t b = serial->read();
-            if ((b == VN200_SYNC) && crc()) {
+            if ((b == VN200_SYNC) && checksum()) {
                 parse();
                 bufidx = 0;
                 buf[bufidx++] = b;
@@ -70,7 +51,7 @@ VN200::parse(void)
 
 /* Calculate CRC for the message, and check it against the CRC value. */
 bool
-VN200::crc(void)
+VN200::checksum(void)
 {
     if (bufidx < VN200_INS_PKT_SZ) {
         return false;
@@ -84,22 +65,6 @@ VN200::crc(void)
         crc ^= (crc & 0x00ff) << 5;
     }
     return crc == 0x0000 ? true : false;
-}
-
-
-/* Convert 4 bytes to float. */
-float
-VN200::b2f(uint8_t idx)
-{
-    float rv;
-    uint8_t b[4];
-    if (idx + 3 >= VN200_BUFSIZE) {
-        /* Return 0 for invalid results. */
-        rv = 0;
-    }
-    b = {buf[idx + 3], buf[idx + 2], buf[idx + 1], buf[idx]};
-    memcpy(&rv, &b, sizeof(float));
-    return rv;
 }
 
 

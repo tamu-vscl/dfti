@@ -4,25 +4,6 @@
 #include "libadc.hh"
 
 
-ADC::ADC(HardwareSerial &s, uint32_t b)
-{
-    /* Get serial communication parameters. */
-    serial = s;
-    baud = b;
-    /* Clear buffer. */
-    memset(&buf, 0, ADC_BUFSIZE);
-}
-
-
-void
-ADC::begin(void)
-{
-    /* Initialize serial device. */
-    serial->begin(baud);
-    serial_is_active = true;
-}
-
-
 void
 ADC::read(void)
 {
