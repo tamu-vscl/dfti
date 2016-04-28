@@ -29,7 +29,7 @@ ADC::read(void)
                 continue;
             /* Otherwise, add the byte to the input buffer. */
             } else {
-                if (bufidx < (ADC_BUFSIZE - 1)) {
+                if (bufidx < (IO_BUFSIZE - 1)) {
                     buf[bufidx++] = b;
                 } else {
                     bufidx = 0;
