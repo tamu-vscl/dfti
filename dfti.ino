@@ -5,13 +5,12 @@
  */
 
 /* Arduino stdlib */
-#include <SPI.h>
 #include <SD.h>
 /* Third-party libs */
 #include <errno.h>
 #include <Queue.h>
 /* Custom libs */
-#include <libbc.hh>
+#include <libadc.hh>
 #include <libvn200.hh>
 
 
@@ -19,7 +18,7 @@
 #define VN200_BAUD_RATE 115200
 #define UADC_BAUD_RATE 115200
 /* Configure SD card logging. */
-#define SD_CARD             4
+#define SD_CARD 8
 /* Increment file to record the last log file number. */
 #define INCREMENT_FILE "lastlog.txt"
 /* Configure analog inputs. */
@@ -41,12 +40,11 @@
 
 
 /* Global variables. */
-/* Aliases for h/w serial ports to allow easily reconfiguration. */
-HardwareSerial *ADCSerial = &Serial3; // TODO: Replace with UADC object.
 /* File object for log. */
 File logfile = NULL;
 /* Sensor objects. */
 VN200 vn200(&Serial2, VN200_BAUD_RATE);
+ADC uadc(&Serial3, UADC_BAUD_RATE);
 /* Task scheduling queue. */
 Queue queue;
 /* Flag to ensure successful initialization. */
@@ -58,7 +56,7 @@ setup()
 {
     /* Setup h/w serial devices. */
     vn200.begin();
-    ADCSerial->begin(UADC_BAUD_RATE);
+    uadc.begin();
 
     /* Attempt to open the SD card and open the log file. */
     if (!SD.begin(SD_CARD)) {
@@ -146,10 +144,12 @@ flush_logfile(unsigned int now)
 }
 
 
-/* Callback function to read in sensor data and write to logfile. */
+/* Callback function to read in sensor data and write to log file. */
 int
 sample_sensors(unsigned int now)
 {
-    /* TODO: Call the sensor object read() methods. */
+    /* TODO: Read in analog and PWM signals, log everything. */
+    vn200.read();
+    uadc.read();
     return TASK_SUCCESS;
 }
