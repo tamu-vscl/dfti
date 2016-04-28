@@ -50,7 +50,7 @@ VN200 vn200(&Serial2, VN200_BAUD_RATE);
 /* Task scheduling queue. */
 Queue queue;
 /* Flag to ensure successful initialization. */
-uint8_t init_success = true;
+bool init_success = true;
 
 
 void
