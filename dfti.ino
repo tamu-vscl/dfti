@@ -8,9 +8,9 @@
 #include <SPI.h>
 #include <SD.h>
 /* Third-party libs */
+#include <errno.h>
 #include <Queue.h>
 /* Custom libs */
-#include <errno.h>
 #include <libbc.hh>
 #include <libvn200.hh>
 
