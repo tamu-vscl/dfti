@@ -95,7 +95,7 @@ open_logfile(void)
 {
     int8_t rv = TASK_SUCCESS;
     uint8_t num = 0;
-    File log = NULL;
+    File fd = NULL;
 
     /*
      * Attempt to open the increment file and read in the integer value for
@@ -104,23 +104,23 @@ open_logfile(void)
      * file doesn't exist, we'll just create it.
      */
     if SD.exists(INCREMENT_FILE) {
-        log = SD.open(INCREMENT_FILE, FILE_READ);
-        if (log.available()){
-            num = log.parseInt();
+       fd = SD.open(INCREMENT_FILE, FILE_READ);
+        if fd.available()){
+            num =fd.parseInt();
         }
-        log.close();
+       fd.close();
     }
 
     /* Increment the log file number and write to the increment file. */
     ++num;
-    log = SD.open(INCREMENT_FILE, FILE_WRITE);
-    if (!log) {
+   fd = SD.open(INCREMENT_FILE, FILE_WRITE);
+    if (fd) {
         /* Failed to open increment file for writing. */
         rv = -EIO;
     }
-    log.write(num);
-    log.close();
-    log = NULL;
+   fd.write(num);
+   fd.close();
+   fd = NULL;
 
     /* Open file for logging. */
     logfile = open(sprintf("flightlog%03d.txt", num), FILE_WRITE);
