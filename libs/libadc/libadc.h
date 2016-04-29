@@ -6,11 +6,7 @@
 
 
 #include <Arduino.h>
-// #include <HardwareSerial.h>
-// #include <String.h>
-
-
-#include "../libsensor/libsensor.h"
+#include <libsensor.h>
 
 
 #define UADC_PKT_SZ     57
