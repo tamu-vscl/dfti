@@ -1,7 +1,7 @@
 /*
  *  libUADC - Arduino library to parse Aeroprobe Micro Air Data Computer.
  */
-#include "libadc.h"
+#include "libuadc.h"
 
 
 void
