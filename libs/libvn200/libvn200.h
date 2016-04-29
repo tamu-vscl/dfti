@@ -21,7 +21,7 @@ public:
     explicit VN200() : Sensor() { };
     explicit VN200(HardwareSerial *s, uint32_t b) : Sensor(s, b) { };
     /* Read sensor data. */
-    void read(void);
+    int8_t read(void);
 
     /* Get sensor outputs. */
     float yaw(void) const;

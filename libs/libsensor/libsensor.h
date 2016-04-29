@@ -10,6 +10,9 @@
 
 
 #define IO_BUFSIZE 128
+#define EINACTIVE    1
+#define ENODATA      2
+#define EINVALDATA   3
 
 
 class Sensor
@@ -21,7 +24,7 @@ public:
     /* Start the serial port. */
     void begin(void);
     /* Read sensor data. */
-    virtual void read(void) = 0;
+    virtual int8_t read(void) = 0;
 
 protected:
     /* Check to see if CRC/checksum is valid. */

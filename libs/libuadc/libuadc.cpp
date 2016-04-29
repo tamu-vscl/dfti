@@ -4,15 +4,18 @@
 #include "libuadc.h"
 
 
-void
+int8_t
 UADC::read(void)
 {
     if (!serial_is_active) {
         /* Serial port is not active, so do nothing. */
-        return;
+        return -EINACTIVE;
     }
     /* Parse the serial data one byte at a time into the buffer. */
     uint8_t len = serial->available();
+    if (!len) {
+        return -ENODATA;
+    }
     for (uint8_t i = 0; i < len; ++i) {
         uint8_t b = serial->read();
         /* Check that the read was valid. */
@@ -37,6 +40,7 @@ UADC::read(void)
             }
         }
     }
+    return 0;
 }
 
 

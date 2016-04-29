@@ -183,19 +183,42 @@ int
 sample_sensors(unsigned long now)
 {
     /* TODO: Read in analog and PWM signals, log everything. */
-    vn200.read();
-    uadc.read();
+    int8_t vn200_rv = vn200.read();
+    int8_t uadc_rv = uadc.read();
+    fd.println(String("VN200: ") + vn200.roll_s() + sep + vn200.pitch_s()
+               + sep + vn200.yaw_s() + sep + vn200.p_s() + sep + vn200.q_s()
+               + sep + vn200.r_s());
+    fd.println(String("UADC : ") + sep + uadc.airspeed_s() + sep
+               + uadc.alpha_s() + sep + uadc.beta_s());
 #ifdef DEBUG
+    switch (vn200_rv) {
+    case -EINACTIVE:
+        Serial.println("FAULT: VN-200 serial port inactive.");
+        break;
+    case -ENODATA:
+        Serial.println("WARN : VN-200 serial port has no data available.");
+        break;
+    default:
+        break;
+    }
+    switch (uadc_rv) {
+    case -EINACTIVE:
+        Serial.println("FAULT: UADC serial port inactive.");
+        break;
+    case -ENODATA:
+        Serial.println("WARN : UADC serial port has no data available.");
+        break;
+    default:
+        break;
+    }
     Serial.println(String("VN200: ") + vn200.roll_s() + sep + vn200.pitch_s()
                    + sep + vn200.yaw_s() + sep + vn200.p_s() + sep
                    + vn200.q_s() + sep + vn200.r_s());
     Serial.println(String("UADC : ") + sep + uadc.airspeed_s() + sep
                    + uadc.alpha_s() + sep + uadc.beta_s());
 #endif
-    fd.println(String("VN200: ") + vn200.roll_s() + sep + vn200.pitch_s()
-               + sep + vn200.yaw_s() + sep + vn200.p_s() + sep + vn200.q_s()
-               + sep + vn200.r_s());
-    fd.println(String("UADC : ") + sep + uadc.airspeed_s() + sep
-               + uadc.alpha_s() + sep + uadc.beta_s());
+    if ((vn200_rv < 0) || (uadc_rv < 0)) {
+        return TASK_FAILURE;
+    }
     return TASK_SUCCESS;
 }

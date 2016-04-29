@@ -24,7 +24,7 @@ public:
     explicit UADC() : Sensor() { };
     explicit UADC(HardwareSerial *s, uint32_t b) : Sensor(s, b) { };
     /* Read sensor data. */
-    void read();
+    int8_t read();
 
     /* Output air data. */
     float airspeed(void) const;
