@@ -114,3 +114,51 @@ r(void)
 {
     return _r;
 }
+
+
+/* Return yaw angle in degrees. */
+String
+yaw_s(void)
+{
+    return String(_yaw, VN200_PREC);
+}
+
+
+/* Return pitch angle in degrees. */
+String
+pitch_s(void)
+{
+    return String(_pitch, VN200_PREC);
+}
+
+
+/* Return roll angle in degrees. */
+String
+roll_s(void)
+{
+    return String(_roll, VN200_PREC);
+}
+
+
+/* Return body-axis roll rate in degrees/sec. */
+String
+p_s(void)
+{
+    return String(_p, VN200_PREC);
+}
+
+
+/* Return body-axis pitch rate in degrees/sec. */
+String
+q_s(void)
+{
+    return String(_q, VN200_PREC);
+}
+
+
+/* Return body-axis yaw rate in degrees/sec. */
+String
+r_s(void)
+{
+    return String(_r, VN200_PREC);
+}

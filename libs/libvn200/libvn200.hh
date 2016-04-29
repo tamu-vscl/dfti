@@ -7,11 +7,13 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
+#include "String.h"
 #include "libsensor.hh"
 
 
 #define VN200_INS_PKT       1
 #define VN200_INS_PKT_SZ   42
+#define VN200_PREC          4
 #define VN200_SYNC       0xFA
 
 
@@ -28,6 +30,12 @@ public:
     float p(void) const;
     float q(void) const;
     float r(void) const;
+    String yaw_s(void) const;
+    String pitch_s(void) const;
+    String roll_s(void) const;
+    String p_s(void) const;
+    String q_s(void) const;
+    String r_s(void) const;
 
 private:
     /* Calculate the CRC/checksum. */

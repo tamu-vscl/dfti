@@ -102,7 +102,7 @@ ADC::parse(void)
 float
 airspeed(void)
 {
-    return _airspeed;
+    return Strispeed;
 }
 
 
@@ -110,7 +110,7 @@ airspeed(void)
 float
 alpha(void)
 {
-    return _alpha;
+    return Salpha;
 }
 
 
@@ -119,4 +119,28 @@ float
 beta(void)
 {
     return _beta;
+}
+
+
+/* Get calibrated airspeed in m/s. */
+String
+airspeed_s(void)
+{
+    return String(_airspeed, ADC_PREC);
+}
+
+
+/* Get angle-of-attack in degrees. */
+String
+alpha_s(void)
+{
+    return String(_alpha, ADC_PREC);
+}
+
+
+/* Get sideslip angle in degrees. */
+String
+beta_s(void)
+{
+    return String(_beta, ADC_PREC);
 }

@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
+#include "String.h"
 #include "libsensor.hh"
 
 
@@ -16,6 +17,7 @@
 #define ADC_VEL_START   7
 #define ADC_AOA_START  14
 #define ADC_BET_START  22
+#define ADC_PREC        2
 
 
 class ADC
@@ -28,6 +30,9 @@ public:
     float airspeed(void) const;
     float alpha(void) const;
     float beta(void) const;
+    String airspeed_s(void) const;
+    String alpha_s(void) const;
+    String beta_s(void) const;
 
 private:
     /* Calculate the checksum. */
