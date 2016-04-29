@@ -5,10 +5,12 @@
 #define __LIBVN200_H
 
 
-#include "Arduino.h"
-#include "HardwareSerial.h"
-#include "String.h"
-#include "libsensor.hh"
+#include <Arduino.h>
+// #include <HardwareSerial.h>
+// #include <String.h>
+
+
+#include "../libsensor/libsensor.h"
 
 
 #define VN200_INS_PKT       1
@@ -17,9 +19,11 @@
 #define VN200_SYNC       0xFA
 
 
-class VN200
+class VN200 : public Sensor
 {
 public:
+    explicit VN200() : Sensor() { };
+    explicit VN200(HardwareSerial *s, uint32_t b) : Sensor(s, b) { };
     /* Read sensor data. */
     void read(void);
 

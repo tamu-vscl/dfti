@@ -1,7 +1,7 @@
 /*
  *  libvn200 - Arduino library to parse VN-200 INS data.
  */
-#include "libvn200.hh"
+#include "libvn200.h"
 
 
 void
@@ -34,7 +34,7 @@ VN200::read(void)
 
 
 /* Parse data from packets. */
-bool
+void
 VN200::parse(void)
 {
     if (buf[1] == VN200_INS_PKT) {
@@ -70,7 +70,7 @@ VN200::checksum(void)
 
 /* Return yaw angle in degrees. */
 float
-yaw(void)
+VN200::yaw(void) const
 {
     return _yaw;
 }
@@ -78,7 +78,7 @@ yaw(void)
 
 /* Return pitch angle in degrees. */
 float
-pitch(void)
+VN200::pitch(void) const
 {
     return _pitch;
 }
@@ -86,7 +86,7 @@ pitch(void)
 
 /* Return roll angle in degrees. */
 float
-roll(void)
+VN200::roll(void) const
 {
     return _roll;
 }
@@ -94,7 +94,7 @@ roll(void)
 
 /* Return body-axis roll rate in degrees/sec. */
 float
-p(void)
+VN200::p(void) const
 {
     return _p;
 }
@@ -102,7 +102,7 @@ p(void)
 
 /* Return body-axis pitch rate in degrees/sec. */
 float
-q(void)
+VN200::q(void) const
 {
     return _q;
 }
@@ -110,7 +110,7 @@ q(void)
 
 /* Return body-axis yaw rate in degrees/sec. */
 float
-r(void)
+VN200::r(void) const
 {
     return _r;
 }
@@ -118,7 +118,7 @@ r(void)
 
 /* Return yaw angle in degrees. */
 String
-yaw_s(void)
+VN200::yaw_s(void) const
 {
     return String(_yaw, VN200_PREC);
 }
@@ -126,7 +126,7 @@ yaw_s(void)
 
 /* Return pitch angle in degrees. */
 String
-pitch_s(void)
+VN200::pitch_s(void) const
 {
     return String(_pitch, VN200_PREC);
 }
@@ -134,7 +134,7 @@ pitch_s(void)
 
 /* Return roll angle in degrees. */
 String
-roll_s(void)
+VN200::roll_s(void) const
 {
     return String(_roll, VN200_PREC);
 }
@@ -142,7 +142,7 @@ roll_s(void)
 
 /* Return body-axis roll rate in degrees/sec. */
 String
-p_s(void)
+VN200::p_s(void) const
 {
     return String(_p, VN200_PREC);
 }
@@ -150,7 +150,7 @@ p_s(void)
 
 /* Return body-axis pitch rate in degrees/sec. */
 String
-q_s(void)
+VN200::q_s(void) const
 {
     return String(_q, VN200_PREC);
 }
@@ -158,7 +158,7 @@ q_s(void)
 
 /* Return body-axis yaw rate in degrees/sec. */
 String
-r_s(void)
+VN200::r_s(void) const
 {
     return String(_r, VN200_PREC);
 }
