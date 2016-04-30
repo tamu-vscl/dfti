@@ -20,22 +20,26 @@
 #define VN200_BAUD_RATE 115200
 #define UADC_BAUD_RATE 115200
 /* Configure SD card logging. */
-#define SD_CARD     4
-#define FN_BUFLEN  50
+#define SD_CARD_ETHSHD  4
+#define SD_CARD_SPKFUN  8
+#define FN_BUFLEN      50
 /* Increment file to record the last log file number. */
 #define INCREMENT_FILE "lastlog.txt"
 /* Configure analog inputs. */
-#define LEFT_AILERON_PIN      1
-#define RIGHT_AILERON_PIN     2
-#define LEFT_RUDDERVATOR_PIN  3
-#define RIGHT_RUDDERVATOR_PIN 4
-#define LEFT_FLAP_PIN         5
-#define RIGHT_FLAP_PIN        6
+#define LEFT_AILERON_PIN      A0
+#define RIGHT_AILERON_PIN     A1
+#define LEFT_RUDDERVATOR_PIN  A2
+#define RIGHT_RUDDERVATOR_PIN A3
+#define LEFT_FLAP_PIN         A4
+#define RIGHT_FLAP_PIN        A5
+/* Configure PWM inputs. */
+#define THROTTLE_INTERRUPT    0
 /* Define rates for scheduler. */
 #define TASK_SUCCESS     0
 #define TASK_FAILURE     1
 #define TASK_30SEC   30000
 #define TASK_10SEC   10000
+#define TASK_5SEC     5000
 #define TASK_2SEC     2000
 #define TASK_1HZ      1000
 #define TASK_10HZ      100
@@ -54,6 +58,9 @@ File fd;
 /* Sensor objects. */
 VN200 vn200;
 UADC uadc;
+/* Throttle PWM. */
+volatile uint32_t throttle_pwm = 0;
+volatile uint32_t throttle_last_us = 0;
 /* Task scheduling queue. */
 Queue queue;
 /* Flag to ensure successful initialization. */
@@ -66,15 +73,29 @@ void
 setup()
 {
     /* Setup h/w serial devices. */
-    vn200 = VN200(&Serial2, (uint8_t) VN200_BAUD_RATE);
-    uadc = UADC(&Serial3, (uint8_t) UADC_BAUD_RATE);
+    vn200 = VN200(&Serial2, VN200_BAUD_RATE);
+    uadc = UADC(&Serial3, UADC_BAUD_RATE);
     vn200.begin();
     uadc.begin();
 
-    /* Attempt to open the SD card and open the log file. */
-    if (!SD.begin(SD_CARD)) {
-        init_success ^= FAULT_SDIO;
-    } else {
+    /* Set up throttle PWM logging. */
+    attachInterrupt(THROTTLE_INTERRUPT, throttle_pwm_rising, RISING);
+
+    /*
+     * Attempt to connect to the SD card. We first try to connect to the SD
+     * card on an Ethernet shield, and if that fails then we attempt to connect
+     * to the SD card on the Sparkfun SD shield.
+     */
+    if (!SD.begin(SD_CARD_ETHSHD)) {
+        if (!SD.begin(SD_CARD_SPKFUN)) {
+            init_success ^= FAULT_SDIO;
+        }
+    }
+    /*
+     * If we successfully we able to access an SD card on one of the shields,
+     * we create the logfile.
+     */
+    if (!(init_success & FAULT_SDIO)) {
         if (open_logfile() < 0) {
             init_success ^= FAULT_FILEIO;
         }
@@ -157,7 +178,7 @@ open_logfile(void)
     }
 
     /* Open file for logging. */
-    String logfn = String(num) + ".txt";
+    String logfn = String(num) + ".csv";
     if (!(fd = SD.open(logfn.c_str(), FILE_WRITE))) {
         /* Failed to open new log file. */
         rv = -EIO;
@@ -183,11 +204,18 @@ sample_sensors(unsigned long now)
     /* TODO: Read in analog and PWM signals, log everything. */
     int8_t vn200_rv = vn200.read();
     int8_t uadc_rv = uadc.read();
-    fd.println(String("VN200: ") + vn200.roll_s() + sep + vn200.pitch_s()
-               + sep + vn200.yaw_s() + sep + vn200.p_s() + sep + vn200.q_s()
-               + sep + vn200.r_s());
-    fd.println(String("UADC : ") + sep + uadc.airspeed_s() + sep
-               + uadc.alpha_s() + sep + uadc.beta_s());
+    float la_pin = analogRead5V(LEFT_AILERON_PIN);
+    float ra_pin = analogRead5V(RIGHT_AILERON_PIN);
+    float lr_pin = analogRead5V(LEFT_RUDDERVATOR_PIN);
+    float rr_pin = analogRead5V(RIGHT_RUDDERVATOR_PIN);
+    float lf_pin = analogRead5V(LEFT_FLAP_PIN);
+    float rf_pin = analogRead5V(RIGHT_FLAP_PIN);
+    fd.println(String(float(millis()) / 1e3, 2) + sep + uadc.airspeed_s() + sep
+               + uadc.alpha_s() + sep + uadc.beta_s() + sep + vn200.roll_s()
+               + sep + vn200.pitch_s() + sep + vn200.yaw_s() + sep
+               + vn200.p_s() + sep + vn200.q_s() + sep + vn200.r_s() + sep
+               + throttle_pwm + sep + la_pin + sep + ra_pin + sep + lr_pin
+               + sep + rr_pin + sep + lf_pin + sep + rf_pin);
 #ifdef DEBUG
     switch (vn200_rv) {
     case -EINACTIVE:
@@ -195,6 +223,9 @@ sample_sensors(unsigned long now)
         break;
     case -ENODATA:
         Serial.println("WARN : VN-200 serial port has no data available.");
+        break;
+    case -EINVAL:
+        Serial.println("WARN : VN-200 checksum verification failed!");
         break;
     default:
         break;
@@ -206,17 +237,49 @@ sample_sensors(unsigned long now)
     case -ENODATA:
         Serial.println("WARN : UADC serial port has no data available.");
         break;
+    case -EINVAL:
+        Serial.println("WARN : UADC checksum verification failed!");
+        break;
     default:
         break;
     }
-    Serial.println(String("VN200: ") + vn200.roll_s() + sep + vn200.pitch_s()
-                   + sep + vn200.yaw_s() + sep + vn200.p_s() + sep
-                   + vn200.q_s() + sep + vn200.r_s());
-    Serial.println(String("UADC : ") + sep + uadc.airspeed_s() + sep
-                   + uadc.alpha_s() + sep + uadc.beta_s());
+    if (!vn200_rv) {
+        Serial.println("VN200: " + vn200.roll_s() + sep + vn200.pitch_s()
+                       + sep + vn200.yaw_s() + sep + vn200.p_s() + sep
+                       + vn200.q_s() + sep + vn200.r_s());
+    }
+    if (!uadc_rv) {
+        Serial.println("UADC : " + uadc.airspeed_s() + sep + uadc.alpha_s()
+                       + sep + uadc.beta_s());
+    }
 #endif
     if ((vn200_rv < 0) || (uadc_rv < 0)) {
         return TASK_FAILURE;
     }
     return TASK_SUCCESS;
+}
+
+
+/* Interrupt handler for rising throttle PWM signal. */
+void
+throttle_pwm_rising(void)
+{
+    attachInterrupt(THROTTLE_INTERRUPT, throttle_pwm_falling, FALLING);
+    throttle_last_us = micros();
+}
+
+
+/* Interrupt handler for falling throttle PWM signal. */
+void
+throttle_pwm_falling(void)
+{
+    attachInterrupt(THROTTLE_INTERRUPT, throttle_pwm_rising, RISING);
+    throttle_pwm = micros() - throttle_last_us;
+}
+
+
+/* Read in voltage level for 5V logic. */
+inline float
+analogRead5V(uint8_t pin) {
+    return analogRead(pin) * 5. / 1023.;
 }
