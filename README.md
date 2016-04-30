@@ -12,9 +12,11 @@ INS (RS232->UART), and the Aeroprobe Micro Air Data Computer
 
 ## Repo Organization
 
-The main Arduino sketch is the `dfti.ino` file.
-Libraries provided with this sketch are in the `libs` directory, while
-bundled third-party libraries are in the `third_party` directory. 
-Note that these will generally need to be moved into the `Libraries` 
-directory of your Arduino workspace for the Arduino IDE to find the 
-libraries.
+The main Arduino sketch is the `dfti.ino` file in the `src` directory.
+Libraries provided with this sketch are in the `lib` directory, while
+third-party libraries can be installed with the Platform IO tool. 
+Currently the only third-party library required is AVRQueue, which has
+PlatformIO ID 181, which can be installed with
+```
+$ platformio lib install 181
+```
