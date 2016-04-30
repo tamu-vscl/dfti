@@ -6,6 +6,7 @@
 
 
 #include <Arduino.h>
+#include <errno.h>
 #include <libsensor.h>
 
 

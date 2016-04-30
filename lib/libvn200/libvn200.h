@@ -6,13 +6,14 @@
 
 
 #include <Arduino.h>
+#include <errno.h>
 #include <libsensor.h>
 
 
-#define VN200_INS_PKT       1
-#define VN200_INS_PKT_SZ   42
-#define VN200_PREC          4
-#define VN200_SYNC       0xFA
+#define VN200_INS_PKT         1
+#define VN200_INS_PKT_SZ     42
+#define VN200_PREC            4
+#define VN200_SYNC       '\xFA'
 
 
 class VN200 : public Sensor

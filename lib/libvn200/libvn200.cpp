@@ -7,6 +7,7 @@
 int8_t
 VN200::read(void)
 {
+    int8_t rv = 0;
     if (!serial_is_active) {
         /* Serial port is not active, so do nothing. */
         return -EINACTIVE;
@@ -18,13 +19,17 @@ VN200::read(void)
     }
     if (len > 0) {
         for (uint8_t i = 0; i < len; ++i) {
-            uint8_t b = serial->read();
-            if ((b == VN200_SYNC) && checksum()) {
-                parse();
-                bufidx = 0;
-                buf[bufidx++] = b;
+            char b = (char) serial->read();
+            if (b == VN200_SYNC) {
+                if (checksum()) {
+                    parse();
+                    bufidx = 0;
+                    buf[bufidx++] = b;
+                } else {
+                    rv = -EINVAL;
+                }
             } else {
-                if (bufidx < VN200_INS_PKT_SZ) {
+                if (bufidx < IO_BUFSIZE) {
                     buf[bufidx++] = b;
                 } else {
                     /* Buffer overflow. */
@@ -33,7 +38,7 @@ VN200::read(void)
             }
         }
     }
-    return 0;
+    return rv;
 }
 
 

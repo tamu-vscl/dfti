@@ -7,6 +7,7 @@
 int8_t
 UADC::read(void)
 {
+    int8_t rv = 0;
     if (!serial_is_active) {
         /* Serial port is not active, so do nothing. */
         return -EINACTIVE;
@@ -17,7 +18,7 @@ UADC::read(void)
         return -ENODATA;
     }
     for (uint8_t i = 0; i < len; ++i) {
-        uint8_t b = serial->read();
+        char b = (char) serial->read();
         /* Check that the read was valid. */
         if (b > 0) {
             /*
@@ -27,12 +28,14 @@ UADC::read(void)
             if (b == '\n') {
                 if (checksum()) {
                     parse();
+                } else {
+                    rv = -EINVAL;
                 }
                 bufidx = 0;
                 continue;
             /* Otherwise, add the byte to the input buffer. */
             } else {
-                if (bufidx < (IO_BUFSIZE - 1)) {
+                if (bufidx < IO_BUFSIZE) {
                     buf[bufidx++] = b;
                 } else {
                     bufidx = 0;
@@ -40,7 +43,7 @@ UADC::read(void)
             }
         }
     }
-    return 0;
+    return rv;
 }
 
 
