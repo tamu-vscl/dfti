@@ -171,9 +171,7 @@ open_logfile(void)
 int
 flush_logfile(unsigned long now)
 {
-    if (fd != NULL) {
-        fd.flush();
-    }
+    fd.flush();
     return TASK_SUCCESS;
 }
 
