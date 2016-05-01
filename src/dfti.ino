@@ -92,7 +92,7 @@ setup()
         }
     }
     /*
-     * If we successfully we able to access an SD card on one of the shields,
+     * If we successfully were able to access an SD card on one of the shields,
      * we create the logfile.
      */
     if (!(init_success & FAULT_SDIO)) {
