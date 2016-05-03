@@ -34,11 +34,11 @@ protected:
 
     /* Serial device the VN-200 is connected to. */
     HardwareSerial *serial = NULL;
-    uint8_t baud = 0;  /* Baud rate. */
+    uint32_t baud = 0;  /* Baud rate. */
     bool serial_is_active = false;
     /* Buffer. */
     uint8_t bufidx = 0;  /* Index for current byte in buffer. */
-    uint8_t buf[IO_BUFSIZE];
+    char buf[IO_BUFSIZE];
 };
 
 
