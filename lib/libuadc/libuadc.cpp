@@ -12,37 +12,19 @@ UADC::read(void)
         /* Serial port is not active, so do nothing. */
         return -EINACTIVE;
     }
-    /* Parse the serial data one byte at a time into the buffer. */
+
     uint8_t len = serial->available();
     if (!len) {
         return -ENODATA;
     }
-    for (uint8_t i = 0; i < len; ++i) {
-        char b = (char) serial->read();
-        /* Check that the read was valid. */
-        if (b > 0) {
-            /*
-             * A newline indicates the end of a packet, so calculate the
-             * checksum and then parse the data.
-             */
-            if (b == '\n') {
-                if (checksum()) {
-                    parse();
-                } else {
-                    rv = -EINVAL;
-                }
-                bufidx = 0;
-                continue;
-            /* Otherwise, add the byte to the input buffer. */
-            } else {
-                if (bufidx < IO_BUFSIZE) {
-                    buf[bufidx++] = b;
-                } else {
-                    bufidx = 0;
-                }
-            }
-        }
+
+    serial->readBytesUntil('\n', buf, UADC_PKT_SZ);
+    if (checksum()) {
+        parse();
+    } else {
+        rv = -EINVAL;
     }
+
     return rv;
 }
 
@@ -54,15 +36,11 @@ UADC::read(void)
 bool
 UADC::checksum(void)
 {
-    /* If the buffer doesn't contain the proper number of bytes, fail. */
-    if (bufidx < UADC_MSG_LEN) {
-        return false;
-    }
     /* Calculate the checksum for the current packet. */
     uint8_t cksum = 0;
     uint8_t cksum_byt = (uint8_t) strtol((const char *) &buf[UADC_CKSUM_BYTE],
                                          NULL, 16);
-    for (uint8_t i = 0; i < UADC_MSG_LEN; ++i) {
+    for (uint8_t i = 0; i < UADC_CKSUM_BYTE; ++i) {
         cksum ^= buf[i];
     }
     return cksum == cksum_byt ? true : false;

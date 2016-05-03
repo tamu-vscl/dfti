@@ -12,7 +12,7 @@
 
 #define UADC_PKT_SZ     57
 #define UADC_MSG_LEN    52
-#define UADC_CKSUM_BYTE 54
+#define UADC_CKSUM_BYTE 53
 #define UADC_VEL_START   7
 #define UADC_AOA_START  14
 #define UADC_BET_START  22
@@ -42,9 +42,9 @@ private:
     void parse(void);
 
     /* Air data. */
-    float _airspeed = 0;
-    float _alpha = 0;
-    float _beta = 0;
+    float _airspeed = -1;
+    float _alpha = -1;
+    float _beta = -1;
 };
 
 #endif
