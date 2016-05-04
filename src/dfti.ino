@@ -49,7 +49,8 @@
 #define FAULT_FILEIO      0x02
 #define FAULT_SCHED_FLUSH 0x04
 #define FAULT_SCHED_SAMPL 0x08
-
+/* LED info */
+#define LED_PIN 13
 
 /* Global variables. */
 /* File object for log. */
@@ -70,6 +71,8 @@ Queue queue;
 int8_t init_success = 0;
 /* String separator. */
 String sep = String(",");
+/* LED state. */
+uint8_t led_state = LOW;
 
 
 void
@@ -113,9 +116,12 @@ setup()
         init_success ^= FAULT_SCHED_FLUSH;
     }
     /* Read in sensor data at 100 Hz and log. */
-    if (queue.scheduleFunction(sample_sensors, "LOG", 100, TASK_100HZ) < 0) {
+    if (queue.scheduleFunction(sample_sensors, "LOG", 10, TASK_100HZ) < 0) {
         init_success ^= FAULT_SCHED_SAMPL;
     }
+    /* Blink LED for success. */
+    pinMode(LED_PIN, OUTPUT);
+    (void) queue.scheduleFunction(toggle_led, "LED", 20, TASK_1HZ);
 
 #ifdef DEBUG
     /* Initialize debugging and alert to setup faults. */
@@ -239,6 +245,10 @@ sample_sensors(unsigned long now)
                + uadc.alpha_s() + sep + uadc.beta_s() + sep + throttle_pwm
                + sep + la_pin + sep + ra_pin + sep + lr_pin + sep + rr_pin
                + sep + lf_pin + sep + rf_pin);
+#else
+    fd.println(String(float(millis()) / 1e3, 2) + sep + throttle_pwm + sep
+               + la_pin + sep + ra_pin + sep + lr_pin + sep + rr_pin + sep
+               + lf_pin + sep + rf_pin);
 #endif
 #ifdef DEBUG
 #   ifdef USE_VN200
@@ -293,6 +303,17 @@ sample_sensors(unsigned long now)
 #endif
     return TASK_SUCCESS;
 }
+
+
+/* Callback to blink LED. */
+int
+toggle_led(unsigned long now)
+{
+    led_state = led_state == HIGH ? LOW : HIGH;
+    digitalWrite(LED_PIN, led_state);
+    return TASK_SUCCESS;
+}
+
 
 
 /* Interrupt handler for rising throttle PWM signal. */
