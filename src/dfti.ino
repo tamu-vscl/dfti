@@ -49,15 +49,18 @@
 #define FAULT_FILEIO      0x02
 #define FAULT_SCHED_FLUSH 0x04
 #define FAULT_SCHED_SAMPL 0x08
-#define DEBUG
 
 
 /* Global variables. */
 /* File object for log. */
 File fd;
 /* Sensor objects. */
+#ifdef USE_VN200
 VN200 vn200;
+#endif
+#ifdef USE_UADC
 UADC uadc;
+#endif
 /* Throttle PWM. */
 volatile uint32_t throttle_pwm = 0;
 volatile uint32_t throttle_last_us = 0;
@@ -73,10 +76,14 @@ void
 setup()
 {
     /* Setup h/w serial devices. */
+#ifdef USE_VN200
     vn200 = VN200(&Serial2, VN200_BAUD_RATE);
-    uadc = UADC(&Serial3, UADC_BAUD_RATE);
     vn200.begin();
+#endif
+#ifdef USE_UADC
+    uadc = UADC(&Serial3, UADC_BAUD_RATE);
     uadc.begin();
+#endif
 
     /* Set up throttle PWM logging. */
     attachInterrupt(THROTTLE_INTERRUPT, throttle_pwm_rising, RISING);
@@ -201,22 +208,40 @@ flush_logfile(unsigned long now)
 int
 sample_sensors(unsigned long now)
 {
-    /* TODO: Read in analog and PWM signals, log everything. */
+#ifdef USE_VN200
     int8_t vn200_rv = vn200.read();
+#endif
+#ifdef USE_UADC
     int8_t uadc_rv = uadc.read();
+#endif
+    /* Read in analog and PWM signals, log everything. */
     float la_pin = analogRead5V(LEFT_AILERON_PIN);
     float ra_pin = analogRead5V(RIGHT_AILERON_PIN);
     float lr_pin = analogRead5V(LEFT_RUDDERVATOR_PIN);
     float rr_pin = analogRead5V(RIGHT_RUDDERVATOR_PIN);
     float lf_pin = analogRead5V(LEFT_FLAP_PIN);
     float rf_pin = analogRead5V(RIGHT_FLAP_PIN);
+#if defined(USE_VN200) && defined(USE_UADC)
     fd.println(String(float(millis()) / 1e3, 2) + sep + uadc.airspeed_s() + sep
                + uadc.alpha_s() + sep + uadc.beta_s() + sep + vn200.roll_s()
                + sep + vn200.pitch_s() + sep + vn200.yaw_s() + sep
                + vn200.p_s() + sep + vn200.q_s() + sep + vn200.r_s() + sep
                + throttle_pwm + sep + la_pin + sep + ra_pin + sep + lr_pin
                + sep + rr_pin + sep + lf_pin + sep + rf_pin);
+#elif defined(USE_VN200)
+    fd.println(String(float(millis()) / 1e3, 2) + sep + vn200.roll_s() + sep
+               + vn200.pitch_s() + sep + vn200.yaw_s() + sep + vn200.p_s()
+               + sep + vn200.q_s() + sep + vn200.r_s() + sep + throttle_pwm
+               + sep + la_pin + sep + ra_pin + sep + lr_pin + sep + rr_pin
+               + sep + lf_pin + sep + rf_pin);
+#elif defined(USE_UADC)
+    fd.println(String(float(millis()) / 1e3, 2) + sep + uadc.airspeed_s() + sep
+               + uadc.alpha_s() + sep + uadc.beta_s() + sep + throttle_pwm
+               + sep + la_pin + sep + ra_pin + sep + lr_pin + sep + rr_pin
+               + sep + lf_pin + sep + rf_pin);
+#endif
 #ifdef DEBUG
+#   ifdef USE_VN200
     switch (vn200_rv) {
     case -EINACTIVE:
         Serial.println("FAULT: VN-200 serial port inactive.");
@@ -230,6 +255,13 @@ sample_sensors(unsigned long now)
     default:
         break;
     }
+    if (!vn200_rv) {
+        Serial.println("VN200: " + vn200.roll_s() + sep + vn200.pitch_s()
+                       + sep + vn200.yaw_s() + sep + vn200.p_s() + sep
+                       + vn200.q_s() + sep + vn200.r_s());
+    }
+#   endif
+#   ifdef USE_UADC
     switch (uadc_rv) {
     case -EINACTIVE:
         Serial.println("FAULT: UADC serial port inactive.");
@@ -243,19 +275,22 @@ sample_sensors(unsigned long now)
     default:
         break;
     }
-    if (!vn200_rv) {
-        Serial.println("VN200: " + vn200.roll_s() + sep + vn200.pitch_s()
-                       + sep + vn200.yaw_s() + sep + vn200.p_s() + sep
-                       + vn200.q_s() + sep + vn200.r_s());
-    }
     if (!uadc_rv) {
         Serial.println("UADC : " + uadc.airspeed_s() + sep + uadc.alpha_s()
                        + sep + uadc.beta_s());
     }
+#   endif
 #endif
-    if ((vn200_rv < 0) || (uadc_rv < 0)) {
+#ifdef USE_VN200
+    if (vn200_rv < 0) {
         return TASK_FAILURE;
     }
+#endif
+#ifdef USE_UADC
+    if (uadc_rv < 0) {
+        return TASK_FAILURE;
+    }
+#endif
     return TASK_SUCCESS;
 }
 
