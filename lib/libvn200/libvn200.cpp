@@ -17,27 +17,13 @@ VN200::read(void)
     if (!len) {
         return -ENODATA;
     }
-    if (len > 0) {
-        for (uint8_t i = 0; i < len; ++i) {
-            char b = (char) serial->read();
-            if (b == VN200_SYNC) {
-                if (checksum()) {
-                    parse();
-                    bufidx = 0;
-                    buf[bufidx++] = b;
-                } else {
-                    rv = -EINVAL;
-                }
-            } else {
-                if (bufidx < IO_BUFSIZE) {
-                    buf[bufidx++] = b;
-                } else {
-                    /* Buffer overflow. */
-                    bufidx = 0;
-                }
-            }
-        }
+    bufidx = serial->readBytesUntil(VN200_SYNC, buf, IO_BUFSIZE);
+    if (checksum()) {
+        parse();
+    } else {
+        rv = -EINVAL;
     }
+
     return rv;
 }
 
