@@ -15,8 +15,26 @@ INS (RS232->UART), and the Aeroprobe Micro Air Data Computer
 The main Arduino sketch is the `dfti.ino` file in the `src` directory.
 Libraries provided with this sketch are in the `lib` directory, while
 third-party libraries can be installed with the Platform IO tool. 
-Currently the only third-party library required is AVRQueue, which has
-PlatformIO ID 181, which can be installed with
+Currently the only third-party library required is AVRQueue, which should be 
+automagically installed by PlatformIO.
+
+## Build Targets
+
+The following build targets are defined:
+
+*   `default` -- Builds with support for the uADC and VN-200.
+*   `vn200` -- Builds with support for *only* the VN-200.
+*   `uadc` -- Builds with support for *only* the uADC.
+*   `debug` -- Builds with support for both sensors and serial debugging.
+
+Note that the analog inputs and PWM input are enabled for all targets. 
+To select a built target, use
 ```
-$ platformio lib install 181
+platformio run -e $TARGET
 ```
+to build the project and 
+```
+platformio run -e $TARGET -t upload
+```
+to build and uplaod to the board.
+
