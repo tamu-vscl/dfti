@@ -36,5 +36,5 @@ to build the project and
 ```
 platformio run -e $TARGET -t upload
 ```
-to build and uplaod to the board.
+to build and upload to the board.
 
