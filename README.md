@@ -1,0 +1,39 @@
+# Developmental Flight Test Instrumentation v2
+
+The VSCL Developmental Flight Test Instrumentation (DFTI) is an embedded 
+software package that handles flight test data recording for Small UAS 
+flight test.
+DFTI is a vehicle-agnostic package that can be easily attached to 
+arbitrary SUAS, provided that the vehicle is large enough to carry the 
+hardware.
+
+This is Version 2 of DFTI, which replaces the Arduino-based Version 1 
+firmware.
+This latter version is kept in an archive branch `arduino`.
+Alternatively, for Version 1 go to commit `2ee60dd`.
+
+## Hardware
+
+DFTI is primarily developed for use with the BeagleBone Black 
+single-board computer, but should work with any recent embedded Linux 
+that supports interfacing over RS-232 and UART.
+
+### Sensors
+
+DFTI is designed to record vehicle states for system identification and 
+does so via dedicated sensors to obtain air data, inertial 
+measurements, and control deflections.
+The current supported sensors are:
+
+*   Air Data: Aeroprobe Micro Air Data Computer (RS-232)
+*   INS: VectorNav VN-200 INS (UART/RS-232/SPI)
+*   Control Surface Deflections: linear potentiometers via Arduino RIOs
+*   Commanded Controls/Throttle: autopilot via MAVLink
+
+DFTI is designed to be modular, so support for additional sensors may
+be added easily.
+
+## License
+
+DFTI is placed under the [ISC license](./LICENSE.md).
+
