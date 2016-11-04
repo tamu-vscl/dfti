@@ -35,3 +35,7 @@
 build/*
 bin/*
 lib/*
+
+# Doxygen
+docs/html/*
+docs/latex/*
