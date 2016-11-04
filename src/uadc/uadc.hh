@@ -1,7 +1,7 @@
 /*!
  *  \file uadc.hh
  *  \brief Aeroprobe Micro Air Data Computer interface.
- *  \author Joshua Harris <joshua.a.harris@tamu.edu>
+ *  \author Joshua Harris
  *  \copyright ISC License
  */
 #pragma once

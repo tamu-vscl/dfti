@@ -1,7 +1,7 @@
 /*!
  *  \file util.hh
  *  \brief Utility functions.
- *  \author Joshua Harris <joshua.a.harris@tamu.edu>
+ *  \author Joshua Harris
  *  \copyright ISC License
  */
 #pragma once

@@ -1,7 +1,7 @@
 /*!
  *  \file main.cc
  *  \brief Aeroprobe Micro Air Data Computer test program.
- *  \author Joshua Harris <joshua.a.harris@tamu.edu>
+ *  \author Joshua Harris
  *  \copyright ISC License
  */
 

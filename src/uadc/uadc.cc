@@ -1,7 +1,7 @@
 /*!
  *  \file uadc.cc
  *  \brief Aeroprobe Micro Air Data Computer implementation.
- *  \author Joshua Harris <joshua.a.harris@tamu.edu>
+ *  \author Joshua Harris
  *  \copyright ISC License
  */
 

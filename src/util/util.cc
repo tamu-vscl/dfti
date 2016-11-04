@@ -1,7 +1,7 @@
 /*!
- *  \file util.hh
+ *  \file util.cc
  *  \brief Utility function implementations.
- *  \author Joshua Harris <joshua.a.harris@tamu.edu>
+ *  \author Joshua Harris
  *  \copyright ISC License
  */
 
