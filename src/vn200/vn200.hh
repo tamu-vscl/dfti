@@ -100,10 +100,13 @@ struct VN200Data
  *  serial and parses the data.
  *
  *  The data packet format is binary, with a header consisting of
+ *
  *      - a sync byte (0xfa)
  *      - the selected output groups (bitmask, 1 byte)
  *      - 16-bit bitmasks for the selected outputs from the groups
+ *
  *  In the configuration this code assumes, Output Group 1 is selected, and the
+ *
  *      - TimeGps
  *      - Quaternion
  *      - AngularRate
@@ -111,6 +114,7 @@ struct VN200Data
  *      - Velocity
  *      - Accel
  *      - MagPres
+ *
  *  fields are selected.
  *  The last two bytes are the checksum.
  */
