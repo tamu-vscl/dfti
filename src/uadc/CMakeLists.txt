@@ -22,7 +22,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 add_executable(${APP_NAME}
-  main.cc
+  uadc_test.cc
 )
 
 target_link_libraries(${APP_NAME}

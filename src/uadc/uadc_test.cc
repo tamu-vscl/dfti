@@ -1,5 +1,5 @@
 /*!
- *  \file main.cc
+ *  \file uadc_test.cc
  *  \brief Aeroprobe Micro Air Data Computer test program.
  *  \author Joshua Harris
  *  \copyright ISC License
