@@ -49,7 +49,7 @@ main(int argc, char* argv[])
     QString serial_port = args.first();
 
     // Instantiate the uADC class.
-    dfti::uAirDataComputer uadc{parser.isSet("verbose")};
+    dfti::uADC uadc{parser.isSet("verbose")};
 
     // Start reading the sensor input.
     uadc.setSerialPort(serial_port);

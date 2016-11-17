@@ -11,6 +11,8 @@
 #include <QByteArray>
 #include <QObject>
 #include <QSerialPort>
+// dfti
+#include "sensor/serialsensor.hh"
 
 
 namespace dfti {
@@ -53,6 +55,38 @@ const quint8 uadcPktPsLen = 6;
 bool validateUADCChecksum(QByteArray pkt);
 
 
+//! Structure to hold uADC data.
+struct uADCData
+{
+    //! Sequence number, overflows after 99999
+    quint32 id;
+    //! Indicated Airspeed, meters / second.
+    /*!
+     *  The indicated airspeed is measured from the uADC 5-hole probe and is
+     *  read in with the format XX.XX, which means the highest representable
+     *  airspeed is 99.99 m/s, which is about 195 knots.
+     */
+    float ias_mps;
+    //! Angle-of-Attack, degrees.
+    /*!
+     *  The angle-of-attack is represented as +/-XX.XX.
+     */
+    float aoa_deg;
+    //! Sideslip Angle, degrees.
+    /*!
+     *  The sideslip angle is represented as +/-XX.XX.
+     */
+    float aos_deg;
+    //! Pressure altitude, meters.
+    quint16 alt_m;
+    //! Total Pressure, Pa.
+    quint32 pt_pa;
+    //! Static Pressure, Pa.
+    quint32 ps_pa;
+};
+typedef struct uADCData uADCData_s;
+
+
 //! Serial driver to acquire data from a Micro Air Data Computer.
 /*!
  *  Reads in data from an Aeroprobe Micro Air Data Computer over RS-232 serial
@@ -70,7 +104,7 @@ bool validateUADCChecksum(QByteArray pkt);
  *      - static pressure, Pa
  *      - checksum byte
  */
-class uAirDataComputer : public QObject
+class uADC : public SerialSensor
 {
     Q_OBJECT;
 
@@ -80,89 +114,19 @@ public:
      *  \param d Boolean to turn on qDebug output.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit uAirDataComputer(bool d = false, QObject* _parent = nullptr);
-
-    //! Destructor
-    ~uAirDataComputer();
-
-    //! Returns true if the serial port is open.
-    /*!
-     *  \return True if the serial port is open.
-     */
-    bool isOpen(void);
-
-    //! Opens the serial port.
-    /*!
-     *  Since we may not initially know which serial port corresponds to which
-     *  sensor, we need to wait to open the serial port associated with the
-     *  uADC until we know which port it is. Once we do, we call this open
-     *  method to start reading the serial port.
-     */
-    void open(void);
-
-    //! Set the serial port name.
-    /*!
-     *  Sets the serial port name once we have figured out which serial port
-     *  corresponds to the uADC sensor.
-     *
-     *  \param port The serial port name.
-     */
-    void setSerialPort(QString port);
-
+    explicit uADC(bool d = false, QObject* _parent = nullptr) :
+        SerialSensor(d, _parent) { };
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.
     void readData(void);
 
+signals:
+    void measurementUpdate(uADCData_s data);
 
 private:
-
-    //! Do we display verbose debug output?
-    bool _debug = false;
-
-    //! Indicates if serial port passed validation.
-    bool _valid_serial = false;
-
-    //! Serial port object.
-    QSerialPort* _port = nullptr;
-
-    //! Buffer
-    /*!
-     *  Buffer to hold the raw bytes we read in from the serial port. Since we
-     *  do not necessarily read in complete packets at a time, we need to let
-     *  the buffer fill up until we have a complete packet and then parse it,
-     *  which is the purpose of this buffer.
-     */
-    QByteArray _buf;
-
-    //! Indicated Airspeed, meters / second.
-    /*!
-     *  The indicated airspeed is measured from the uADC 5-hole probe and is
-     *  read in with the format XX.XX, which means the highest representable
-     *  airspeed is 99.99 m/s, which is about 195 knots.
-     */
-    float _ias_mps = 0.0;
-
-    //! Angle-of-Attack, degrees.
-    /*!
-     *  The angle-of-attack is represented as +/-XX.XX.
-     */
-   float _aoa_deg = 0.0;
-
-    //! Sideslip Angle, degrees.
-    /*!
-     *  The sideslip angle is represented as +/-XX.XX.
-     */
-   float _aos_deg = 0.0;
-
-    //! Pressure altitude, meters.
-    quint16 _alt_m = 0;
-
-    //! Total Pressure, Pa.
-    quint32 _pt_pa = 0;
-
-    //! Static Pressure, Pa.
-    quint32 _ps_pa = 0;
+    //! Data structure.
+    uADCData_s data;
 };
 
 

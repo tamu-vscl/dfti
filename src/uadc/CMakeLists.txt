@@ -1,4 +1,4 @@
-project(uadc)
+project(dftiuadc)
 set(APP_NAME uadc_test)
 
 set(SOURCES
@@ -17,18 +17,19 @@ add_library(${PROJECT_NAME} SHARED
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core
   Qt5::SerialPort
+  dftisensor
   dftiutil
 )
 
 add_executable(${APP_NAME}
   main.cc
-  ${SOURCES}
-  ${MOC_SRC}
 )
 
 target_link_libraries(${APP_NAME}
   Qt5::Core
   Qt5::SerialPort
+  dftisensor
+  dftiuadc
   dftiutil
 )
 
