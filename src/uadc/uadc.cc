@@ -129,7 +129,7 @@ uAirDataComputer::readData(void)
         _buf.remove(0, _buf.lastIndexOf(uadcTerm) + 1);
         // Validate the packet and parse the data structure. If validation
         // fails, then display a warning.
-        if (validateChecksum(pkt)) {
+        if (validateUADCChecksum(pkt)) {
             // Parse the data structure.
             // Packet ID
             QByteArray _id_buf = pkt.left(5);
@@ -173,10 +173,10 @@ uAirDataComputer::readData(void)
 
 
 // ----------------------------------------------------------------------------
-//  Private functions
+//  Functions
 // ----------------------------------------------------------------------------
 bool
-uAirDataComputer::validateChecksum(QByteArray pkt)
+validateUADCChecksum(QByteArray pkt)
 {
     bool ok;
     quint8 cksum = 0;

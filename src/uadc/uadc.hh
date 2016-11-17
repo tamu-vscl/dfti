@@ -42,6 +42,17 @@ const quint8 uadcPktPsPos = 45;
 const quint8 uadcPktPsLen = 6;
 
 
+//! Validate the uADC packet checksum.
+/*!
+ *  The checksum is a simple byte-wise XOR up to but not including the
+ *  checksum byte itself.
+ *
+ *  \param pkt A full uADC packet to validate.
+ *  \return True if the packet checksum is correct.
+*/
+bool validateUADCChecksum(QByteArray pkt);
+
+
 //! Serial driver to acquire data from a Micro Air Data Computer.
 /*!
  *  Reads in data from an Aeroprobe Micro Air Data Computer over RS-232 serial
@@ -105,15 +116,6 @@ public slots:
 
 
 private:
-    //! Validate the uADC packet checksum.
-    /*!
-     *  The checksum is a simple byte-wise XOR up to but not including the
-     *  checksum byte itself.
-     *
-     *  \param pkt A full uADC packet to validate.
-     *  \return True if the packet checksum is correct.
-    */
-    bool validateChecksum(QByteArray pkt);
 
     //! Do we display verbose debug output?
     bool _debug = false;
