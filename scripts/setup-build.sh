@@ -9,4 +9,4 @@ script=$(readlink -f "$0")
 scriptpath=$(dirname "$script")
 
 # Make folders.
-mkdir "$scriptpath/../{bin,build,lib}"
+mkdir "$scriptpath"/../{bin,build,lib}
