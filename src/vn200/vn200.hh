@@ -20,7 +20,7 @@
 namespace dfti {
 
 
-//! Validate the uADC packet checksum.
+//! Validate the VN-200 packet checksum.
 /*!
  *  The checksum is a CRC 16; if the checksum byte is included the checksum
  *  should evaluate to 0.
@@ -94,10 +94,10 @@ struct VN200Data
 };
 
 
-//! Serial driver to acquire data from a Micro Air Data Computer.
+//! Serial driver to acquire data from a VN-200 Inertial Navigation System.
 /*!
- *  Reads in data from an Aeroprobe Micro Air Data Computer over RS-232 serial
- *  and parses the data.
+ *  Reads in data from a VectorNav VN-200 Inertial Navigation System over
+ *  serial and parses the data.
  *
  *  The data packet format is binary, with a header consisting of
  *      - a sync byte (0xfa)
