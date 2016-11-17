@@ -2,7 +2,9 @@
  *  \file serialsensor.cc
  *  \brief Serial I/O sensor interface implementation.
  *  \author Joshua Harris
- *  \copyright ISC License
+ *  \copyright Copyright © 2016 Vehicle Systems & Control Laboratory,
+ *  Department of Aerospace Engineering, Texas A&M University
+ *  \license ISC License
  */
 
 
