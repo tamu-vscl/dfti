@@ -35,9 +35,7 @@ void
 VN200::readData(void)
 {
     // Add available bytes to the buffer up to the first newline.
-    _buf.append(_port->readLine());
-    // If there is a newline in the buffer, then we should have a full packet
-    // from the uADC, which we extract from the buffer and then parse.
+    _buf.append(_port->read(2 * packetSize));
     quint8 bufSize = _buf.size();
     if (_buf.contains(header) && bufSize >= packetSize) {
         // Find the start of the first full packet we have.
