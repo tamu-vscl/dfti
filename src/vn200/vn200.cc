@@ -2,7 +2,9 @@
  *  \file vn200.cc
  *  \brief VectorNav VN-200 Inertial Navigation System implementation.
  *  \author Joshua Harris
- *  \copyright ISC License
+ *  \copyright Copyright © 2016 Vehicle Systems & Control Laboratory,
+ *  Department of Aerospace Engineering, Texas A&M University
+ *  \license ISC License
  */
 
 
