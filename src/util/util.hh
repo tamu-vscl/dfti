@@ -26,4 +26,15 @@ namespace dfti {
 QString validateSerialPort(QString _port);
 
 
+quint32
+byte_to_uint32(QByteArray bytes)
+{
+    quint32 bytes = 0;
+    for (quint8 i = 0; i < 4; ++ i) {
+        bytes |= (quint32) bytes[i] << i;
+    }
+    return bytes;
+}
+
+
 };  // namespace dfti
