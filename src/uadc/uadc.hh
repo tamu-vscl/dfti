@@ -59,32 +59,31 @@ bool validateUADCChecksum(QByteArray pkt);
 struct uADCData
 {
     //! Sequence number, overflows after 99999
-    quint32 id;
+    quint32 id = 0;
     //! Indicated Airspeed, meters / second.
     /*!
      *  The indicated airspeed is measured from the uADC 5-hole probe and is
      *  read in with the format XX.XX, which means the highest representable
      *  airspeed is 99.99 m/s, which is about 195 knots.
      */
-    float ias_mps;
+    float ias_mps = 0;
     //! Angle-of-Attack, degrees.
     /*!
      *  The angle-of-attack is represented as +/-XX.XX.
      */
-    float aoa_deg;
+    float aoa_deg = 0;
     //! Sideslip Angle, degrees.
     /*!
      *  The sideslip angle is represented as +/-XX.XX.
      */
-    float aos_deg;
+    float aos_deg = 0;
     //! Pressure altitude, meters.
-    quint16 alt_m;
+    quint16 alt_m = 0;
     //! Total Pressure, Pa.
-    quint32 pt_pa;
+    quint32 pt_pa = 0;
     //! Static Pressure, Pa.
-    quint32 ps_pa;
+    quint32 ps_pa = 0;
 };
-typedef struct uADCData uADCData_s;
 
 
 //! Serial driver to acquire data from a Micro Air Data Computer.
@@ -122,11 +121,11 @@ public slots:
     void readData(void);
 
 signals:
-    void measurementUpdate(uADCData_s data);
+    void measurementUpdate(uADCData data);
 
 private:
     //! Data structure.
-    uADCData_s data;
+    uADCData data;
 };
 
 
