@@ -29,11 +29,11 @@ QString validateSerialPort(QString _port);
 quint32
 byte_to_uint32(QByteArray bytes)
 {
-    quint32 bytes = 0;
+    quint32 rv = 0;
     for (quint8 i = 0; i < 4; ++ i) {
-        bytes |= (quint32) bytes[i] << i;
+        rv |= (quint32) bytes[i] << i;
     }
-    return bytes;
+    return rv;
 }
 
 
