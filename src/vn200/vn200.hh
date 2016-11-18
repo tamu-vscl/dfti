@@ -7,8 +7,6 @@
  *  \license ISC License
  */
 #pragma once
-// Need to have speficied alignment in structures to cast.
-#pragma pack(1)
 
 
 // 3rd party
@@ -130,7 +128,7 @@ public:
      *  \param d Boolean to turn on qDebug output.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit VN200(bool d = false, QObject* _parent = nullptr):
+    explicit VN200(bool d = false, QObject* _parent = nullptr) :
         SerialSensor(d, _parent) { };
 
 public slots:
@@ -150,20 +148,20 @@ private:
      *  a byte depends on if we are looking for a new packet. If that's the
      *  case, we need to check for the sync byte and then the group byte.
      */
-    bool foundSyncByte = false;
-    bool foundGroupByte = false;
+    bool foundSyncByte{false};
+    bool foundGroupByte{false};
 
     //! Sync byte.
-    const quint8 syncByte = (quint8) 0xfa;
+    static const quint8 syncByte{0xfa};
 
     //! Group byte
-    const quint8 groupByte = (quint8) 0x01;
+    static const quint8 groupByte{0x01};
 
     //! Buffer position.
-    quint8 currentBufIdx = 0;
+    quint8 currentBufIdx{0};
 
     //! Expected packet size.
-    static const quint8 packetSize = 108;
+    static const quint8 packetSize{110};
 
     //! Buffer
     /*!
@@ -172,7 +170,13 @@ private:
      */
     quint8 buf[packetSize];
 
+#pragma pack(push, 1)  // change structure packing to 1 byte
     //! Packet format.
+    /*!
+     *  Note that we need to use pragma pack(1) for the memory layout of the
+     *  structure to match the wire format of the packet, but we want it ONLY
+     *  for this struct (which, incidentally, is POD).
+     */
     struct VN200Packet {
         quint8 sync = 0;
         quint8 outputGroups = 0;
@@ -187,12 +191,13 @@ private:
         float temp = 0;
         float pressure = 0;
     };
+#pragma pack(pop)  // reset structure packing
 
     //! Output data structure.
     VN200Data data;
 
     //! Raw packet data.
-    VN200Packet *packet = nullptr;
+    VN200Packet *packet{nullptr};
 };
 
 
