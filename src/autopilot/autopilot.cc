@@ -68,6 +68,9 @@ Autopilot::readData(void)
                     data.rcIn7 = rcIn.chan7_raw;
                     data.rcIn8 = rcIn.chan8_raw;
                     timestamps.rcChannelsRaw = getTimeUsec();
+                    if (_debug) {
+                        qDebug() << "Autopilot::readData: RC_CHANNELS_RAW";
+                    }
                     break;
                 }
                 case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW: {
@@ -82,11 +85,19 @@ Autopilot::readData(void)
                     data.rcOut7 = rcOut.servo7_raw;
                     data.rcOut8 = rcOut.servo8_raw;
                     timestamps.servoOutputRaw = getTimeUsec();
+                    if (_debug) {
+                        qDebug() << "Autopilot::readData: SERVO_OUTPUT_RAW";
+                    }
                     break;
                 }
                 default:
                     if (_debug) {
-                        qDebug() << "Got unhandled message type.";
+                        QString msgName = QString::number(message.msgid);
+                        if (mavlinkMessageName.contains(message.msgid)) {
+                            msgName = mavlinkMessageName[message.msgid];
+                        }
+                        qDebug() << "Got unhandled message type:"
+                                 << msgName;
                     }
                     break;
             }
@@ -101,6 +112,26 @@ Autopilot::readData(void)
     if (timestamps.rcChannelsRaw && timestamps.servoOutputRaw) {
         emit measurementUpdate(data);
         timestamps.reset();
+
+        if (_debug) {
+            qDebug() << "MAVLink:\n"
+                     << "\tRCIN1 :  " << data.rcIn1 << "\n"
+                     << "\tRCIN2 :  " << data.rcIn2 << "\n"
+                     << "\tRCIN3 :  " << data.rcIn3 << "\n"
+                     << "\tRCIN4 :  " << data.rcIn4 << "\n"
+                     << "\tRCIN5 :  " << data.rcIn5 << "\n"
+                     << "\tRCIN6 :  " << data.rcIn6 << "\n"
+                     << "\tRCIN7 :  " << data.rcIn7 << "\n"
+                     << "\tRCIN8 :  " << data.rcIn8 << "\n"
+                     << "\tRCOUT1:  " << data.rcOut1 << "\n"
+                     << "\tRCOUT2:  " << data.rcOut2 << "\n"
+                     << "\tRCOUT3:  " << data.rcOut3 << "\n"
+                     << "\tRCOUT4:  " << data.rcOut4 << "\n"
+                     << "\tRCOUT5:  " << data.rcOut5 << "\n"
+                     << "\tRCOUT6:  " << data.rcOut6 << "\n"
+                     << "\tRCOUT7:  " << data.rcOut7 << "\n"
+                     << "\tRCOUT8:  " << data.rcOut8 << "\n";
+        }
     }
 
     return;

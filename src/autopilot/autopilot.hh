@@ -16,6 +16,7 @@
 #include <mavlink/common/mavlink.h>
 // dfti
 #include "sensor/serialsensor.hh"
+#include "mavlink_info.hh"
 
 
 namespace dfti {
