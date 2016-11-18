@@ -122,6 +122,10 @@ SerialSensor::setSerialPort(QString port)
                 qDebug() << "using serial port" << port;
             }
         }
+    } else {
+        if (_port->portName() == "") {
+            _valid_serial = false;
+        }
     }
     return;
 }
