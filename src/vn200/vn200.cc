@@ -36,26 +36,64 @@ namespace dfti {
 void
 VN200::readData(void)
 {
-    // Add available bytes to the buffer up to the first newline.
-    _buf.append(_port->read(2 * packetSize));
-    quint8 bufSize = _buf.size();
-    if (_buf.contains(header) && bufSize >= packetSize) {
-        // Find the start of the first full packet we have.
-        quint8 startPos = _buf.indexOf(header);
-        if (startPos + packetSize < bufSize) {
-            // We don't have a full packet, so delay.
-            return;
-        }
-        QByteArray pkt = _buf.mid(startPos, packetSize);
+    // Flags for parsing.
+    bool cleanup = false;
+    bool completePacket = false;
+
+    // Read in a single byte.
+    quint8 ch;
+    if (!_port->getChar((char *) &ch)) {
         if (_debug) {
-            qDebug() << "buffer:" << _buf;
-            qDebug() << "packet:" << pkt;
+            qDebug() << "Failed to read serial port!";
         }
-        // Remove everything up to the end of this packet.
-        _buf.remove(0, startPos + packetSize);
-        // Validate and parse the packet. Emit signal for measurement update.
-        if (validateVN200Checksum(pkt)) {
-            packet = reinterpret_cast<VN200Packet*>(pkt.data());
+        cleanup = true;
+    }
+
+    // Attempt to construct valid packet.
+    if (!foundSyncByte && (ch == syncByte)) {
+        buf[currentBufIdx++] = ch;
+        foundSyncByte = true;
+    } else if (foundSyncByte) {
+        /*
+         * If we haven't found the group byte yet, then check to see if the
+         * current byte is the group byte. Since we know a priori what the
+         * packet from the IMU will look like we can check for the known group
+         * byte directly.
+         */
+        if (!foundGroupByte && (ch == groupByte)) {
+            buf[currentBufIdx++] = ch;
+            foundGroupByte = true;
+        /*
+         * If we've found the group byte, the next byte should be part of the
+         * packet and we add it to the buffer.
+         */
+        } else if (foundGroupByte) {
+            if (currentBufIdx < packetSize) {
+                buf[currentBufIdx++] = ch;
+                if (currentBufIdx == packetSize) {
+                    // We are at the end of the packet, so we should validate
+                    // and parse it.
+                    completePacket = true;
+                }
+            } else {
+                // Packet is longer than buffer size so probably invalid,
+                // ignore.
+                cleanup = true;
+            }
+        } else {
+            // Garbage data, reset buffer and flags.
+            cleanup = true;
+        }
+
+    } else {
+        // Garbage data, reset buffer and flags.
+        cleanup = true;
+    }
+
+    // Validate and parse the packet if we have an entire packet.
+    if (completePacket) {
+        if (validateVN200Checksum(buf, packetSize)) {
+            packet = reinterpret_cast<VN200Packet*>(buf);
             copyPacketToData();
             // Emit the signal.
             emit measurementUpdate(data);
@@ -90,7 +128,20 @@ VN200::readData(void)
                 qDebug() << "[INFO]    packet failed validation";
             }
         }
+        cleanup = true;
     }
+
+    // Reset the buffer if we're done with the packet or had an error.
+    if (cleanup) {
+        // Clear buffer for new data.
+        std::memset(buf, 0, packetSize);
+        // Reset buffer index.
+        currentBufIdx = 0;
+        // Reset flags.
+        foundSyncByte = false;
+        foundGroupByte = false;
+    }
+
     return;
 }
 
@@ -132,13 +183,13 @@ VN200::copyPacketToData(void)
 //  Functions
 // ----------------------------------------------------------------------------
 bool
-validateVN200Checksum(QByteArray pkt)
+validateVN200Checksum(quint8 *pkt, quint8 pktLen)
 {
     quint16 crc = 0;
     // Calculate checksum.
-    for (quint8 i = 0; i < pkt.size(); ++i) {
+    for (quint8 i = 1; i < pktLen; ++i) {
         crc = (quint8) (crc >> 8) | (crc << 8);
-        crc ^= pkt.at(i);
+        crc ^= pkt[i];
         crc ^= (quint8) (crc & 0xff) >> 4;
         crc ^= crc << 12;
         crc ^= (crc & 0x00ff) << 5;

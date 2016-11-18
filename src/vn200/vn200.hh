@@ -30,7 +30,7 @@ namespace dfti {
  *  \param pkt A full VN-200 packet to validate.
  *  \return True if the packet checksum is correct.
 */
-bool validateVN200Checksum(QByteArray pkt);
+bool validateVN200Checksum(quint8 *pkt, quint8 pktLen);
 
 
 //! Structure to hold VN-200 data.
@@ -144,14 +144,33 @@ private:
     //! Copy from raw packet to data struct.
     void copyPacketToData(void);
 
-    //! Header
+    //! Flag to indicate if we are reading a new packet.
     /*!
-     *  The header is the sync byte, group byte, and field bitmask. This
-     *  bitmask is 2**1 | 2**4 | 2**5 | 2**6 | 2**7 | 2**8 | 2**10, which
-     *  evaluates to 0x05f2, or, in little endian form, {0xf2, 0x05}.
+     *  Since we read in the packet a single byte at a time, the way we handle
+     *  a byte depends on if we are looking for a new packet. If that's the
+     *  case, we need to check for the sync byte and then the group byte.
      */
-    const QByteArray header{"\xfa\x01\xf2\x05", 4};
-    const quint8 packetSize = 108;
+    bool foundSyncByte = false;
+    bool foundGroupByte = false;
+
+    //! Sync byte.
+    const quint8 syncByte = (quint8) 0xfa;
+
+    //! Group byte
+    const quint8 groupByte = (quint8) 0x01;
+
+    //! Buffer position.
+    quint8 currentBufIdx = 0;
+
+    //! Expected packet size.
+    static const quint8 packetSize = 108;
+
+    //! Buffer
+    /*!
+     *  Buffer to hold the raw bytes we read in from the serial port. We read
+     *  in one byte at a time.
+     */
+    quint8 buf[packetSize];
 
     //! Packet format.
     struct VN200Packet {
