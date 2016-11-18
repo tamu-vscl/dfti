@@ -12,7 +12,7 @@
 // 3rd party
 #include <QDebug>
 #include <QObject>
-#include <mavlink/common/mavlink.h>
+#include <mavlink/v1/common/mavlink.h>
 // dfti
 #include "sensor/serialsensor.hh"
 #include "mavlink_info.hh"

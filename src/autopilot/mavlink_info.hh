@@ -11,7 +11,7 @@
 
 // 3rd party
 #include <QMap>
-#include <mavlink/common/mavlink.h>
+#include <mavlink/v1/common/mavlink.h>
 
 
 namespace dfti {
