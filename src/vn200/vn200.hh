@@ -26,6 +26,7 @@ namespace dfti {
  *  should evaluate to 0.
  *
  *  \param pkt A full VN-200 packet to validate.
+ *  \param pktLen The length of the packet.
  *  \return True if the packet checksum is correct.
 */
 bool validateVN200Checksum(quint8 *pkt, quint8 pktLen);
@@ -101,19 +102,19 @@ struct VN200Data
  *
  *  The data packet format is binary, with a header consisting of
  *
- *      - a sync byte (0xfa)
- *      - the selected output groups (bitmask, 1 byte)
- *      - 16-bit bitmasks for the selected outputs from the groups
+ *  - a sync byte (0xfa)
+ *  - the selected output groups (bitmask, 1 byte)
+ *  - 16-bit bitmasks for the selected outputs from the groups
  *
  *  In the configuration this code assumes, Output Group 1 is selected, and the
  *
- *      - TimeGps
- *      - Quaternion
- *      - AngularRate
- *      - Position
- *      - Velocity
- *      - Accel
- *      - MagPres
+ *  - TimeGps
+ *  - Quaternion
+ *  - AngularRate
+ *  - Position
+ *  - Velocity
+ *  - Accel
+ *  - MagPres
  *
  *  fields are selected.
  *  The last two bytes are the checksum.
