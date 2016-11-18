@@ -16,6 +16,16 @@
 
 namespace dfti {
 
+
+quint64
+getTimeUsec(void)
+{
+    static struct timeval _ts;
+    gettimeofday(&_ts, nullptr);
+    return 1e6 * _ts.tv_sec + _ts.tv_usec;
+}
+
+
 QString
 validateSerialPort(QString _port)
 {

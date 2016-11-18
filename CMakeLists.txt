@@ -162,6 +162,7 @@ link_directories(
 
 include_directories(
   ${HEADER_DIR}
+  ${EXTERN_DIR}
 )
 
 

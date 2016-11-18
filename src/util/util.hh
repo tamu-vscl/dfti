@@ -9,6 +9,9 @@
 #pragma once
 
 
+// stdlib
+#include <ctime>
+#include <sys/time.h>
 // 3rd party
 #include <QDebug>
 #include <QSerialPort>
@@ -16,6 +19,10 @@
 
 
 namespace dfti {
+
+
+//! Get timestamp in microseconds.
+quint64 getTimeUsec(void);
 
 
 //! Validates a proposed serial port.
