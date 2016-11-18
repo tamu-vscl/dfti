@@ -7,6 +7,7 @@
  *  \license ISC License
  */
 
+
 // 3rd party
 #include <QCoreApplication>
 #include <QCommandLineParser>
@@ -58,6 +59,7 @@ main(int argc, char* argv[])
     uadc.open();
     if (!uadc.isOpen()) {
         qDebug() << "failed to open serial port" << serial_port;
+        exit(-1);
     }
 
     return app.exec();

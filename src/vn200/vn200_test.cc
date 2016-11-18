@@ -7,6 +7,7 @@
  *  \license ISC License
  */
 
+
 // 3rd party
 #include <QCoreApplication>
 #include <QCommandLineParser>
@@ -30,7 +31,7 @@ main(int argc, char* argv[])
     QCoreApplication::setApplicationVersion(app_version);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("uadc_test -- test VN-200 serial driver");
+    parser.setApplicationDescription("vn200_test -- test VN-200 serial driver");
     // Positional Arguments
     parser.addPositionalArgument("port",
         QCoreApplication::translate("main",
@@ -58,6 +59,7 @@ main(int argc, char* argv[])
     vn200.open();
     if (!vn200.isOpen()) {
         qDebug() << "failed to open serial port" << serial_port;
+        exit(-1);
     }
 
     return app.exec();
