@@ -11,10 +11,11 @@
 
 // 3rd party
 #include <QByteArray>
+#include <QDebug>
 #include <QObject>
-#include <QSerialPort>
 // dfti
 #include "sensor/serialsensor.hh"
+#include "util/util.hh"
 
 
 namespace dfti {

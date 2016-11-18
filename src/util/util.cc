@@ -6,11 +6,6 @@
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
  */
-
-
-// 3rd party
-#include <QSerialPortInfo>
-// project
 #include "util.hh"
 
 

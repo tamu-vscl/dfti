@@ -6,15 +6,7 @@
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
  */
-
-
-// 3rd party
-#include <QDebug>
-#include <QIODevice>
-#include <QSerialPortInfo>
-// dfti
 #include "uadc.hh"
-#include "util/util.hh"
 
 
 namespace dfti {

@@ -15,6 +15,7 @@
 // 3rd party
 #include <QDebug>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QString>
 
 
@@ -33,17 +34,6 @@ quint64 getTimeUsec(void);
  *  \return True if the port name corresponds to a valid system serial port.
  */
 QString validateSerialPort(QString _port);
-
-
-quint32
-byte_to_uint32(QByteArray bytes)
-{
-    quint32 rv = 0;
-    for (quint8 i = 0; i < 4; ++ i) {
-        rv |= (quint32) bytes[i] << i;
-    }
-    return rv;
-}
 
 
 };  // namespace dfti

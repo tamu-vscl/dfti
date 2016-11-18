@@ -11,9 +11,13 @@
 
 // 3rd party
 #include <QByteArray>
+#include <QDebug>
+#include <QIODevice>
 #include <QObject>
-#include <QtPlugin>
 #include <QSerialPort>
+#include <QSerialPortInfo>
+// dfti
+#include "util/util.hh"
 
 
 namespace dfti {

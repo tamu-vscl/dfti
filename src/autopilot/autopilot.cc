@@ -6,17 +6,7 @@
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
  */
-
-
-// stdlib
-#include <cstring>
-// 3rd party
-#include <QDebug>
-#include <QIODevice>
-#include <QSerialPortInfo>
-// dfti
 #include "autopilot.hh"
-#include "util/util.hh"
 
 
 namespace dfti {

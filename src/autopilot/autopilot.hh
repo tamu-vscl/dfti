@@ -10,13 +10,13 @@
 
 
 // 3rd party
-#include <QByteArray>
+#include <QDebug>
 #include <QObject>
-#include <QSerialPort>
 #include <mavlink/common/mavlink.h>
 // dfti
 #include "sensor/serialsensor.hh"
 #include "mavlink_info.hh"
+#include "util/util.hh"
 
 
 namespace dfti {
