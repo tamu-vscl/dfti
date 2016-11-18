@@ -88,15 +88,6 @@ protected:
 
     //! Serial port object.
     QSerialPort* _port = nullptr;
-
-    //! Buffer
-    /*!
-     *  Buffer to hold the raw bytes we read in from the serial port. Since we
-     *  do not necessarily read in complete packets at a time, we need to let
-     *  the buffer fill up until we have a complete packet and then parse it,
-     *  which is the purpose of this buffer.
-     */
-    QByteArray _buf;
 };
 
 

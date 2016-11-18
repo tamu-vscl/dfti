@@ -28,7 +28,6 @@ SerialSensor::SerialSensor(bool d, QObject* _parent)
 {
     // Initialize the serial port object, but do not assign the port yet.
     _port = new QSerialPort(this);
-    // The uADC is 115200 baud, 8-N-1.
     if (_port->setBaudRate(QSerialPort::Baud115200) &&
         _port->setDataBits(QSerialPort::Data8) &&
         _port->setParity(QSerialPort::NoParity) &&
@@ -63,6 +62,10 @@ SerialSensor::open(void)
 {
     if (_valid_serial && !isOpen()) {
         if (_port->open(QIODevice::ReadOnly)) {
+            if (_debug) {
+                qDebug() << "Opened serial port:"
+                         << _port->portName();
+            }
         } else {
             if (_debug) {
                 qDebug() << "Failed to open serial port:"
@@ -80,6 +83,10 @@ SerialSensor::open(QSerialPort::BaudRate baud)
     if (_port->setBaudRate(baud)) {
         if (_valid_serial && !isOpen()) {
             if (_port->open(QIODevice::ReadOnly)) {
+                if (_debug) {
+                    qDebug() << "Opened serial port:"
+                             << _port->portName();
+                }
             } else {
                 if (_debug) {
                     qDebug() << "Failed to open serial port:"
@@ -107,12 +114,14 @@ SerialSensor::setSerialPort(QString port)
 {
     // Check if the serial port is valid.
     port = validateSerialPort(port);
-    if (_debug) {
-        qDebug() << "using serial port" << port;
-    }
     if (port != "") {
         _valid_serial = true;
-        _port->setPortName(port);
+        if (!isOpen()) {
+            _port->setPortName(port);
+            if (_debug) {
+                qDebug() << "using serial port" << port;
+            }
+        }
     }
     return;
 }
