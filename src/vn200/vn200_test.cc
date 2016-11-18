@@ -49,7 +49,10 @@ main(int argc, char* argv[])
     parser.process(app);
     // Get serial port name.
     QStringList args = parser.positionalArguments();
-    QString serial_port = args.first();
+    QString serial_port{"/dev/ttyUSB0"};
+    if (!args.isEmpty()) {
+        serial_port = args.first();
+    }
 
     // Instantiate the VN200 class.
     dfti::VN200 vn200{parser.isSet("verbose")};
