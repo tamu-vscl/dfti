@@ -70,7 +70,8 @@ main(int argc, char* argv[])
     dfti::VN200 vn200{&settings};
 
     // Start reading the sensor input.
-    vn200.setSerialPort(serial_port);
+    vn200.configureSerial(serial_port);
+    vn200.init();
     vn200.open();
     if (!vn200.isOpen()) {
         qDebug() << "failed to open serial port" << serial_port;

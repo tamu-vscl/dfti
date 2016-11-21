@@ -72,7 +72,8 @@ main(int argc, char* argv[])
     dfti::Autopilot pixhawk{&settings};
 
     // Start reading the sensor input.
-    pixhawk.setSerialPort(serial_port);
+    pixhawk.configureSerial(serial_port);
+    pixhawk.init();
     pixhawk.open();
     if (!pixhawk.isOpen()) {
         qDebug() << "failed to open serial port" << serial_port;

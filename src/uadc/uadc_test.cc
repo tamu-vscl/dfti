@@ -69,7 +69,8 @@ main(int argc, char* argv[])
     dfti::uADC uadc{&settings};
 
     // Start reading the sensor input.
-    uadc.setSerialPort(serial_port);
+    uadc.configureSerial(serial_port);
+    uadc.init();
     uadc.open();
     if (!uadc.isOpen()) {
         qDebug() << "failed to open serial port" << serial_port;

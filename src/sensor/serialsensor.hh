@@ -32,14 +32,25 @@ class SerialSensor : public QObject
 public:
     //! Constructor
     /*!
-     *  \param d Boolean to turn on qDebug output.
+     *  \param _settings Pointer to settings object.
      *  \param _parent Pointer to parent QObject.
-     *  \todo Replace d boolean with debug mode enum.
      */
-    explicit SerialSensor(Settings *_settings, QObject* _parent = nullptr);
+    explicit SerialSensor(Settings *_settings, QObject* _parent = nullptr) :
+        settings(_settings), QObject(_parent) { };
 
     //! Destructor
     ~SerialSensor();
+
+    //! Set the serial port parameters.
+    /*!
+     *  \param port The serial port name.
+     *  \param baud The serial port baud rate (default 115k).
+     */
+    void configureSerial(QString portName,
+        QSerialPort::BaudRate baud = QSerialPort::Baud115200);
+
+    //! Initialize the serial port.
+    void init();
 
     //! Returns true if the serial port is open.
     /*!
@@ -56,26 +67,8 @@ public:
      */
     void open(void);
 
-    //! Opens the serial port while changing the baud rate.
-    /*!
-     *  Since we may not initially know which serial port corresponds to which
-     *  sensor, we need to wait to open the serial port associated with the
-     *  sensor until we know which port it is. Once we do, we call this open
-     *  method to start reading the serial port. This version of open supports
-     *  changing the baud rate if the serial port is not 115200 baud as assumed
-     *  by default.
-     *  \param baud The baud rate as a QSerialPort::BaudRate enum.
-     */
-    void open(QSerialPort::BaudRate baud);
-
-    //! Set the serial port name.
-    /*!
-     *  Sets the serial port name once we have figured out which serial port
-     *  corresponds to the sensor.
-     *
-     *  \param port The serial port name.
-     */
-    void setSerialPort(QString port);
+    //! Start the sensor in a thread.
+    void threadStart(void);
 
 
 public slots:
@@ -87,8 +80,11 @@ protected:
     //! Settings object.
     Settings *settings = nullptr;
 
-    //! Do we display verbose debug output?
-    bool _debug = false;
+    //! Serial port name.
+    QString portName{""};
+
+    //! Serial port baud rate.
+    QSerialPort::BaudRate baudRate{QSerialPort::Baud115200};
 
     //! Indicates if serial port passed validation.
     bool _valid_serial = false;
