@@ -21,7 +21,6 @@ SerialSensor::~SerialSensor(void)
         _port->close();
     }
     delete _port;
-    settings = nullptr;
 }
 
 

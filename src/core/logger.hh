@@ -41,6 +41,9 @@ public:
      */
     explicit Logger(Settings *_settings, QObject* _parent = nullptr);
 
+    //! Dtor.
+    ~Logger();
+
     //! Enable Autopilot Sensor.
     /*!
      * \param ap Pointer to Autopilot object.

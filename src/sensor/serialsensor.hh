@@ -46,8 +46,8 @@ public:
      *  \param port The serial port name.
      *  \param baud The serial port baud rate (default 115k).
      */
-    void configureSerial(QString portName,
-        QSerialPort::BaudRate baud = QSerialPort::Baud115200);
+    void configureSerial(QString _portName,
+        QSerialPort::BaudRate _baud = QSerialPort::Baud115200);
 
     //! Initialize the serial port.
     void init();

@@ -32,6 +32,19 @@ Logger::Logger(Settings *_settings, QObject* _parent)
     }
 }
 
+
+Logger::~Logger()
+{
+    if (writeTimer != nullptr) {
+        delete writeTimer;
+        writeTimer = nullptr;
+    }
+    if (flushTimer != nullptr) {
+        delete flushTimer;
+        flushTimer = nullptr;
+    }
+}
+
 // ----------------------------------------------------------------------------
 //  Public functions
 // ----------------------------------------------------------------------------
