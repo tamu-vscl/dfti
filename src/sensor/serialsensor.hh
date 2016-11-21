@@ -17,6 +17,7 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 // dfti
+#include "settings/settings.hh"
 #include "util/util.hh"
 
 
@@ -35,7 +36,7 @@ public:
      *  \param _parent Pointer to parent QObject.
      *  \todo Replace d boolean with debug mode enum.
      */
-    explicit SerialSensor(bool d = false, QObject* _parent = nullptr);
+    explicit SerialSensor(Settings *_settings, QObject* _parent = nullptr);
 
     //! Destructor
     ~SerialSensor();
@@ -83,6 +84,8 @@ public slots:
 
 
 protected:
+    //! Settings object.
+    Settings *settings = nullptr;
 
     //! Do we display verbose debug output?
     bool _debug = false;

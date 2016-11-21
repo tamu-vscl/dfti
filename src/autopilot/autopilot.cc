@@ -36,7 +36,7 @@ Autopilot::readData(void)
         msgReceived = mavlink_parse_char(MAVLINK_COMM_1, ch, &message, &status);
         // Check if we dropped any packets.
         if (lastStatus.packet_rx_drop_count != status.packet_rx_drop_count) {
-            if (_debug) {
+            if (settings->debugSerial()) {
                 qDebug() << "dropped" << status.packet_rx_drop_count
                          << "packets";
             }
@@ -58,7 +58,7 @@ Autopilot::readData(void)
                     data.rcIn7 = rcIn.chan7_raw;
                     data.rcIn8 = rcIn.chan8_raw;
                     timestamps.rcChannelsRaw = getTimeUsec();
-                    if (_debug) {
+                    if (settings->debugData()) {
                         qDebug() << "Autopilot::readData: RC_CHANNELS_RAW";
                     }
                     break;
@@ -75,13 +75,13 @@ Autopilot::readData(void)
                     data.rcOut7 = rcOut.servo7_raw;
                     data.rcOut8 = rcOut.servo8_raw;
                     timestamps.servoOutputRaw = getTimeUsec();
-                    if (_debug) {
+                    if (settings->debugData()) {
                         qDebug() << "Autopilot::readData: SERVO_OUTPUT_RAW";
                     }
                     break;
                 }
                 default:
-                    if (_debug) {
+                    if (settings->debugData()) {
                         QString msgName = QString::number(message.msgid);
                         if (mavlinkMessageName.contains(message.msgid)) {
                             msgName = mavlinkMessageName[message.msgid];
@@ -93,7 +93,7 @@ Autopilot::readData(void)
             }
         }
     } else {
-        if (_debug) {
+        if (settings->debugSerial()) {
             qDebug() << "Failed to read serial port!";
         }
     }
@@ -103,7 +103,7 @@ Autopilot::readData(void)
         emit measurementUpdate(data);
         timestamps.reset();
 
-        if (_debug) {
+        if (settings->debugData()) {
             qDebug() << "MAVLink:\n"
                      << "\tRCIN1 :  " << data.rcIn1 << "\n"
                      << "\tRCIN2 :  " << data.rcIn2 << "\n"

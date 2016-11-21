@@ -36,7 +36,7 @@ uADC::readData(void)
         // length. This may not be true when we start out, in which case the
         // packet will fail validation.
         QByteArray pkt = _buf.left(uadcPktLen);
-        if (_debug) {
+        if (settings->debugSerial()) {
             qDebug() << "buffer:" << _buf;
             qDebug() << "packet:" << pkt;
         }
@@ -72,7 +72,7 @@ uADC::readData(void)
             // Emit the signal.
             emit measurementUpdate(data);
             // If we are in the verbose debugging mode, print the parsed data.
-            if (_debug) {
+            if (settings->debugData()) {
                 qDebug() << "ID :" << data.id
                          << "IAS:" << data.ias_mps
                          << "AoA:" << data.aoa_deg
@@ -82,7 +82,7 @@ uADC::readData(void)
                          << "Ps :" << data.ps_pa;
             }
         } else {
-            if (_debug) {
+            if (settings->debugData()) {
                 qDebug() << "[INFO]    packet failed validation";
             }
         }
@@ -106,10 +106,6 @@ validateUADCChecksum(QByteArray pkt)
     for (quint8 i = 0; i < uadcPktCksumPos; ++i) {
         cksum ^= static_cast<quint8>(pkt.at(i));
     }
-    // if (_debug) {
-        qDebug() << "checksum byte:" << cksum_byte
-                 << "calc. checksum:" << cksum;
-    // }
     return ok ? (cksum == cksum_byte ? true : false) : false;
 }
 

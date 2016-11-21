@@ -14,8 +14,9 @@
 #include <QObject>
 #include <mavlink/v1/common/mavlink.h>
 // dfti
-#include "sensor/serialsensor.hh"
 #include "mavlink_info.hh"
+#include "sensor/serialsensor.hh"
+#include "settings/settings.hh"
 #include "util/util.hh"
 
 
@@ -100,8 +101,11 @@ public:
      *  \param d Boolean to turn on qDebug output.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit Autopilot(bool d = false, QObject* _parent = nullptr) :
-        SerialSensor(d, _parent) { lastStatus.packet_rx_drop_count = 0; };
+    explicit Autopilot(Settings *_settings, QObject* _parent = nullptr) :
+        SerialSensor(_settings, _parent)
+    {
+        lastStatus.packet_rx_drop_count = 0;
+    };
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.

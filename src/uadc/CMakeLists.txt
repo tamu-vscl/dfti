@@ -18,6 +18,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Core
   Qt5::SerialPort
   dftisensor
+  dftisettings
   dftiutil
 )
 
@@ -29,6 +30,7 @@ target_link_libraries(${APP_NAME}
   Qt5::Core
   Qt5::SerialPort
   dftisensor
+  dftisettings
   dftiuadc
   dftiutil
 )

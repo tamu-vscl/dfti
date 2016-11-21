@@ -33,7 +33,7 @@ VN200::readData(void)
     // Read in a single byte.
     quint8 ch;
     if (!_port->getChar((char *) &ch)) {
-        if (_debug) {
+        if (settings->debugSerial()) {
             qDebug() << "Failed to read serial port!";
         }
         cleanup = true;
@@ -88,7 +88,7 @@ VN200::readData(void)
             // Emit the signal.
             emit measurementUpdate(data);
             // If we are in the verbose debugging mode, print the parsed data.
-            if (_debug) {
+            if (settings->debugData()) {
                 qDebug() << "TimeGPS :" << data.gpsTimeNs
                          << "Quaternion: {"
                          << data.quaternion[0] << ","
@@ -114,7 +114,7 @@ VN200::readData(void)
                          << "Pressure:" << data.pressureKpa;
             }
         } else {
-            if (_debug) {
+            if (settings->debugData()) {
                 qDebug() << "[INFO]    packet failed validation";
             }
         }

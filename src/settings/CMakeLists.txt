@@ -1,11 +1,11 @@
-project(dftisensor)
+project(dftisettings)
 
 set(SOURCES
-  serialsensor.cc
+  settings.cc
 )
 
 set(HEADERS
-  serialsensor.hh
+  settings.hh
 )
 
 add_library(${PROJECT_NAME} SHARED
@@ -16,6 +16,6 @@ add_library(${PROJECT_NAME} SHARED
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core
   Qt5::SerialPort
-  dftisettings
-  dftiutil
 )
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)

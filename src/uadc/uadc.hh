@@ -15,6 +15,7 @@
 #include <QObject>
 // dfti
 #include "sensor/serialsensor.hh"
+#include "settings/settings.hh"
 #include "util/util.hh"
 
 
@@ -116,8 +117,8 @@ public:
      *  \param d Boolean to turn on qDebug output.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit uADC(bool d = false, QObject* _parent = nullptr) :
-        SerialSensor(d, _parent) { };
+    explicit uADC(Settings *_settings, QObject* _parent = nullptr) :
+        SerialSensor(_settings, _parent) { };
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.

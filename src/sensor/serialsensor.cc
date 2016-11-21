@@ -15,8 +15,8 @@ namespace dfti {
 // ----------------------------------------------------------------------------
 //  Constructors/destructors
 // ----------------------------------------------------------------------------
-SerialSensor::SerialSensor(bool d, QObject* _parent)
-: _debug(d), QObject(_parent)
+SerialSensor::SerialSensor(Settings *_settings, QObject* _parent)
+: settings(_settings), QObject(_parent)
 {
     // Initialize the serial port object, but do not assign the port yet.
     _port = new QSerialPort(this);
@@ -25,11 +25,11 @@ SerialSensor::SerialSensor(bool d, QObject* _parent)
         _port->setParity(QSerialPort::NoParity) &&
         _port->setStopBits(QSerialPort::OneStop) &&
         _port->setFlowControl(QSerialPort::NoFlowControl)) {
-        if (_debug) {
+        if (settings->debugSerial()) {
             qDebug() << "[INFO]    port settings successful";
         }
     } else {
-        if (_debug) {
+        if (settings->debugSerial()) {
             qDebug() << "[ERROR]   port settings failed";
         }
     }
@@ -43,6 +43,7 @@ SerialSensor::~SerialSensor(void)
         _port->close();
     }
     delete _port;
+    settings = nullptr;
 }
 
 
@@ -54,12 +55,12 @@ SerialSensor::open(void)
 {
     if (_valid_serial && !isOpen()) {
         if (_port->open(QIODevice::ReadOnly)) {
-            if (_debug) {
+            if (settings->debugSerial()) {
                 qDebug() << "Opened serial port:"
                          << _port->portName();
             }
         } else {
-            if (_debug) {
+            if (settings->debugSerial()) {
                 qDebug() << "Failed to open serial port:"
                          << _port->errorString();
             }
@@ -75,12 +76,12 @@ SerialSensor::open(QSerialPort::BaudRate baud)
     if (_port->setBaudRate(baud)) {
         if (_valid_serial && !isOpen()) {
             if (_port->open(QIODevice::ReadOnly)) {
-                if (_debug) {
+                if (settings->debugSerial()) {
                     qDebug() << "Opened serial port:"
                              << _port->portName();
                 }
             } else {
-                if (_debug) {
+                if (settings->debugSerial()) {
                     qDebug() << "Failed to open serial port:"
                              << _port->errorString();
                 }
@@ -89,7 +90,7 @@ SerialSensor::open(QSerialPort::BaudRate baud)
                 &SerialSensor::readData);
         }
     } else {
-        qDebug() << "Failed to update baud rate.";
+        qWarning() << "Failed to update baud rate.";
     }
 }
 
@@ -110,7 +111,7 @@ SerialSensor::setSerialPort(QString port)
         _valid_serial = true;
         if (!isOpen()) {
             _port->setPortName(port);
-            if (_debug) {
+            if (settings->debugSerial()) {
                 qDebug() << "using serial port" << port;
             }
         }

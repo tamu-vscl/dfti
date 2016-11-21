@@ -39,13 +39,14 @@ main(int argc, char* argv[])
     // Options
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addOptions({
-        {
-            {"V", "verbose"},
-            QCoreApplication::translate("main",
-                "Request verbose console output.")
-        }
-    });
+    parser.addOption(QCommandLineOption({"c", "config"},
+        "Specify RC file.", "rc.ini"));
+    parser.addOption(QCommandLineOption({"d", "debug-data"},
+        "Display sensor data for debugging."));
+    parser.addOption(QCommandLineOption({"r", "debug-rc"},
+        "Display settings for debugging."));
+    parser.addOption(QCommandLineOption({"s", "debug-serial"},
+        "Display serial i/o for debugging."));
     parser.process(app);
     // Get serial port name.
     QStringList args = parser.positionalArguments();
@@ -54,8 +55,19 @@ main(int argc, char* argv[])
         serial_port = args.first();
     }
 
+    // Settings
+    dfti::DebugMode debug = dfti::DebugMode::DEBUG_NONE;
+    debug |= parser.isSet("debug-data") ?
+        dfti::DebugMode::DEBUG_DATA : dfti::DebugMode::DEBUG_NONE;
+    debug |= parser.isSet("debug-rc") ?
+        dfti::DebugMode::DEBUG_RC : dfti::DebugMode::DEBUG_NONE;
+    debug |= parser.isSet("debug-serial") ?
+        dfti::DebugMode::DEBUG_SERIAL : dfti::DebugMode::DEBUG_NONE;
+
+    dfti::Settings settings(parser.value("config"), debug);
+
     // Instantiate the VN200 class.
-    dfti::VN200 vn200{parser.isSet("verbose")};
+    dfti::VN200 vn200{&settings};
 
     // Start reading the sensor input.
     vn200.setSerialPort(serial_port);
