@@ -19,6 +19,46 @@ namespace dfti {
 // ----------------------------------------------------------------------------
 //  Public functions
 // ----------------------------------------------------------------------------
+void
+Autopilot::requestDataStreams(void)
+{
+    // Create MAVLink commands.
+    mavlink_command_long_t rcInCmd = {0};
+    rcInCmd.target_system = systemId;
+    rcInCmd.target_component = compId;
+    rcInCmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+    rcInCmd.confirmation = true;
+    rcInCmd.param1 = static_cast<float>(MAVLINK_MSG_ID_RC_CHANNELS_RAW);
+    rcInCmd.param2 = static_cast<float>(1000);
+    mavlink_command_long_t rcOutCmd = {0};
+    rcOutCmd.target_system = systemId;
+    rcOutCmd.target_component = compId;
+    rcOutCmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+    rcOutCmd.confirmation = true;
+    rcOutCmd.param1 = static_cast<float>(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW);
+    rcOutCmd.param2 = static_cast<float>(1000);
+
+    // Build messages.
+    char buf[300];
+    quint32 len;
+    mavlink_message_t msg;
+    mavlink_msg_command_long_encode(systemId, thisId, &msg, &rcInCmd);
+    len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+    if (isOpen()) {
+        _port->write(buf, len);
+        if (settings->debugSerial()) {
+            qDebug() << "Requested RCIN at 1 Hz.";
+        }
+    }
+    mavlink_msg_command_long_encode(systemId, thisId, &msg, &rcOutCmd);
+    len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+    if (isOpen()) {
+        _port->write(buf, len);
+        if (settings->debugSerial()) {
+            qDebug() << "Requested RCOUT at 1 Hz.";
+        }
+    }
+}
 
 // ----------------------------------------------------------------------------
 // Public Slots
@@ -45,6 +85,10 @@ Autopilot::readData(void)
 
         // Extract the message type if we have a full packet.
         if (msgReceived) {
+
+            systemId = message.sysid;
+            compId = message.compid;
+
             switch (message.msgid) {
                 case MAVLINK_MSG_ID_RC_CHANNELS_RAW: {
                     mavlink_rc_channels_raw_t rcIn;
@@ -122,6 +166,11 @@ Autopilot::readData(void)
                      << "\tRCOUT7:  " << data.rcOut7 << "\n"
                      << "\tRCOUT8:  " << data.rcOut8 << "\n";
         }
+    }
+
+    if (!gotMsg) {
+        requestDataStreams();
+        gotMsg = true;
     }
 
     return;

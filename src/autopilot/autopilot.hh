@@ -107,6 +107,9 @@ public:
         lastStatus.packet_rx_drop_count = 0;
     };
 
+    //! Request desired data at 1 Hz.
+    void requestDataStreams(void);
+
 public slots:
     //! Slot to read in data over serial and parse complete packets.
     void readData(void);
@@ -115,6 +118,18 @@ signals:
     void measurementUpdate(APData data);
 
 private:
+    //! Have we gotten a message?
+    bool gotMsg{false};
+
+    //! System ID.
+    int systemId{0};
+
+    //! Autopilot ID.
+    int compId{0};
+
+    //! This ID
+    int thisId{0};
+
     //! Current MAVLink message.
     mavlink_message_t message;
 

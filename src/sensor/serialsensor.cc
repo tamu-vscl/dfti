@@ -64,7 +64,7 @@ void
 SerialSensor::open(void)
 {
     if (_valid_serial && !isOpen()) {
-        if (_port->open(QIODevice::ReadOnly)) {
+        if (_port->open(QIODevice::ReadWrite)) {
             if (settings->debugSerial()) {
                 qDebug() << "Opened serial port:"
                          << _port->portName();
