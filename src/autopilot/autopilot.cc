@@ -213,17 +213,17 @@ Autopilot::readData(void)
                                << status.text;
                 }
                 case MAVLINK_MSG_ID_COMMAND_ACK: {
-                    mavlink_command_ack_t ack;
-                    mavlink_msg_command_ack_decode(&message, &ack);
                     if (settings->debugData()) {
+                        mavlink_command_ack_t ack;
+                        mavlink_msg_command_ack_decode(&message, &ack);
                         qDebug() << "COMMAND ACK" << ack.command << "RESULT"
                                  << ack.result;
                     }
                 }
                 case MAVLINK_MSG_ID_MESSAGE_INTERVAL: {
-                    mavlink_message_interval_t mi;
-                    mavlink_msg_message_interval_decode(&message, &mi);
                     if (settings->debugData()) {
+                        mavlink_message_interval_t mi;
+                        mavlink_msg_message_interval_decode(&message, &mi);
                         QString msgName = QString::number(mi.message_id);
                         if (mavlinkMessageName.contains(mi.message_id)) {
                             msgName = mavlinkMessageName[mi.message_id];
