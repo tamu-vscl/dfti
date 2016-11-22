@@ -67,30 +67,7 @@ struct APData
 };
 
 
-//! Serial driver to acquire data from a VN-200 Inertial Navigation System.
-/*!
- *  Reads in data from a VectorNav VN-200 Inertial Navigation System over
- *  serial and parses the data.
- *
- *  The data packet format is binary, with a header consisting of
- *
- *  - a sync byte (0xfa)
- *  - the selected output groups (bitmask, 1 byte)
- *  - 16-bit bitmasks for the selected outputs from the groups
- *
- *  In the configuration this code assumes, Output Group 1 is selected, and the
- *
- *  - TimeGps
- *  - Quaternion
- *  - AngularRate
- *  - Position
- *  - Velocity
- *  - Accel
- *  - MagPres
- *
- *  fields are selected.
- *  The last two bytes are the checksum.
- */
+//! Serial driver to acquire data from a MAVLink-based autopilot.
 class Autopilot : public SerialSensor
 {
     Q_OBJECT;
@@ -98,7 +75,7 @@ class Autopilot : public SerialSensor
 public:
     //! Constructor
     /*!
-     *  \param d Boolean to turn on qDebug output.
+     *  \param _settings Pointer to Settings object.
      *  \param _parent Pointer to parent QObject.
      */
     explicit Autopilot(Settings *_settings, QObject* _parent = nullptr) :
@@ -109,7 +86,7 @@ public:
 
     //! Opens the serial port.
     /*!
-     *  Overrides the SerialSensor open method to open the serial port as R/W.
+     *  Overrides the SerialSensor::open method to open the serial port as R/W.
      */
     void open(void);
 
@@ -122,7 +99,7 @@ public:
      *  \remark See http://mavlink.org/messages/common for the MAVLink
      *      MAV_DATA_STREAM enum.
      *  \param streamID The MAVLink stream ID.
-     *  \param streamRate Requested rate of the stream in microseconds (?).
+     *  \param streamRate Requested rate of the stream in Hz.
      *  \param enabled Use 1 to enable the stream and 0 to disabled.
      */
     void requestStream(quint8 streamId, quint16 streamRate, quint8 enabled);
