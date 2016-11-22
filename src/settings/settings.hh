@@ -54,16 +54,33 @@ public:
      */
     void loadRCFile(QString _fn);
 
+    //! Should we prefer the MESSAGE_INTERVAL interface?
+    /*!
+     *  \remark MAVLink has deprecated the REQUEST_DATA_STREAM interface in
+     *      favor of the new MESSAGE_INTERVAL interface, however APM does not
+     *      yet (~Nov 2016) support this.
+     */
+    bool use_message_interval(void) const { return m_use_message_interval; };
+
+    //! Return the desired MAVLink stream rate in Hz.
+    quint32 stream_rate(void) const { return m_stream_rate; };
+
 private:
     QString m_rcfile;
     QString m_userRC;
     QString m_sysRC{"/etc/dftirc"};
 
-    // Settings object.
+    //! Settings object.
     QSettings* m_settings = nullptr;
 
-    // Debug settings.
+    //! Debug settings.
     DebugMode m_debug;
+
+    //! Prefer MESSAGE_INTERVAL to REQUEST_DATA_STREAM?
+    bool m_use_message_interval{false};
+
+    //! Stream rate in Hz for desired MAVLink parameters.
+    quint32 m_stream_rate{10};
 };
 
 };  // namespace dfti

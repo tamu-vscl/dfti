@@ -20,42 +20,120 @@ namespace dfti {
 //  Public functions
 // ----------------------------------------------------------------------------
 void
-Autopilot::requestDataStreams(void)
+Autopilot::open(void)
 {
-    // Create MAVLink commands.
-    mavlink_command_long_t rcInCmd = {0};
-    rcInCmd.target_system = systemId;
-    rcInCmd.target_component = compId;
-    rcInCmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-    rcInCmd.confirmation = true;
-    rcInCmd.param1 = static_cast<float>(MAVLINK_MSG_ID_RC_CHANNELS_RAW);
-    rcInCmd.param2 = static_cast<float>(1000);
-    mavlink_command_long_t rcOutCmd = {0};
-    rcOutCmd.target_system = systemId;
-    rcOutCmd.target_component = compId;
-    rcOutCmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
-    rcOutCmd.confirmation = true;
-    rcOutCmd.param1 = static_cast<float>(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW);
-    rcOutCmd.param2 = static_cast<float>(1000);
+    if (_valid_serial && !isOpen()) {
+        if (_port->open(QIODevice::ReadWrite)) {
+            if (settings->debugSerial()) {
+                qDebug() << "Opened serial port:"
+                         << _port->portName();
+            }
+        } else {
+            if (settings->debugSerial()) {
+                qDebug() << "Failed to open serial port:"
+                         << _port->errorString();
+            }
+        };
+        connect(_port, &QIODevice::readyRead, this,
+            &Autopilot::readData);
+    }
+}
 
-    // Build messages.
+void
+Autopilot::getDataRate(quint16 msgId)
+{
+    // Create MAVLink command.
+    mavlink_command_long_t cmd = {0};
+    cmd.target_system = systemId;
+    cmd.target_component = compId;
+    cmd.command = MAV_CMD_GET_MESSAGE_INTERVAL;
+    cmd.confirmation = true;
+    cmd.param1 = static_cast<float>(msgId);
+
+    // Create packed MAVLink message.
     char buf[300];
-    quint32 len;
     mavlink_message_t msg;
-    mavlink_msg_command_long_encode(systemId, thisId, &msg, &rcInCmd);
-    len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+    mavlink_msg_command_long_encode(systemId, thisId, &msg, &cmd);
+    quint32 len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+
+    // Send the command message.
     if (isOpen()) {
-        _port->write(buf, len);
+        quint32 writeLen = _port->write(buf, len);
+        QString msgName = QString::number(msgId);
+        if (mavlinkMessageName.contains(msgId)) {
+            msgName = mavlinkMessageName[msgId];
+        }
         if (settings->debugSerial()) {
-            qDebug() << "Requested RCIN at 1 Hz.";
+            qDebug() << "Requested" << msgName <<  "stream rate.";
+        }
+        if (writeLen != len) {
+            qWarning() << "Failed to send message" << msgName
+                       << "to autopilot!";
         }
     }
-    mavlink_msg_command_long_encode(systemId, thisId, &msg, &rcOutCmd);
-    len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+}
+
+
+void
+Autopilot::setDataRate(quint8 msgId, float msgRate)
+{
+    // Create MAVLink command.
+    mavlink_command_long_t cmd = {0};
+    cmd.target_system = systemId;
+    cmd.target_component = compId;
+    cmd.command = MAV_CMD_SET_MESSAGE_INTERVAL;
+    cmd.confirmation = 0;
+    cmd.param1 = static_cast<float>(msgId);
+    cmd.param2 = msgRate;
+
+    // Create packed MAVLink message.
+    char buf[300];
+    mavlink_message_t msg;
+    mavlink_msg_command_long_encode(systemId, thisId, &msg, &cmd);
+    quint32 len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+
+    // Send the command message.
     if (isOpen()) {
-        _port->write(buf, len);
+        quint32 writeLen = _port->write(buf, len);
+        _port->flush();
+        QString msgName = QString::number(msgId);
+        if (mavlinkMessageName.contains(msgId)) {
+            msgName = mavlinkMessageName[msgId];
+        }
         if (settings->debugSerial()) {
-            qDebug() << "Requested RCOUT at 1 Hz.";
+            qDebug() << "Requested" << msgName <<  "every" << msgRate << "ms";
+        }
+        if (writeLen != len) {
+            qWarning() << "Failed to send message" << msgName
+                       << "to autopilot!";
+        }
+    }
+}
+
+
+void
+Autopilot::requestStream(quint8 streamId, quint16 streamRate, quint8 enabled)
+{
+    // Create MAVLink REQUEST_DATA_STREAM message.
+    mavlink_request_data_stream_t stream = {0};
+    stream.target_system = systemId;
+    stream.target_component = compId;
+    stream.req_stream_id = streamId;
+    stream.req_message_rate = streamRate;
+    stream.start_stop = enabled;
+
+    // Create packed MAVLink message.
+    char buf[300];
+    mavlink_message_t msg;
+    mavlink_msg_request_data_stream_encode(systemId, thisId, &msg, &stream);
+    quint32 len = mavlink_msg_to_send_buffer((quint8 *) buf, &msg);
+
+    // Send the message.
+    if (isOpen()) {
+        quint32 writeLen = _port->write(buf, len);
+        _port->flush();
+        if (writeLen != len) {
+            qWarning() << "Failed to send data stream request to autopilot!";
         }
     }
 }
@@ -85,11 +163,15 @@ Autopilot::readData(void)
 
         // Extract the message type if we have a full packet.
         if (msgReceived) {
-
+            // Get the system and component IDs of the connected a/p.
             systemId = message.sysid;
             compId = message.compid;
 
             switch (message.msgid) {
+                case MAVLINK_MSG_ID_HEARTBEAT:
+                    if (settings->debugData()) {
+                        qDebug() << "got HEARTBEAT";
+                    }
                 case MAVLINK_MSG_ID_RC_CHANNELS_RAW: {
                     mavlink_rc_channels_raw_t rcIn;
                     mavlink_msg_rc_channels_raw_decode(&message, &rcIn);
@@ -124,16 +206,47 @@ Autopilot::readData(void)
                     }
                     break;
                 }
-                default:
+                case MAVLINK_MSG_ID_STATUSTEXT: {
+                    mavlink_statustext_t status;
+                    mavlink_msg_statustext_decode(&message, &status);
+                    qWarning() << "[WARN:" << status.severity << "]: "
+                               << status.text;
+                }
+                case MAVLINK_MSG_ID_COMMAND_ACK: {
+                    mavlink_command_ack_t ack;
+                    mavlink_msg_command_ack_decode(&message, &ack);
+                    if (settings->debugData()) {
+                        qDebug() << "COMMAND ACK" << ack.command << "RESULT"
+                                 << ack.result;
+                    }
+                }
+                case MAVLINK_MSG_ID_MESSAGE_INTERVAL: {
+                    mavlink_message_interval_t mi;
+                    mavlink_msg_message_interval_decode(&message, &mi);
+                    if (settings->debugData()) {
+                        QString msgName = QString::number(mi.message_id);
+                        if (mavlinkMessageName.contains(mi.message_id)) {
+                            msgName = mavlinkMessageName[mi.message_id];
+                        }
+                        qDebug() << "Message" << msgName << "at"
+                                 << mi.interval_us << "us.";
+                    }
+                }
+                default: {
                     if (settings->debugData()) {
                         QString msgName = QString::number(message.msgid);
                         if (mavlinkMessageName.contains(message.msgid)) {
                             msgName = mavlinkMessageName[message.msgid];
                         }
+                        if (settings->use_message_interval()) {
+                            setDataRate(message.msgid, -1);
+                            getDataRate(message.msgid);
+                        }
                         qDebug() << "Got unhandled message type:"
                                  << msgName;
                     }
                     break;
+                }
             }
         }
     } else {
@@ -168,8 +281,20 @@ Autopilot::readData(void)
         }
     }
 
+    // If this is our first time getting data, request the streams/messages we
+    // want.
     if (!gotMsg) {
-        requestDataStreams();
+        if (settings->use_message_interval()) {
+            setDataRate(MAVLINK_MSG_ID_RC_CHANNELS_RAW,
+                hzToUsec(settings->stream_rate()));
+            setDataRate(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW,
+                hzToUsec(settings->stream_rate()));
+            getDataRate(MAVLINK_MSG_ID_RC_CHANNELS_RAW);
+            getDataRate(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW);
+        } else {
+            requestStream(MAV_DATA_STREAM_RC_CHANNELS,
+                settings->stream_rate(), 1);
+        }
         gotMsg = true;
     }
 

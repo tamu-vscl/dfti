@@ -23,7 +23,20 @@ namespace dfti {
 
 
 //! Get timestamp in microseconds.
+/*!
+ *  \remark If you are using this function on an embedded computer without a
+ *      Real Time Clock, this is probably the time since boot.
+ *  \return Unix time, microseconds since Jan 1, 1970.
+ */
 quint64 getTimeUsec(void);
+
+
+//! Convert Hertz rate to microsecond sampling time.
+/*!
+ *  \param Sampling rate in Hz.
+ *  \return Sampling period in microseconds.
+ */
+float hzToUsec(quint8 rate);
 
 
 //! Validates a proposed serial port.

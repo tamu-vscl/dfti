@@ -75,6 +75,18 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "Created QSettings from file" << _fn;
     }
 
+    // MAVLink parameters.
+    m_settings->beginGroup("mavlink");
+    m_use_message_interval = m_settings->value("use_message_interval",
+        false).toBool();
+    m_stream_rate = m_settings->value("stream_rate", 10).toInt();
+    m_settings->endGroup();
+    if (debugRC()) {
+        qDebug() << "Loaded [mavlink] settings group:";
+        qDebug() << "\tuse_message_interval:  " << m_use_message_interval;
+        qDebug() << "\tstream_rate:           " << m_stream_rate;
+    }
+
     return;
 }
 

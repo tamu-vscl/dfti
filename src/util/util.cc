@@ -21,6 +21,13 @@ getTimeUsec(void)
 }
 
 
+float
+hzToUsec(quint8 rate)
+{
+    return 1e6 / static_cast<float>(rate);
+}
+
+
 QString
 validateSerialPort(QString _port)
 {

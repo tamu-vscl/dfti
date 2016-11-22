@@ -107,8 +107,43 @@ public:
         lastStatus.packet_rx_drop_count = 0;
     };
 
-    //! Request desired data at 1 Hz.
-    void requestDataStreams(void);
+    //! Opens the serial port.
+    /*!
+     *  Overrides the SerialSensor open method to open the serial port as R/W.
+     */
+    void open(void);
+
+
+    //! Request a MAVLink message at a given rate.
+    /*!
+     *  \deprecated REQUEST_DATA_STREAM is deprecated in favor of the
+     *      MESSAGE_INTERVAL MAVLink message. However, at this time APM does
+     *      not support this latter interface.
+     *  \remark See http://mavlink.org/messages/common for the MAVLink
+     *      MAV_DATA_STREAM enum.
+     *  \param streamID The MAVLink stream ID.
+     *  \param streamRate Requested rate of the stream in microseconds (?).
+     *  \param enabled Use 1 to enable the stream and 0 to disabled.
+     */
+    void requestStream(quint8 streamId, quint16 streamRate, quint8 enabled);
+
+    //! Request current MAVLink message data rate.
+    /*!
+     *  \remark See http://mavlink.org/messages/common for MAVLink message
+     *  info. Note also that this should return a MESSAGE_INTERVAL message, so
+     *  you should make sure this message is handled.
+     *  \param msgID The MAVLink message ID.
+     */
+    void getDataRate(quint16 msgId);
+
+    //! Request a MAVLink message at a given rate.
+    /*!
+     *  \remark See http://mavlink.org/messages/common for MAVLink message info.
+     *  \param msgID The MAVLink message ID.
+     *  \param msgRate Requested rate of the message in microseconds. To
+     *      disable output, use -1, and to reset to the default rate, use 0.
+     */
+    void setDataRate(quint8 msgId, float msgRate);
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.
@@ -122,13 +157,13 @@ private:
     bool gotMsg{false};
 
     //! System ID.
-    int systemId{0};
+    quint8 systemId{0};
 
     //! Autopilot ID.
-    int compId{0};
+    quint8 compId{0};
 
     //! This ID
-    int thisId{0};
+    quint8 thisId{255};
 
     //! Current MAVLink message.
     mavlink_message_t message;
