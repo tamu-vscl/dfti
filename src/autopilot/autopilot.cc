@@ -211,6 +211,7 @@ Autopilot::readData(void)
                     mavlink_msg_statustext_decode(&message, &status);
                     qWarning() << "[WARN:" << status.severity << "]: "
                                << status.text;
+                    break;
                 }
                 case MAVLINK_MSG_ID_COMMAND_ACK: {
                     if (settings->debugData()) {
@@ -219,6 +220,7 @@ Autopilot::readData(void)
                         qDebug() << "COMMAND ACK" << ack.command << "RESULT"
                                  << ack.result;
                     }
+                    break;
                 }
                 case MAVLINK_MSG_ID_MESSAGE_INTERVAL: {
                     if (settings->debugData()) {
@@ -231,6 +233,7 @@ Autopilot::readData(void)
                         qDebug() << "Message" << msgName << "at"
                                  << mi.interval_us << "us.";
                     }
+                    break;
                 }
                 default: {
                     if (settings->debugData()) {
