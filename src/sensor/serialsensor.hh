@@ -65,7 +65,7 @@ public:
      *  sensor until we know which port it is. Once we do, we call this open
      *  method to start reading the serial port.
      */
-    void open(void);
+    virtual void open(void);
 
     //! Start the sensor in a thread.
     void threadStart(void);
