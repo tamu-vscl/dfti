@@ -5,6 +5,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_subdirectory(autopilot)
 add_subdirectory(core)
+add_subdirectory(test)
 add_subdirectory(sensor)
 add_subdirectory(settings)
 add_subdirectory(uadc)

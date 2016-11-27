@@ -1,16 +1,7 @@
-project(dftiuadc)
+project(dftitest)
 
-set(SOURCES
-  uadc.cc
-)
-
-set(HEADERS
-  uadc.hh
-)
-
-add_library(${PROJECT_NAME} SHARED
-   ${SOURCES}
-   ${MOC_SRC}
+add_executable(${PROJECT_NAME}
+  dfti_test.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -18,7 +9,10 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::SerialPort
   dftisensor
   dftisettings
+  dftiap
+  dftiuadc
   dftiutil
+  dftivn200
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

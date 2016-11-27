@@ -1,5 +1,4 @@
 project(dftiap)
-set(APP_NAME ap_test)
 
 set(SOURCES
   autopilot.cc
@@ -19,19 +18,6 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::SerialPort
   dftisensor
   dftisettings
-  dftiutil
-)
-
-add_executable(${APP_NAME}
-  autopilot_test.cc
-)
-
-target_link_libraries(${APP_NAME}
-  Qt5::Core
-  Qt5::SerialPort
-  dftisensor
-  dftisettings
-  dftiap
   dftiutil
 )
 

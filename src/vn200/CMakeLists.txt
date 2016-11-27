@@ -1,5 +1,4 @@
 project(dftivn200)
-set(APP_NAME vn200_test)
 
 set(SOURCES
   vn200.cc
@@ -19,19 +18,6 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::SerialPort
   dftisensor
   dftisettings
-  dftiutil
-)
-
-add_executable(${APP_NAME}
-  vn200_test.cc
-)
-
-target_link_libraries(${APP_NAME}
-  Qt5::Core
-  Qt5::SerialPort
-  dftisensor
-  dftisettings
-  dftivn200
   dftiutil
 )
 
