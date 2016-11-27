@@ -169,8 +169,7 @@ main(int argc, char* argv[])
     // Set up application.
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(dfti::app_name);
-    QCoreApplication::setApplicationVersion(QString("%1.%2.%3").arg(
-        dfti_MAJOR_VERSION, dfti_MINOR_VERSION, dfti_PATCH_VERSION));
+    QCoreApplication::setApplicationVersion(dfti::app_version);
 
     // Register meta types.
     qRegisterMetaType<dfti::APData>("APData");

@@ -31,15 +31,14 @@ main(int argc, char* argv[])
 {
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(app_name);
-    QCoreApplication::setApplicationVersion(QString("%1.%2.%3").arg(
-        dfti_MAJOR_VERSION, dfti_MINOR_VERSION, dfti_PATCH_VERSION));
+    QCoreApplication::setApplicationVersion(dfti::app_version);
 
     QCommandLineParser parser;
     parser.setApplicationDescription("dftitest -- test DFTI sensor drivers");
     // Positional Arguments
     parser.addPositionalArgument("sensor",
         QCoreApplication::translate("main",
-            "Sensor to test."));
+            "Sensor to test, one of (ap|uadc|vn200)."));
     parser.addPositionalArgument("port",
         QCoreApplication::translate("main",
             "Serial port name to connect to the autopilot."));

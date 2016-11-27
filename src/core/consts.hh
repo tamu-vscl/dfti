@@ -15,6 +15,12 @@ namespace dfti {
 //! DFTI application name.
 const QString app_name{"dfti"};
 
+//! DFTI application version.
+/*!
+ *  \remark DFTI uses semantic versioning with the major, minor, and patch
+ *      versions defined as macros in the main CMakeLists.txt file.
+ */
+const QString app_version{DFTI_VERSION};
 
 //! Available sensors enumeration.
 enum class AvailableSensors : quint8 {

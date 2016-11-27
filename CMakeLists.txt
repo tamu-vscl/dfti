@@ -83,9 +83,10 @@ elseif(UNIX)
 endif()
 
 # Define macros to pass CMake version to code.
-add_definitions(-Ddfti_MAJOR_VERSION="${dfti_MAJOR_VERSION}")
-add_definitions(-Ddfti_MINOR_VERSION="${dfti_MINOR_VERSION}")
-add_definitions(-Ddfti_PATCH_VERSION="${dfti_PATCH_VERSION}")
+add_definitions(-DDFTI_VERSION="${dfti_VERSION}")
+add_definitions(-DDFTI_MAJOR_VERSION="${dfti_MAJOR_VERSION}")
+add_definitions(-DDFTI_MINOR_VERSION="${dfti_MINOR_VERSION}")
+add_definitions(-DDFTI_PATCH_VERSION="${dfti_PATCH_VERSION}")
 
 ################################################################################
 # C++11 support
