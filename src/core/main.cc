@@ -94,13 +94,15 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             thisPortPID = port.productIdentifier();
         }
         // Check if we have a Pixhawk USB(?) serial connection.
-        if ((thisPortPID == pixhawkPID) && (thisPortVID == pixhawkVID)) {
-            if (ap != nullptr) {
-                ap->configureSerial(port.systemLocation());
+        if (settings.use_mavlink()) {
+            if ((thisPortPID == pixhawkPID) && (thisPortVID == pixhawkVID)) {
+                if (ap != nullptr) {
+                    ap->configureSerial(port.systemLocation());
+                }
+                qDebug() << "MAVLink/Pixhawk serial port set to"
+                         << port.systemLocation() << "(Pixhawk USB)";
+                continue;
             }
-            qDebug() << "MAVLink/Pixhawk serial port set to"
-                     << port.systemLocation() << "(Pixhawk USB)";
-            continue;
         }
         // Attempt to read in data from the serial port to determine what it
         // is.
@@ -115,31 +117,37 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             // Check to see if it contains data that looks like it is from a
             // sensor we support.
             if (data.contains(vn200Header)) {
-                if (vn200 != nullptr) {
-                    vn200->configureSerial(port.systemLocation());
-                }
-                qDebug() << "VN-200 serial port set to"
-                         << port.systemLocation();
-                continue;
-            } else if (data.contains(mavlinkSync)) {
-                if (ap != nullptr) {
-                    ap->configureSerial(port.systemLocation());
-                }
-                qDebug() << "MAVLink/Pixhawk serial port set to"
-                         << port.systemLocation();
-                continue;
-            } else if (data.contains('\n')) {
-                newline1 = data.indexOf('\n');
-                newline2 = data.indexOf('\n', newline1 + 1);
-                if ((newline2 - newline1) == dfti::uadcPktLen) {
-                    if (uadc != nullptr) {
-                        uadc->configureSerial(port.systemLocation());
+                if (settings.use_vn200()) {
+                    if (vn200 != nullptr) {
+                        vn200->configureSerial(port.systemLocation());
                     }
-                    qDebug() << "uADC serial port set to"
+                    qDebug() << "VN-200 serial port set to"
                              << port.systemLocation();
                 }
-                newline1 = 0;
-                newline2 = 0;
+                continue;
+            } else if (data.contains(mavlinkSync)) {
+                if (settings.use_mavlink()) {
+                    if (ap != nullptr) {
+                        ap->configureSerial(port.systemLocation());
+                    }
+                    qDebug() << "MAVLink/Pixhawk serial port set to"
+                             << port.systemLocation();
+                }
+                continue;
+            } else if (data.contains('\n')) {
+                if (settings.use_uadc()) {
+                    newline1 = data.indexOf('\n');
+                    newline2 = data.indexOf('\n', newline1 + 1);
+                    if ((newline2 - newline1) == dfti::uadcPktLen) {
+                        if (uadc != nullptr) {
+                            uadc->configureSerial(port.systemLocation());
+                        }
+                        qDebug() << "uADC serial port set to"
+                                 << port.systemLocation();
+                    }
+                    newline1 = 0;
+                    newline2 = 0;
+                }
                 continue;
             }
             sp.close();
