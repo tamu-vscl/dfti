@@ -75,6 +75,23 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "Created QSettings from file" << _fn;
     }
 
+    // DFTI parameters.
+    m_settings->beginGroup("dfti");
+    m_id_timeout = m_settings->value("id_timeout", 2000).toInt();
+    m_set_system_time = m_settings->value("set_system_time", false).toBool();
+    m_use_mavlink = m_settings->value("use_mavlink", false).toBool();
+    m_use_uadc = m_settings->value("use_uadc", false).toBool();
+    m_use_vn200 = m_settings->value("use_vn200", false).toBool();
+    m_settings->endGroup();
+    if (debugRC()) {
+        qDebug() << "Loaded [dfti] settings group:";
+        qDebug() << "\tid_timeout:            " << m_id_timeout;
+        qDebug() << "\tset_system_time:       " << m_set_system_time;
+        qDebug() << "\tuse_mavlink:           " << m_use_mavlink;
+        qDebug() << "\tuse_uadc:              " << m_use_uadc;
+        qDebug() << "\tuse_vn200:             " << m_use_vn200;
+    }
+
     // MAVLink parameters.
     m_settings->beginGroup("mavlink");
     m_use_message_interval = m_settings->value("use_message_interval",
