@@ -33,7 +33,7 @@ quint64 getTimeUsec(void);
 
 //! Convert Hertz rate to microsecond sampling time.
 /*!
- *  \param Sampling rate in Hz.
+ *  \param rate Sampling rate in Hz.
  *  \return Sampling period in microseconds.
  */
 float hzToUsec(quint8 rate);
