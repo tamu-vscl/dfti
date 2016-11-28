@@ -18,4 +18,4 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::SerialPort
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib64)

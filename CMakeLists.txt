@@ -34,23 +34,33 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${dfti_LIBRARY_OUTPUT_DIRECTORY})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${dfti_LIBRARY_OUTPUT_DIRECTORY})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dfti_RUNTIME_OUTPUT_DIRECTORY})
 
-set(CMAKE_INSTALL_PREFIX /opt/dfti)
+set(CMAKE_INSTALL_PREFIX /usr)
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
-#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 
 ################################################################################
 # Set the output directory for the build executables and libraries
 ################################################################################
 set(CPACK_PACKAGE_VERSION ${dfti_VERSION})
-set(CPACK_GENERATOR "RPM")
+set(CPACK_GENERATOR "DEB;RPM")
 set(CPACK_PACKAGE_NAME "dfti")
 set(CPACK_PACKAGE_RELEASE 1)
-set(CPACK_PACKAGE_CONTACT "Joshua Harris")
+set(CPACK_PACKAGE_CONTACT "Joshua Harris <joshua.a.harris@tamu.edu>")
 set(CPACK_PACKAGE_VENDOR "TAMU Vehicle Systems & Control Laboratory")
 set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_RELEASE}.${CMAKE_SYSTEM_PROCESSOR}")
-set(CPACK_RPM_PACKAGE_AUTOREQPROV " no")
+# Vars for DEB/RPM fields.
+set(DFTI_DESCRIPTION "Developmental flight test instrumentation software.")
+set(DFTI_LICENSE "ISC License.")
+set(DFTI_URL "https://github.tamu.edu/vscl/dfti")
+# DEB variables.
+set(CPACK_DEBIAN_PACKAGE_DESCRIPTION ${DFTI_DESCRIPTION})
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE ${DFTI_URL})
+# RPM variables.
+set(CPACK_RPM_PACKAGE_DESCRIPTION ${DFTI_DESCRIPTION})
+set(CPACK_RPM_PACKAGE_LICENSE ${DFTI_LICENSE})
+set(CPACK_RPM_PACKAGE_URL ${DFTI_URL})
 include(CPack)
 
 

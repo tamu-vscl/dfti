@@ -19,3 +19,5 @@ target_link_libraries(${PROJECT_NAME}
   dftisettings
   dftiutil
 )
+
+install(TARGETS ${PROJECT_NAME} DESTINATION lib64)
