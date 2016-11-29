@@ -110,9 +110,12 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
         if (sp.open(QIODevice::ReadOnly)) {
             QByteArray data;
             // Read in a buffer of data.
-            while (data.size() < serialBufSize) {
-                sp.waitForReadyRead(settings.id_timeout());
-                data.append(sp.read(oneByte));
+            bool dataAvailable = true;
+            while (dataAvailable && (data.size() < serialBufSize)) {
+                dataAvailable = sp.waitForReadyRead(settings.id_timeout());
+                if (dataAvailable) {
+                    data.append(sp.read(oneByte));
+                }
             }
             // Check to see if it contains data that looks like it is from a
             // sensor we support.
