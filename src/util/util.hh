@@ -31,6 +31,22 @@ namespace dfti {
 quint64 getTimeUsec(void);
 
 
+//! Convert GPS timestamp in nanoseconds to Unix timestamp in microseconds.
+/*!
+ *  \param gpsTime Timestamp from GPS epoch (0000 6 JAN 1980) in nanoseconds.
+ */
+quint64 gpsToUnixUsec(quint64 gpsTime);
+
+
+//! Convert GPS timestamp in nanoseconds to Unix timestamp in seconds.
+/*!
+ *  \param gpsTime Timestamp from GPS epoch (0000 6 JAN 1980) in nanoseconds.
+ *  \remark This function is used to generate a timestamp to update the system
+ *      time of an embedded computer without an RTC using date(1).
+ */
+quint64 gpsToUnixSec(quint64 gpsTime);
+
+
 //! Convert Hertz rate to microsecond sampling time.
 /*!
  *  \param rate Sampling rate in Hz.

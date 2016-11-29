@@ -69,6 +69,7 @@ Logger::enableVN200(VN200 *ins)
 {
     sensors |= AvailableSensors::HAVE_VN200;
     connect(ins, &VN200::measurementUpdate, this, &Logger::getVN200Data);
+    connect(ins, &VN200::gpsAvailable, this, &Logger::gpsAvailable);
 }
 
 
@@ -155,6 +156,43 @@ Logger::getVN200Data(VN200Data data)
     vn200DataUpdate = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getVN200Data";
+    }
+}
+
+
+void
+Logger::gpsAvailable(bool flag)
+{
+    haveGPS = flag;
+    if (settings->set_system_time()) {
+        // Make sure we haven't already set the system time and that the GPS
+        // time value actually is GPS time. (Current GPS timestamp in
+        // nanoseconds should always be greater than 1e18.)
+        if ((!setSystemTime) && (gpsTimeNs > 1e18)) {
+            // See http://unix.stackexchange.com/a/84138
+            QString program{"date"};
+            QStringList arguments;
+            arguments << "+%s" << "-s"
+                      << QString("@%1").arg(gpsToUnixSec(gpsTimeNs));
+            QProcess process(this);
+            process.start(program, arguments);
+            // Assume we set the system time.
+            setSystemTime = true;
+            // Wait at most 2 seconds for the process to finish.
+            if (process.waitForFinished(2000)) {
+                if ((process.exitStatus() == QProcess::NormalExit) &&
+                    (process.exitCode() == 0)) {
+                    if (settings->debugRC()) {
+                        qDebug() << "Set system time.";
+                    }
+                } else {
+                    qWarning() << "[WARN] Failed to set system time.";
+                    // If we detect we failed to set the system time, reset the
+                    // flag.
+                    setSystemTime = false;
+                }
+            }
+        }
     }
 }
 
@@ -287,6 +325,9 @@ Logger::writeData(void)
                 << rcOut8;
         }
         out << '\n';
+    }
+    if (settings->debugSerial()) {
+        qDebug() << "Logger:writeData";
     }
 }
 

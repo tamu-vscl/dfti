@@ -85,8 +85,13 @@ VN200::readData(void)
         if (validateVN200Checksum(buf, packetSize)) {
             packet = reinterpret_cast<VN200Packet*>(buf);
             copyPacketToData();
-            // Emit the signal.
+            // Emit the measurement update signal.
             emit measurementUpdate(data);
+            // Check to see if we have GPS. If either the latitude or longitude
+            // is nonzero we should be OK.
+            if (abs(data.posDegDegM[0]) || abs(data.posDegDegM[1])) {
+                emit gpsAvailable(true);
+            }
             // If we are in the verbose debugging mode, print the parsed data.
             if (settings->debugData()) {
                 qDebug() << "TimeGPS :" << data.gpsTimeNs

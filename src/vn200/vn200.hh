@@ -10,6 +10,7 @@
 
 
 // stdlib
+#include <cmath>
 #include <cstring>
 // 3rd party
 #include <QDebug>
@@ -140,6 +141,10 @@ public slots:
     void readData(void);
 
 signals:
+    //! Emitted when GPS data is available.
+    void gpsAvailable(bool flag);
+
+    //! Emitted when new data is available.
     void measurementUpdate(VN200Data data);
 
 private:

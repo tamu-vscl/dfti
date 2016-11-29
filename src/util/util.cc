@@ -21,6 +21,23 @@ getTimeUsec(void)
 }
 
 
+quint64
+gpsToUnixUsec(quint64 gpsTime)
+{
+    const float nsToUs = 1e-3;
+    const quint64 gpsEpochFromUnixEpochNs = 315964800000000;
+    return static_cast<quint64>(gpsEpochFromUnixEpochNs + gpsTime * nsToUs);
+}
+
+
+quint64
+gpsToUnixSec(quint64 gpsTime)
+{
+    const float usToSec = 1e-6;
+    return static_cast<quint64>(gpsToUnixUsec(gpsTime) * usToSec);
+}
+
+
 float
 hzToUsec(quint8 rate)
 {

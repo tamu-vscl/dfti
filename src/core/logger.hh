@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QObject>
+#include <QProcess>
 #include <QTextStream>
 #include <QTimer>
 // dfti
@@ -81,6 +82,9 @@ public slots:
     //! Slot to receive data from the VN-200 INS.
     void getVN200Data(VN200Data data);
 
+    //! Slot to see if GPS is available.
+    void gpsAvailable(bool flag);
+
     //! Slot to write data.
     void writeData(void);
 
@@ -115,7 +119,11 @@ private:
     //! Flag to indicate a VN-200 data update.
     bool vn200DataUpdate{false};
 
-    //! Flag to indic
+    //! Flag to indicate GPS is available.
+    bool haveGPS{false};
+
+    //! Flag to indicate we have set the system time.
+    bool setSystemTime{false};
 
     //! Log file.
     QFile logFile;
