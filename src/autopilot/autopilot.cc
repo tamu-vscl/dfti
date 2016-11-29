@@ -241,7 +241,7 @@ Autopilot::readData(void)
                         if (mavlinkMessageName.contains(message.msgid)) {
                             msgName = mavlinkMessageName[message.msgid];
                         }
-                        if (settings->use_message_interval()) {
+                        if (settings->useMessageInterval()) {
                             setDataRate(message.msgid, -1);
                             getDataRate(message.msgid);
                         }
@@ -287,16 +287,16 @@ Autopilot::readData(void)
     // If this is our first time getting data, request the streams/messages we
     // want.
     if (!gotMsg) {
-        if (settings->use_message_interval()) {
+        if (settings->useMessageInterval()) {
             setDataRate(MAVLINK_MSG_ID_RC_CHANNELS_RAW,
-                hzToUsec(settings->stream_rate()));
+                hzToUsec(settings->streamRate()));
             setDataRate(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW,
-                hzToUsec(settings->stream_rate()));
+                hzToUsec(settings->streamRate()));
             getDataRate(MAVLINK_MSG_ID_RC_CHANNELS_RAW);
             getDataRate(MAVLINK_MSG_ID_SERVO_OUTPUT_RAW);
         } else {
             requestStream(MAV_DATA_STREAM_RC_CHANNELS,
-                settings->stream_rate(), 1);
+                settings->streamRate(), 1);
         }
         gotMsg = true;
     }

@@ -94,7 +94,7 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             thisPortPID = port.productIdentifier();
         }
         // Check if we have a Pixhawk USB(?) serial connection.
-        if (settings.use_mavlink()) {
+        if (settings.useMavlink()) {
             if ((thisPortPID == pixhawkPID) && (thisPortVID == pixhawkVID)) {
                 if (ap != nullptr) {
                     ap->configureSerial(port.systemLocation());
@@ -112,7 +112,7 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             // Read in a buffer of data.
             bool dataAvailable = true;
             while (dataAvailable && (data.size() < serialBufSize)) {
-                dataAvailable = sp.waitForReadyRead(settings.id_timeout());
+                dataAvailable = sp.waitForReadyRead(settings.idTimeout());
                 if (dataAvailable) {
                     data.append(sp.read(oneByte));
                 }
@@ -120,7 +120,7 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             // Check to see if it contains data that looks like it is from a
             // sensor we support.
             if (data.contains(vn200Header)) {
-                if (settings.use_vn200()) {
+                if (settings.useVN200()) {
                     if (vn200 != nullptr) {
                         vn200->configureSerial(port.systemLocation());
                     }
@@ -129,7 +129,7 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
                 }
                 continue;
             } else if (data.contains(mavlinkSync)) {
-                if (settings.use_mavlink()) {
+                if (settings.useMavlink()) {
                     if (ap != nullptr) {
                         ap->configureSerial(port.systemLocation());
                     }
@@ -138,7 +138,7 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
                 }
                 continue;
             } else if (data.contains('\n')) {
-                if (settings.use_uadc()) {
+                if (settings.useUADC()) {
                     newline1 = data.indexOf('\n');
                     newline2 = data.indexOf('\n', newline1 + 1);
                     if ((newline2 - newline1) == dfti::uadcPktLen) {
@@ -215,13 +215,13 @@ main(int argc, char* argv[])
     dfti::VN200 *vn200 = nullptr;
 
     // Instantiate sensor classes if sensors are available.
-    if (settings.use_mavlink()) {
+    if (settings.useMavlink()) {
         pixhawk = new dfti::Autopilot(&settings);
     }
-    if (settings.use_uadc()) {
+    if (settings.useUADC()) {
         uadc = new dfti::uADC(&settings);
     }
-    if (settings.use_vn200()) {
+    if (settings.useVN200()) {
         vn200 = new dfti::VN200(&settings);
     }
 
@@ -236,38 +236,38 @@ main(int argc, char* argv[])
 
     // Move objects to threads, and initialize sensor threads.
     logger->moveToThread(loggingThread);
-    if (settings.use_mavlink()) {
+    if (settings.useMavlink()) {
         pixhawkThread = new QThread();
         pixhawk->moveToThread(pixhawkThread);
     }
-    if (settings.use_uadc()) {
+    if (settings.useUADC()) {
         uadcThread = new QThread();
         uadc->moveToThread(uadcThread);
     }
-    if (settings.use_vn200()) {
+    if (settings.useVN200()) {
         vn200Thread = new QThread();
         vn200->moveToThread(vn200Thread);
     }
 
     // Connect everything.
-    if (settings.use_mavlink()) {
+    if (settings.useMavlink()) {
         logger->enableAutopilot(pixhawk);
     }
-    if (settings.use_uadc()) {
+    if (settings.useUADC()) {
         logger->enableUADC(uadc);
     }
-    if (settings.use_vn200()) {
+    if (settings.useVN200()) {
         logger->enableVN200(vn200);
     }
-    if (settings.use_mavlink()) {
+    if (settings.useMavlink()) {
         QObject::connect(pixhawkThread, &QThread::started, pixhawk,
             &dfti::Autopilot::threadStart);
     }
-    if (settings.use_uadc()) {
+    if (settings.useUADC()) {
         QObject::connect(uadcThread, &QThread::started, uadc,
             &dfti::uADC::threadStart);
     }
-    if (settings.use_vn200()) {
+    if (settings.useVN200()) {
         QObject::connect(vn200Thread, &QThread::started, vn200,
             &dfti::VN200::threadStart);
     }
@@ -275,13 +275,13 @@ main(int argc, char* argv[])
         &dfti::Logger::start);
 
     // Start the threads.
-    if (settings.use_mavlink()) {
+    if (settings.useMavlink()) {
         pixhawkThread->start();
     }
-    if (settings.use_uadc()) {
+    if (settings.useUADC()) {
         uadcThread->start();
     }
-    if (settings.use_vn200()) {
+    if (settings.useVN200()) {
         vn200Thread->start();
     }
     loggingThread->start();

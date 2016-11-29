@@ -77,31 +77,31 @@ Settings::loadRCFile(QString _fn)
 
     // DFTI parameters.
     m_settings->beginGroup("dfti");
-    m_id_timeout = m_settings->value("id_timeout", 2000).toInt();
-    m_set_system_time = m_settings->value("set_system_time", false).toBool();
-    m_use_mavlink = m_settings->value("use_mavlink", false).toBool();
-    m_use_uadc = m_settings->value("use_uadc", false).toBool();
-    m_use_vn200 = m_settings->value("use_vn200", false).toBool();
+    m_idTimeout = m_settings->value("id_timeout", 2000).toInt();
+    m_setSystemTime = m_settings->value("set_system_time", false).toBool();
+    m_useMavlink = m_settings->value("use_mavlink", false).toBool();
+    m_useUADC = m_settings->value("use_uadc", false).toBool();
+    m_useVN200 = m_settings->value("use_vn200", false).toBool();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [dfti] settings group:";
-        qDebug() << "\tid_timeout:            " << m_id_timeout;
-        qDebug() << "\tset_system_time:       " << m_set_system_time;
-        qDebug() << "\tuse_mavlink:           " << m_use_mavlink;
-        qDebug() << "\tuse_uadc:              " << m_use_uadc;
-        qDebug() << "\tuse_vn200:             " << m_use_vn200;
+        qDebug() << "\tid_timeout:            " << m_idTimeout;
+        qDebug() << "\tset_system_time:       " << m_setSystemTime;
+        qDebug() << "\tuse_mavlink:           " << m_useMavlink;
+        qDebug() << "\tuse_uadc:              " << m_useUADC;
+        qDebug() << "\tuse_vn200:             " << m_useVN200;
     }
 
     // MAVLink parameters.
     m_settings->beginGroup("mavlink");
-    m_use_message_interval = m_settings->value("use_message_interval",
+    m_useMessageInterval = m_settings->value("use_message_interval",
         false).toBool();
-    m_stream_rate = m_settings->value("stream_rate", 10).toInt();
+    m_streamRate = m_settings->value("stream_rate", 10).toInt();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [mavlink] settings group:";
-        qDebug() << "\tuse_message_interval:  " << m_use_message_interval;
-        qDebug() << "\tstream_rate:           " << m_stream_rate;
+        qDebug() << "\tuse_message_interval:  " << m_useMessageInterval;
+        qDebug() << "\tstream_rate:           " << m_streamRate;
     }
 
     return;

@@ -60,25 +60,25 @@ public:
      *      favor of the new MESSAGE_INTERVAL interface, however APM does not
      *      yet (~Nov 2016) support this.
      */
-    bool use_message_interval(void) const { return m_use_message_interval; };
+    bool useMessageInterval(void) const { return m_useMessageInterval; };
 
     //! Return the desired MAVLink stream rate in Hz.
-    quint32 stream_rate(void) const { return m_stream_rate; };
+    quint32 streamRate(void) const { return m_streamRate; };
 
     //! Should we set the system time from GPS?
-    bool set_system_time(void) const { return m_set_system_time; };
+    bool setSystemTime(void) const { return m_setSystemTime; };
 
     //! Do we have a MAVLink-based autopilot?
-    bool use_mavlink(void) const { return m_use_mavlink; };
+    bool useMavlink(void) const { return m_useMavlink; };
 
     //! Do we have a Micro Air Data Computer?
-    bool use_uadc(void) const { return m_use_uadc; };
+    bool useUADC(void) const { return m_useUADC; };
 
     //! Do we have a VN-200 INS?
-    bool use_vn200(void) const { return m_use_vn200; };
+    bool useVN200(void) const { return m_useVN200; };
 
     //! Timeout for waitForReadyRead in identifySerialPorts.
-    quint16 id_timeout(void) const { return m_id_timeout; };
+    quint16 idTimeout(void) const { return m_idTimeout; };
 
 private:
     //! Settings file name.
@@ -97,29 +97,29 @@ private:
     DebugMode m_debug{DebugMode::DEBUG_NONE};
 
     //! Prefer MESSAGE_INTERVAL to REQUEST_DATA_STREAM?
-    bool m_use_message_interval{false};
+    bool m_useMessageInterval{false};
 
     //! Stream rate in Hz for desired MAVLink parameters.
-    quint32 m_stream_rate{10};
+    quint32 m_streamRate{10};
 
     //! Do we use a MAVLink-based autopilot?
-    bool m_use_mavlink{false};
+    bool m_useMavlink{false};
 
     //! Do we have a uADC?
-    bool m_use_uadc{false};
+    bool m_useUADC{false};
 
     //! Do we have a VN-200?
-    bool m_use_vn200{false};
+    bool m_useVN200{false};
 
     //! Should we set the system time?
-    bool m_set_system_time{false};
+    bool m_setSystemTime{false};
 
     //! How long should we wait for a blocking serial read?
     /*!
      *  \remark This parameter controls how long the identifySerialPorts
      *      function waits for the readyRead signal.
      */
-    quint16 m_id_timeout{2000};
+    quint16 m_idTimeout{2000};
 
 };
 

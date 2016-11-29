@@ -164,7 +164,7 @@ void
 Logger::gpsAvailable(bool flag)
 {
     haveGPS = flag;
-    if (settings->set_system_time()) {
+    if (settings->setSystemTime()) {
         // Make sure we haven't already set the system time and that the GPS
         // time value actually is GPS time. (Current GPS timestamp in
         // nanoseconds should always be greater than 1e18.)
