@@ -264,10 +264,25 @@ Logger::writeData(void)
             out << '\n';
             firstWrite = false;
         }
+
+        // Skip this write if we don't have updates. Note we currently don't
+        // check for the apDataUpdate flag since it is at a slower rate.
+        if ((check(sensors & AvailableSensors::HAVE_VN200) &&
+                !vn200DataUpdate) ||
+            (check(sensors & AvailableSensors::HAVE_UADC) &&
+                !uadcDataUpdate)) {
+            if (settings->debugSerial()) {
+                qDebug() << "No data, skipped write.";
+            }
+            return;
+        }
+
+        // Always write the system time in microseconds.
         out << getTimeUsec();
+
         // VN-200 data.
         if (check(sensors & AvailableSensors::HAVE_VN200)) {
-            out.setRealNumberPrecision(7);
+            out.setRealNumberPrecision(7);  // float
             out << delim
                 << gpsTimeNs << delim
                 << quaternion[0] << delim
@@ -276,11 +291,13 @@ Logger::writeData(void)
                 << quaternion[3] << delim
                 << angularRatesRPS[0] << delim
                 << angularRatesRPS[1] << delim
-                << angularRatesRPS[2] << delim
-                << posDegDegM[0] << delim
+                << angularRatesRPS[2] << delim;
+            out.setRealNumberPrecision(15);  // double
+            out << posDegDegM[0] << delim
                 << posDegDegM[1] << delim
-                << posDegDegM[2] << delim
-                << velNedMps[0] << delim
+                << posDegDegM[2] << delim;
+            out.setRealNumberPrecision(7);  // float
+            out << velNedMps[0] << delim
                 << velNedMps[1] << delim
                 << velNedMps[2] << delim
                 << accelMps2[0] << delim
@@ -291,7 +308,9 @@ Logger::writeData(void)
                 << mag[2] << delim
                 << tempC << delim
                 << pressureKpa;
+            vn200DataUpdate = false;
         }
+
         // Air data system data.
         if (check(sensors & AvailableSensors::HAVE_UADC)) {
             // We get two decimal places from the uADC...
@@ -303,7 +322,9 @@ Logger::writeData(void)
                 << alt_m << delim
                 << pt_pa << delim
                 << ps_pa;
+            uadcDataUpdate = false;
         }
+
         // Autopilot data.
         if (check(sensors & AvailableSensors::HAVE_AP)) {
             out << delim
@@ -325,6 +346,7 @@ Logger::writeData(void)
                 << rcOut8;
         }
         out << '\n';
+        apDataUpdate = false;
     }
     if (settings->debugSerial()) {
         qDebug() << "Logger:writeData";
