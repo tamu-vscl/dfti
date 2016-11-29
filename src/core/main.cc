@@ -107,6 +107,9 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
         // Attempt to read in data from the serial port to determine what it
         // is.
         sp.setPortName(port.systemLocation());
+        if (sp.isOpen()) {
+            sp.close();
+        }
         if (sp.open(QIODevice::ReadOnly)) {
             QByteArray data;
             // Read in a buffer of data.
@@ -139,9 +142,15 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
                 continue;
             } else if (data.contains('\n')) {
                 if (settings.useUADC()) {
-                    newline1 = data.indexOf('\n');
-                    newline2 = data.indexOf('\n', newline1 + 1);
-                    if ((newline2 - newline1) == dfti::uadcPktLen) {
+                    // Find newlines to try and get two packets.
+                    newline1 = data.indexOf('\n') + 1;
+                    newline2 = data.indexOf('\n', newline1 + 1) + 1;
+                    // Get two packets.
+                    QByteArray pkt1 = data.mid(newline1, dfti::uadcPktLen);
+                    QByteArray pkt2 = data.mid(newline2, dfti::uadcPktLen);
+                    // Make sure at least one verifies correctly.
+                    if (dfti::validateUADCChecksum(pkt1) ||
+                        dfti::validateUADCChecksum(pkt2)) {
                         if (uadc != nullptr) {
                             uadc->configureSerial(port.systemLocation());
                         }
@@ -153,7 +162,6 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
                 }
                 continue;
             }
-            sp.close();
         } else {
             if (settings.debugSerial()) {
                 qDebug() << "Failed to open candidate serial port"
@@ -161,6 +169,9 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
                 qDebug() << "Reason:" << sp.errorString();
             }
         }
+    }
+    if (sp.isOpen()) {
+        sp.close();
     }
     return;
 }
