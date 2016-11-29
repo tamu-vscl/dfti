@@ -125,12 +125,13 @@ Logger::getAPData(APData data)
 void
 Logger::getUADCData(uADCData data)
 {
-    ias_mps = data.ias_mps;
-    aoa_deg = data.aoa_deg;
-    aos_deg = data.aos_deg;
-    alt_m = data.alt_m;
-    pt_pa = data.pt_pa;
-    ps_pa = data.ps_pa;
+    uadcId = data.id;
+    iasMps = data.iasMps;
+    aoaDeg = data.aoaDeg;
+    aosDeg = data.aosDeg;
+    altM = data.altM;
+    ptPa = data.ptPa;
+    psPa = data.psPa;
     uadcDataUpdate = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getuADCData";
@@ -234,6 +235,7 @@ Logger::writeData(void)
             // Air data system data.
             if (check(sensors & AvailableSensors::HAVE_UADC)) {
                 out << delim
+                    << "uadc_id" << delim
                     << "ias_mps" << delim
                     << "aoa_deg" << delim
                     << "aos_deg" << delim
@@ -316,12 +318,13 @@ Logger::writeData(void)
             // We get two decimal places from the uADC...
             out.setRealNumberPrecision(2);
             out << delim
-                << ias_mps << delim
-                << aoa_deg << delim
-                << aos_deg << delim
-                << alt_m << delim
-                << pt_pa << delim
-                << ps_pa;
+                << uadcId << delim
+                << iasMps << delim
+                << aoaDeg << delim
+                << aosDeg << delim
+                << altM << delim
+                << ptPa << delim
+                << psPa;
             uadcDataUpdate = false;
         }
 

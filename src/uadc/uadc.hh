@@ -70,23 +70,23 @@ struct uADCData
      *  read in with the format XX.XX, which means the highest representable
      *  airspeed is 99.99 m/s, which is about 195 knots.
      */
-    float ias_mps = 0;
+    float iasMps = 0;
     //! Angle-of-Attack, degrees.
     /*!
      *  The angle-of-attack is represented as +/-XX.XX.
      */
-    float aoa_deg = 0;
+    float aoaDeg = 0;
     //! Sideslip Angle, degrees.
     /*!
      *  The sideslip angle is represented as +/-XX.XX.
      */
-    float aos_deg = 0;
+    float aosDeg = 0;
     //! Pressure altitude, meters.
-    quint16 alt_m = 0;
+    quint16 altM = 0;
     //! Total Pressure, Pa.
-    quint32 pt_pa = 0;
+    quint32 ptPa = 0;
     //! Static Pressure, Pa.
-    quint32 ps_pa = 0;
+    quint32 psPa = 0;
 };
 
 

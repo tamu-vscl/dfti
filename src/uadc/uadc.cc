@@ -49,37 +49,37 @@ uADC::readData(void)
         if (validateUADCChecksum(pkt)) {
             // Parse the data structure.
             // Packet ID
-            QByteArray _id_buf = pkt.left(5);
-            data.id = _id_buf.toInt();
+            QByteArray _idBuf = pkt.left(5);
+            data.id = _idBuf.toInt();
             // Indicated Airspeed
-            QByteArray _ias_mps_buf = pkt.mid(uadcPktIasPos, uadcPktIasLen);
-            data.ias_mps = _ias_mps_buf.toFloat();
+            QByteArray _iasMpsBuf = pkt.mid(uadcPktIasPos, uadcPktIasLen);
+            data.iasMps = _iasMpsBuf.toFloat();
             // Angle-of-Attack
-            QByteArray _aoa_deg_buf = pkt.mid(uadcPktAoAPos, uadcPktAoALen);
-            data.aoa_deg = _aoa_deg_buf.toFloat();
+            QByteArray _aoaDegBuf = pkt.mid(uadcPktAoAPos, uadcPktAoALen);
+            data.aoaDeg = _aoaDegBuf.toFloat();
             // Sideslip Angle
-            QByteArray _aos_deg_buf = pkt.mid(uadcPktAoSPos, uadcPktAoSLen);
-            data.aos_deg = _aos_deg_buf.toFloat();
+            QByteArray _aosDegBuf = pkt.mid(uadcPktAoSPos, uadcPktAoSLen);
+            data.aosDeg = _aosDegBuf.toFloat();
             // Pressure Altitude
-            QByteArray _alt_m_buf = pkt.mid(uadcPktAltPos, uadcPktAltLen);
-            data.alt_m = _alt_m_buf.toInt();
+            QByteArray _altMBuf = pkt.mid(uadcPktAltPos, uadcPktAltLen);
+            data.altM = _altMBuf.toInt();
             // Total Pressure
-            QByteArray _pt_pa_buf = pkt.mid(uadcPktPtPos, uadcPktPtLen);
-            data.pt_pa = _pt_pa_buf.toInt();
+            QByteArray _ptPaBuf = pkt.mid(uadcPktPtPos, uadcPktPtLen);
+            data.ptPa = _ptPaBuf.toInt();
             // Static Pressure
-            QByteArray _ps_pa_buf = pkt.mid(uadcPktPsPos, uadcPktPsLen);
-            data.ps_pa = _ps_pa_buf.toInt();
+            QByteArray _psPaBuf = pkt.mid(uadcPktPsPos, uadcPktPsLen);
+            data.psPa = _psPaBuf.toInt();
             // Emit the signal.
             emit measurementUpdate(data);
             // If we are in the verbose debugging mode, print the parsed data.
             if (settings->debugData()) {
                 qDebug() << "ID :" << data.id
-                         << "IAS:" << data.ias_mps
-                         << "AoA:" << data.aoa_deg
-                         << "AoS:" << data.aos_deg
-                         << "ALT:" << data.alt_m
-                         << "Pt :" << data.pt_pa
-                         << "Ps :" << data.ps_pa;
+                         << "IAS:" << data.iasMps
+                         << "AoA:" << data.aoaDeg
+                         << "AoS:" << data.aosDeg
+                         << "ALT:" << data.altM
+                         << "Pt :" << data.ptPa
+                         << "Ps :" << data.psPa;
             }
         } else {
             if (settings->debugData()) {
@@ -100,13 +100,13 @@ validateUADCChecksum(QByteArray pkt)
     bool ok;
     quint8 cksum = 0;
     // Extract checksum byte.
-    QByteArray _cksum_bytes = pkt.mid(uadcPktCksumPos, 2);
-    quint8 cksum_byte = static_cast<quint8>(_cksum_bytes.toInt(&ok, 16));
+    QByteArray _cksumBytes = pkt.mid(uadcPktCksumPos, 2);
+    quint8 cksumByte = static_cast<quint8>(_cksumBytes.toInt(&ok, 16));
     // Calculate checksum.
     for (quint8 i = 0; i < uadcPktCksumPos; ++i) {
         cksum ^= static_cast<quint8>(pkt.at(i));
     }
-    return ok ? (cksum == cksum_byte ? true : false) : false;
+    return ok ? (cksum == cksumByte ? true : false) : false;
 }
 
 
