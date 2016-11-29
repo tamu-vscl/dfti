@@ -269,14 +269,16 @@ Logger::writeData(void)
 
         // Skip this write if we don't have updates. Note we currently don't
         // check for the apDataUpdate flag since it is at a slower rate.
-        if ((check(sensors & AvailableSensors::HAVE_VN200) &&
-                !vn200DataUpdate) ||
-            (check(sensors & AvailableSensors::HAVE_UADC) &&
-                !uadcDataUpdate)) {
-            if (settings->debugSerial()) {
-                qDebug() << "No data, skipped write.";
+        if (settings->waitForAllSensors()) {
+            if ((check(sensors & AvailableSensors::HAVE_VN200) &&
+                    !vn200DataUpdate) ||
+                (check(sensors & AvailableSensors::HAVE_UADC) &&
+                    !uadcDataUpdate)) {
+                if (settings->debugSerial()) {
+                    qDebug() << "No data, skipped write.";
+                }
+                return;
             }
-            return;
         }
 
         // Always write the system time in microseconds.

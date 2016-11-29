@@ -82,6 +82,8 @@ Settings::loadRCFile(QString _fn)
     m_useMavlink = m_settings->value("use_mavlink", false).toBool();
     m_useUADC = m_settings->value("use_uadc", false).toBool();
     m_useVN200 = m_settings->value("use_vn200", false).toBool();
+    m_waitForAllSensors = m_settings->value("wait_for_all_sensors",
+        false).toBool();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [dfti] settings group:";
@@ -90,6 +92,7 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "\tuse_mavlink:           " << m_useMavlink;
         qDebug() << "\tuse_uadc:              " << m_useUADC;
         qDebug() << "\tuse_vn200:             " << m_useVN200;
+        qDebug() << "\twait_for_all_sensors:  " << m_waitForAllSensors;
     }
 
     // MAVLink parameters.

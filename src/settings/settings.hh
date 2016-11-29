@@ -86,6 +86,9 @@ public:
     //! Should we wait for VN200 GPS before logging?
     bool waitForVN200GPS(void) const { return m_waitForVN200GPS; };
 
+    //! Should we wait for all sensors to get data before writing?
+    bool waitForAllSensors(void) const { return m_waitForAllSensors; };
+
 private:
     //! Settings file name.
     QString m_rcfile;
@@ -132,6 +135,9 @@ private:
 
     //! Should we wait for VN200 GPS before logging?
     bool m_waitForVN200GPS{false};
+
+    //! Should we wait for all sensors to get data before writing?
+    bool m_waitForAllSensors{false};
 
 };
 
