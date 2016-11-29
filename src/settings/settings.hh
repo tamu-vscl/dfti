@@ -80,6 +80,12 @@ public:
     //! Timeout for waitForReadyRead in identifySerialPorts.
     quint16 idTimeout(void) const { return m_idTimeout; };
 
+    //! Should we wait for the MAVLink init message before logging?
+    bool waitForMavInit(void) const { return m_waitForMavInit; };
+
+    //! Should we wait for VN200 GPS before logging?
+    bool waitForVN200GPS(void) const { return m_waitForVN200GPS; };
+
 private:
     //! Settings file name.
     QString m_rcfile;
@@ -120,6 +126,12 @@ private:
      *      function waits for the readyRead signal.
      */
     quint16 m_idTimeout{2000};
+
+    //! Should we wait for the MAVLink init message before logging?
+    bool m_waitForMavInit{false};
+
+    //! Should we wait for VN200 GPS before logging?
+    bool m_waitForVN200GPS{false};
 
 };
 

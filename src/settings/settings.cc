@@ -97,12 +97,24 @@ Settings::loadRCFile(QString _fn)
     m_useMessageInterval = m_settings->value("use_message_interval",
         false).toBool();
     m_streamRate = m_settings->value("stream_rate", 10).toInt();
+    m_waitForMavInit = m_settings->value("wait_for_init", false).toBool();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [mavlink] settings group:";
         qDebug() << "\tuse_message_interval:  " << m_useMessageInterval;
         qDebug() << "\tstream_rate:           " << m_streamRate;
+        qDebug() << "\twait_for_init:         " << m_waitForMavInit;
     }
+
+    // VN-200 parameters.
+    m_settings->beginGroup("vn200");
+    m_waitForVN200GPS = m_settings->value("wait_for_gps", false).toBool();
+    m_settings->endGroup();
+    if (debugRC()) {
+        qDebug() << "Loaded [vn200] settings group:";
+        qDebug() << "\twait_for_gps:          " << m_waitForVN200GPS;
+    }
+
 
     return;
 }
