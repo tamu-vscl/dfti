@@ -246,14 +246,14 @@ Logger::writeData(void)
             // Autopilot data.
             if (check(sensors & AvailableSensors::HAVE_AP)) {
                 out << delim
-                    << "rc_out_1_pwm" << delim
-                    << "rc_out_2_pwm" << delim
-                    << "rc_out_3_pwm" << delim
-                    << "rc_out_4_pwm" << delim
-                    << "rc_out_5_pwm" << delim
-                    << "rc_out_6_pwm" << delim
-                    << "rc_out_7_pwm" << delim
-                    << "rc_out_8_pwm" << delim
+                    << "rc_in_1_pwm" << delim
+                    << "rc_in_2_pwm" << delim
+                    << "rc_in_3_pwm" << delim
+                    << "rc_in_4_pwm" << delim
+                    << "rc_in_5_pwm" << delim
+                    << "rc_in_6_pwm" << delim
+                    << "rc_in_7_pwm" << delim
+                    << "rc_in_8_pwm" << delim
                     << "rc_out_1_pwm" << delim
                     << "rc_out_2_pwm" << delim
                     << "rc_out_3_pwm" << delim
