@@ -130,7 +130,7 @@ class VN200 : public SerialSensor
 public:
     //! Constructor
     /*!
-     *  \param d Boolean to turn on qDebug output.
+     *  \param _settings Pointer to settings object.
      *  \param _parent Pointer to parent QObject.
      */
     explicit VN200(Settings *_settings, QObject* _parent = nullptr) :
@@ -144,7 +144,7 @@ signals:
     //! Emitted when GPS data is available.
     void gpsAvailable(bool flag);
 
-    //! Emitted when new data is available.
+    //! Emitted to share new VN200Data.
     void measurementUpdate(VN200Data data);
 
 private:

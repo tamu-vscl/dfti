@@ -17,6 +17,7 @@
 namespace dfti {
 
 
+//! Map from MAVLink message ID to human-readable message name.
 const QMap<quint8, QString> mavlinkMessageName{
     {MAVLINK_MSG_ID_HEARTBEAT, "HEARTBEAT"},
     {MAVLINK_MSG_ID_SYS_STATUS, "SYS_STATUS"},

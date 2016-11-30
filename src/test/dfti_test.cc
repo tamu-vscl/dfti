@@ -22,10 +22,17 @@
 #include "vn200/vn200.hh"
 
 
-// App info.
+//! App info.
 const QString app_name{"dftitest"};
 
 
+//! Main test application function.
+/*!
+ *  Main function file for DFTI test program. Creates sensor objects and
+ *  manages threads.
+ *  \param argc Number of command line arguments.
+ *  \param argv Array of command line arguments.
+ */
 int
 main(int argc, char* argv[])
 {

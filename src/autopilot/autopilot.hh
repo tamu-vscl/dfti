@@ -98,7 +98,7 @@ public:
      *      not support this latter interface.
      *  \remark See http://mavlink.org/messages/common for the MAVLink
      *      MAV_DATA_STREAM enum.
-     *  \param streamID The MAVLink stream ID.
+     *  \param streamId The MAVLink stream ID.
      *  \param streamRate Requested rate of the stream in Hz.
      *  \param enabled Use 1 to enable the stream and 0 to disabled.
      */
@@ -109,14 +109,14 @@ public:
      *  \remark See http://mavlink.org/messages/common for MAVLink message
      *  info. Note also that this should return a MESSAGE_INTERVAL message, so
      *  you should make sure this message is handled.
-     *  \param msgID The MAVLink message ID.
+     *  \param msgId The MAVLink message ID.
      */
     void getDataRate(quint16 msgId);
 
     //! Request a MAVLink message at a given rate.
     /*!
      *  \remark See http://mavlink.org/messages/common for MAVLink message info.
-     *  \param msgID The MAVLink message ID.
+     *  \param msgId The MAVLink message ID.
      *  \param msgRate Requested rate of the message in microseconds. To
      *      disable output, use -1, and to reset to the default rate, use 0.
      */
@@ -127,6 +127,7 @@ public slots:
     void readData(void);
 
 signals:
+    //! Emitted to share new APData.
     void measurementUpdate(APData data);
 
 private:

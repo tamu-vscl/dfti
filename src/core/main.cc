@@ -219,6 +219,12 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
 }
 
 
+//! Main application function.
+/*!
+ *  Main function file for DFTI. Creates sensor objects and manages threads.
+ *  \param argc Number of command line arguments.
+ *  \param argv Array of command line arguments.
+ */
 int
 main(int argc, char* argv[])
 {

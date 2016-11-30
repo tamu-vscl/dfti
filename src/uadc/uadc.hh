@@ -22,29 +22,35 @@
 namespace dfti {
 
 
-// uADC packet terminator.
+//! uADC packet terminator.
 const char uadcTerm = '\n';
-// uADC packet length.
+//! uADC packet length.
 const quint8 uadcPktLen = 56;
-// uADC packet checksum pos.
+//! uADC packet checksum pos.
 const quint8 uadcPktCksumPos = 53;
-// uADC packet velocity info.
+//! uADC packet velocity byte start position.
 const quint8 uadcPktIasPos = 7;
+//! uADC packet velocity byte length.
 const quint8 uadcPktIasLen = 5;
-// uADC packet AoA info.
+//! uADC packet AoA byte start position.
 const quint8 uadcPktAoAPos = 14;
+//! uADC packet AoA byte length.
 const quint8 uadcPktAoALen = 6;
-// uADC packet AoS info.
+//! uADC packet AoS byte start position.
 const quint8 uadcPktAoSPos = 22;
+//! uADC packet AoS byte length.
 const quint8 uadcPktAoSLen = 6;
-// uADC packet altitude info.
+//! uADC packet altitude byte start position.
 const quint8 uadcPktAltPos = 30;
+//! uADC packet altitude byte length.
 const quint8 uadcPktAltLen = 5;
-// uADC packet total pressure info.
+//! uADC packet total pressure byte start position.
 const quint8 uadcPktPtPos = 37;
+//! uADC packet total pressure byte length.
 const quint8 uadcPktPtLen = 6;
-// uADC packet static pressure info.
+//! uADC packet static pressure byte start position.
 const quint8 uadcPktPsPos = 45;
+//! uADC packet static pressure byte length.
 const quint8 uadcPktPsLen = 6;
 
 
@@ -96,7 +102,7 @@ struct uADCData
  *  and parses the data.
  *
  *  The data packet format is
- *      XXXXX, XX.XX, +XX.XX, +XX.XX, +XXXX, XXXXXX, XXXXXX, XX\r\n
+ *      <tt>XXXXX, XX.XX, +XX.XX, +XX.XX, +XXXX, XXXXXX, XXXXXX, XX\\r\\n</tt>
  *  with the fields having the order:
  *      - sample number
  *      - velocity, m/s
@@ -114,7 +120,7 @@ class uADC : public SerialSensor
 public:
     //! Constructor
     /*!
-     *  \param d Boolean to turn on qDebug output.
+     *  \param _settings Pointer to settings object.
      *  \param _parent Pointer to parent QObject.
      */
     explicit uADC(Settings *_settings, QObject* _parent = nullptr) :
@@ -125,6 +131,7 @@ public slots:
     void readData(void);
 
 signals:
+    //! Emitted to share new uADCData.
     void measurementUpdate(uADCData data);
 
 private:
