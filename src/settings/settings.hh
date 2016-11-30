@@ -89,6 +89,15 @@ public:
     //! Should we wait for all sensors to get data before writing?
     bool waitForAllSensors(void) const { return m_waitForAllSensors; };
 
+    //! Overridden Autopilot serial port.
+    QString autopilotSerialPort(void) const { return m_autopilotSerialPort; };
+
+    //! Overridden uADC serial port.
+    QString uADCSerialPort(void) const { return m_uADCSerialPort; };
+
+    //! Overridden VN-200 serial port.
+    QString vn200SerialPort(void) const { return m_vn200SerialPort; };
+
 private:
     //! Settings file name.
     QString m_rcfile;
@@ -138,6 +147,15 @@ private:
 
     //! Should we wait for all sensors to get data before writing?
     bool m_waitForAllSensors{false};
+
+    //! Overridden Autopilot serial port.
+    QString m_autopilotSerialPort{""};
+
+    //! Overridden uADC serial port.
+    QString m_uADCSerialPort{""};
+
+    //! Overridden VN-200 serial port.
+    QString m_vn200SerialPort{""};
 
 };
 

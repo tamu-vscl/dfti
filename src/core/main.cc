@@ -39,18 +39,37 @@ void
 identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
     dfti::uADC *uadc, dfti::VN200 *vn200)
 {
-    const quint8 oneByte = 1;
-    const quint8 serialBufSize = 255;
+    const quint8 oneByte{1};
+    const quint8 serialBufSize{255};
+
+    // Check to see if we have overriden serial ports.
+    bool detectAP{true};
+    bool detectUADC{true};
+    bool detectVN200{true};
+    if (settings.useMavlink() && (settings.autopilotSerialPort() != "")) {
+        detectAP = false;
+        ap->configureSerial(settings.autopilotSerialPort());
+    }
+    if (settings.useUADC() && (settings.uADCSerialPort() != "")) {
+        detectUADC = false;
+        uadc->configureSerial(settings.uADCSerialPort());
+    }
+    if (settings.useVN200() && (settings.vn200SerialPort() != "")) {
+        detectVN200 = false;
+        vn200->configureSerial(settings.vn200SerialPort());
+    }
+    // Stop if we have all sensors configured already.
+    if (!(settings.useMavlink() && detectAP) &&
+        !(settings.useUADC() && detectUADC) &&
+        !(settings.useVN200() && detectVN200)) {
+        return;
+    }
 
     // Serial port vendor/product IDs.
-    quint16 thisPortPID = 0;
-    quint16 thisPortVID = 0;
-    quint16 pixhawkPID = 17;
-    quint16 pixhawkVID = 9900;
-
-    // Newline locations.
-    quint16 newline1 = 0;
-    quint16 newline2 = 0;
+    quint16 thisPortPID{0};
+    quint16 thisPortVID{0};
+    quint16 pixhawkPID{17};
+    quint16 pixhawkVID{9900};
 
     // Packet contents to help determine payload type.
     QByteArray vn200Header{"\xfa\x01\xf2\x05"};
@@ -94,13 +113,13 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             thisPortPID = port.productIdentifier();
         }
         // Check if we have a Pixhawk USB(?) serial connection.
-        if (settings.useMavlink()) {
+        if (settings.useMavlink() && detectAP) {
             if ((thisPortPID == pixhawkPID) && (thisPortVID == pixhawkVID)) {
                 if (ap != nullptr) {
                     ap->configureSerial(port.systemLocation());
+                    qDebug() << "MAVLink/Pixhawk serial port set to"
+                             << port.systemLocation() << "(Pixhawk USB)";
                 }
-                qDebug() << "MAVLink/Pixhawk serial port set to"
-                         << port.systemLocation() << "(Pixhawk USB)";
                 continue;
             }
         }
@@ -122,46 +141,69 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
             }
             // Check to see if it contains data that looks like it is from a
             // sensor we support.
-            if (data.contains(vn200Header)) {
-                if (settings.useVN200()) {
-                    if (vn200 != nullptr) {
-                        vn200->configureSerial(port.systemLocation());
-                    }
-                    qDebug() << "VN-200 serial port set to"
-                             << port.systemLocation();
-                }
-                continue;
-            } else if (data.contains(mavlinkSync)) {
-                if (settings.useMavlink()) {
-                    if (ap != nullptr) {
-                        ap->configureSerial(port.systemLocation());
-                    }
-                    qDebug() << "MAVLink/Pixhawk serial port set to"
-                             << port.systemLocation();
-                }
-                continue;
-            } else if (data.contains('\n')) {
+            // uADC
+            if (data.contains('\n')) {
                 if (settings.useUADC()) {
                     // Find newlines to try and get two packets.
-                    newline1 = data.indexOf('\n') + 1;
-                    newline2 = data.indexOf('\n', newline1 + 1) + 1;
+                    quint16 newline1 = data.indexOf('\n') + 1;
+                    quint16 newline2 = data.indexOf('\n', newline1 + 1) + 1;
                     // Get two packets.
                     QByteArray pkt1 = data.mid(newline1, dfti::uadcPktLen);
                     QByteArray pkt2 = data.mid(newline2, dfti::uadcPktLen);
                     // Make sure at least one verifies correctly.
                     if (dfti::validateUADCChecksum(pkt1) ||
                         dfti::validateUADCChecksum(pkt2)) {
-                        if (uadc != nullptr) {
+                        if ((uadc != nullptr) && detectUADC) {
                             uadc->configureSerial(port.systemLocation());
+                            detectUADC = false;
+                            qDebug() << "uADC serial port set to"
+                                     << port.systemLocation();
+                        } else {
+                            if (settings.debugSerial()) {
+                                qDebug() << "Potentially found other uADC:"
+                                         << port.systemLocation();
+                            }
                         }
-                        qDebug() << "uADC serial port set to"
+                        continue;
+                    }
+                }
+            }
+            // VN-200
+            if (data.contains(vn200Header)) {
+                if (settings.useVN200() && detectVN200) {
+                    if (vn200 != nullptr) {
+                        vn200->configureSerial(port.systemLocation());
+                        detectVN200 = false;
+                        qDebug() << "VN-200 serial port set to"
                                  << port.systemLocation();
                     }
-                    newline1 = 0;
-                    newline2 = 0;
+                } else {
+                    if (settings.debugSerial()) {
+                        qDebug() << "Potentially found other VN-200:"
+                                 << port.systemLocation();
+                    }
                 }
                 continue;
             }
+            // MAVLink stream
+            if (data.contains(mavlinkSync)) {
+                if (settings.useMavlink() && detectAP) {
+                    if (ap != nullptr) {
+                        ap->configureSerial(port.systemLocation());
+                        detectAP = false;  // only detect the first A/P
+                        qDebug() << "MAVLink/Pixhawk serial port set to"
+                                 << port.systemLocation();
+                    }
+                } else {
+                    if (settings.debugSerial()) {
+                        qDebug() << "Potentially found other MAVLink/Pixhawk:"
+                                 << port.systemLocation();
+                    }
+                }
+                continue;
+            }
+            // We don't know.
+            qDebug() << "Unknown serial device:" << port.systemLocation();
         } else {
             if (settings.debugSerial()) {
                 qDebug() << "Failed to open candidate serial port"
