@@ -274,9 +274,6 @@ Logger::writeData(void)
                     !vn200DataUpdate) ||
                 (check(sensors & AvailableSensors::HAVE_UADC) &&
                     !uadcDataUpdate)) {
-                if (settings->debugSerial()) {
-                    qDebug() << "No data, skipped write.";
-                }
                 return;
             }
         }
