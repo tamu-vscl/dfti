@@ -33,7 +33,7 @@ namespace dfti {
  *  \param pktLen The length of the packet.
  *  \return True if the packet checksum is correct.
 */
-bool validateVN200Checksum(quint8 *pkt, quint8 pktLen);
+bool validateVN200Checksum(QByteArray pkt);
 
 
 //! Structure to hold VN-200 data.
@@ -136,6 +136,14 @@ public:
     explicit VN200(Settings *_settings, QObject* _parent = nullptr) :
         SerialSensor(_settings, _parent) { };
 
+    //! VN-200 packet header bytes.
+    /*!
+     *  \remark Used to identify the start of a VN-200 packet. Note that the
+     *      last three header bytes here change depending on the VN-200
+     *      payload.
+     */
+    const QByteArray header{"\xfa\x01\xf2\x05"};
+
 public slots:
     //! Slot to read in data over serial and parse complete packets.
     void readData(void);
@@ -148,36 +156,20 @@ signals:
     void measurementUpdate(VN200Data data);
 
 private:
+    //! Buffer
+    /*!
+     *  Buffer to hold the raw bytes we read in from the serial port. Since we
+     *  do not necessarily read in complete packets at a time, we need to let
+     *  the buffer fill up until we have a complete packet and then parse it,
+     *  which is the purpose of this buffer.
+     */
+    QByteArray buf;
+
     //! Copy from raw packet to data struct.
     void copyPacketToData(void);
 
-    //! Flag to indicate if we are reading a new packet.
-    /*!
-     *  Since we read in the packet a single byte at a time, the way we handle
-     *  a byte depends on if we are looking for a new packet. If that's the
-     *  case, we need to check for the sync byte and then the group byte.
-     */
-    bool foundSyncByte{false};
-    bool foundGroupByte{false};
-
-    //! Sync byte.
-    static const quint8 syncByte{0xfa};
-
-    //! Group byte
-    static const quint8 groupByte{0x01};
-
-    //! Buffer position.
-    quint8 currentBufIdx{0};
-
     //! Expected packet size.
     static const quint8 packetSize{110};
-
-    //! Buffer
-    /*!
-     *  Buffer to hold the raw bytes we read in from the serial port. We read
-     *  in one byte at a time.
-     */
-    quint8 buf[packetSize];
 
 #pragma pack(push, 1)  // change structure packing to 1 byte
     //! Packet format.

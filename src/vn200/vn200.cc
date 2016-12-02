@@ -26,64 +26,20 @@ namespace dfti {
 void
 VN200::readData(void)
 {
-    // Flags for parsing.
-    bool cleanup = false;
-    bool completePacket = false;
+    // Add available bytes to the buffer.
+    buf.append(_port->readAll());
 
-    // Read in a single byte.
-    quint8 ch;
-    if (!_port->getChar((char *) &ch)) {
-        if (settings->debugSerial()) {
-            qDebug() << "Failed to read serial port!";
+    if (buf.contains(header)) {
+        quint16 startIdx = buf.indexOf(header);
+        // Make sure we have a full packet, otherwise return and wait.
+        if (buf.size() < startIdx + packetSize) {
+            return;
         }
-        cleanup = true;
-    }
+        QByteArray pkt = buf.mid(startIdx, packetSize);
 
-    // Attempt to construct valid packet.
-    if (!foundSyncByte && (ch == syncByte)) {
-        buf[currentBufIdx++] = ch;
-        foundSyncByte = true;
-    } else if (foundSyncByte) {
-        /*
-         * If we haven't found the group byte yet, then check to see if the
-         * current byte is the group byte. Since we know a priori what the
-         * packet from the IMU will look like we can check for the known group
-         * byte directly.
-         */
-        if (!foundGroupByte && (ch == groupByte)) {
-            buf[currentBufIdx++] = ch;
-            foundGroupByte = true;
-        /*
-         * If we've found the group byte, the next byte should be part of the
-         * packet and we add it to the buffer.
-         */
-        } else if (foundGroupByte) {
-            if (currentBufIdx < packetSize) {
-                buf[currentBufIdx++] = ch;
-                if (currentBufIdx == packetSize) {
-                    // We are at the end of the packet, so we should validate
-                    // and parse it.
-                    completePacket = true;
-                }
-            } else {
-                // Packet is longer than buffer size so probably invalid,
-                // ignore.
-                cleanup = true;
-            }
-        } else {
-            // Garbage data, reset buffer and flags.
-            cleanup = true;
-        }
-
-    } else {
-        // Garbage data, reset buffer and flags.
-        cleanup = true;
-    }
-
-    // Validate and parse the packet if we have an entire packet.
-    if (completePacket) {
-        if (validateVN200Checksum(buf, packetSize)) {
-            packet = reinterpret_cast<VN200Packet*>(buf);
+        //Validate packet.
+        if (validateVN200Checksum(pkt)) {
+            packet = reinterpret_cast<VN200Packet*>(pkt.data());
             copyPacketToData();
             // Emit the measurement update signal.
             emit measurementUpdate(data);
@@ -123,20 +79,9 @@ VN200::readData(void)
                 qDebug() << "[INFO]    packet failed validation";
             }
         }
-        cleanup = true;
+        // We remove everything up to the next packet.
+        buf.remove(0, startIdx + packetSize);
     }
-
-    // Reset the buffer if we're done with the packet or had an error.
-    if (cleanup) {
-        // Clear buffer for new data.
-        std::memset(buf, 0, packetSize);
-        // Reset buffer index.
-        currentBufIdx = 0;
-        // Reset flags.
-        foundSyncByte = false;
-        foundGroupByte = false;
-    }
-
     return;
 }
 
@@ -178,11 +123,11 @@ VN200::copyPacketToData(void)
 //  Functions
 // ----------------------------------------------------------------------------
 bool
-validateVN200Checksum(quint8 *pkt, quint8 pktLen)
+validateVN200Checksum(QByteArray pkt)
 {
     quint16 crc = 0;
     // Calculate checksum.
-    for (quint8 i = 1; i < pktLen; ++i) {
+    for (quint8 i = 1; i < pkt.size(); ++i) {
         crc = (quint8) (crc >> 8) | (crc << 8);
         crc ^= pkt[i];
         crc ^= (quint8) (crc & 0xff) >> 4;
