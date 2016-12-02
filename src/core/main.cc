@@ -49,18 +49,20 @@ identifySerialPorts(const dfti::Settings& settings, dfti::Autopilot *ap,
     if (settings.useMavlink() && (settings.autopilotSerialPort() != "")) {
         detectAP = false;
         ap->configureSerial(settings.autopilotSerialPort());
-        qDebug() << "MAVLink/Pixhawk serial port set to"
+        qDebug() << "[OVR] MAVLink/Pixhawk serial port set to"
                  << settings.autopilotSerialPort();
     }
     if (settings.useUADC() && (settings.uADCSerialPort() != "")) {
         detectUADC = false;
         uadc->configureSerial(settings.uADCSerialPort());
-        qDebug() << "uADC serial port set to" << settings.uADCSerialPort();
+        qDebug() << "[OVR] uADC serial port set to"
+                 << settings.uADCSerialPort();
     }
     if (settings.useVN200() && (settings.vn200SerialPort() != "")) {
         detectVN200 = false;
         vn200->configureSerial(settings.vn200SerialPort());
-        qDebug() << "VN-200 serial port set to" << settings.vn200SerialPort();
+        qDebug() << "[OVR] VN-200 serial port set to"
+                 << settings.vn200SerialPort();
     }
     // Stop if we have all sensors configured already.
     if (!(settings.useMavlink() && detectAP) &&
