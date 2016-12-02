@@ -101,8 +101,14 @@ private:
     //! CSV file delimeter.
     const QString delim{","};
 
-    //! Available sensors.
-    AvailableSensors sensors{AvailableSensors::NONE};
+    //! Autopilot available.
+    bool haveAP{false};
+
+    //! uADC available.
+    bool haveUADC{false};
+
+    //! VN-200 available.
+    bool haveVN200{false};
 
     //! Flag to indicate log file is opened.
     bool logFileOpen{false};
@@ -111,13 +117,13 @@ private:
     bool firstWrite{true};
 
     //! Flag to indicate an A/P data update.
-    bool apDataUpdate{false};
+    bool newAPData{false};
 
     //! Flag to indicate a uADC data update.
-    bool uadcDataUpdate{false};
+    bool newUADCData{false};
 
     //! Flag to indicate a VN-200 data update.
-    bool vn200DataUpdate{false};
+    bool newVN200Data{false};
 
     //! Flag to indicate GPS is available.
     bool haveGPS{false};

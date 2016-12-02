@@ -51,7 +51,7 @@ Logger::~Logger()
 void
 Logger::enableAutopilot(Autopilot *ap)
 {
-    sensors |= AvailableSensors::HAVE_AP;
+    haveAP = true;
     connect(ap, &Autopilot::measurementUpdate, this, &Logger::getAPData);
 }
 
@@ -59,7 +59,7 @@ Logger::enableAutopilot(Autopilot *ap)
 void
 Logger::enableUADC(uADC *adc)
 {
-    sensors |= AvailableSensors::HAVE_UADC;
+    haveUADC = true;
     connect(adc, &uADC::measurementUpdate, this, &Logger::getUADCData);
 }
 
@@ -67,7 +67,7 @@ Logger::enableUADC(uADC *adc)
 void
 Logger::enableVN200(VN200 *ins)
 {
-    sensors |= AvailableSensors::HAVE_VN200;
+    haveVN200 = true;
     connect(ins, &VN200::measurementUpdate, this, &Logger::getVN200Data);
     connect(ins, &VN200::gpsAvailable, this, &Logger::gpsAvailable);
 }
@@ -115,7 +115,7 @@ Logger::getAPData(APData data)
     rcOut6 = data.rcOut6;
     rcOut7 = data.rcOut7;
     rcOut8 = data.rcOut8;
-    apDataUpdate = true;
+    newAPData = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getAPData";
     }
@@ -132,7 +132,7 @@ Logger::getUADCData(uADCData data)
     altM = data.altM;
     ptPa = data.ptPa;
     psPa = data.psPa;
-    uadcDataUpdate = true;
+    newUADCData = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getuADCData";
     }
@@ -154,7 +154,7 @@ Logger::getVN200Data(VN200Data data)
     quaternion[3] = data.quaternion[3];
     tempC = data.tempC;
     pressureKpa = data.pressureKpa;
-    vn200DataUpdate = true;
+    newVN200Data = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getVN200Data";
     }
@@ -207,7 +207,7 @@ Logger::writeData(void)
         if (firstWrite) {
             out << "unix_time";
             // VN-200 data.
-            if (check(sensors & AvailableSensors::HAVE_VN200)) {
+            if (haveVN200) {
                 out << delim
                     << "gps_time_ns" << delim
                     << "quat_w" << delim
@@ -233,7 +233,7 @@ Logger::writeData(void)
                     << "pressure_kpa";
             }
             // Air data system data.
-            if (check(sensors & AvailableSensors::HAVE_UADC)) {
+            if (haveUADC) {
                 out << delim
                     << "uadc_id" << delim
                     << "ias_mps" << delim
@@ -244,7 +244,7 @@ Logger::writeData(void)
                     << "ps_pa";
             }
             // Autopilot data.
-            if (check(sensors & AvailableSensors::HAVE_AP)) {
+            if (haveAP) {
                 out << delim
                     << "rc_in_1_pwm" << delim
                     << "rc_in_2_pwm" << delim
@@ -270,19 +270,20 @@ Logger::writeData(void)
         // Skip this write if we don't have updates. Note we currently don't
         // check for the apDataUpdate flag since it is at a slower rate.
         if (settings->waitForAllSensors()) {
-            if ((check(sensors & AvailableSensors::HAVE_VN200) &&
-                    !vn200DataUpdate) ||
-                (check(sensors & AvailableSensors::HAVE_UADC) &&
-                    !uadcDataUpdate)) {
+            if ((haveVN200 && !newVN200Data) || (haveUADC && !newUADCData)) {
                 return;
             }
+        }
+        // Wait to get fast data before writing.
+        if ((!haveVN200 || !newVN200Data) && (!haveUADC || !newUADCData)) {
+            return;
         }
 
         // Always write the system time in microseconds.
         out << getTimeUsec();
 
         // VN-200 data.
-        if (check(sensors & AvailableSensors::HAVE_VN200)) {
+        if (haveVN200) {
             out.setRealNumberPrecision(7);  // float
             out << delim
                 << gpsTimeNs << delim
@@ -309,11 +310,11 @@ Logger::writeData(void)
                 << mag[2] << delim
                 << tempC << delim
                 << pressureKpa;
-            vn200DataUpdate = false;
+            newVN200Data = false;
         }
 
         // Air data system data.
-        if (check(sensors & AvailableSensors::HAVE_UADC)) {
+        if (haveUADC) {
             // We get two decimal places from the uADC...
             out.setRealNumberPrecision(2);
             out << delim
@@ -324,11 +325,11 @@ Logger::writeData(void)
                 << altM << delim
                 << ptPa << delim
                 << psPa;
-            uadcDataUpdate = false;
+            newUADCData = false;
         }
 
         // Autopilot data.
-        if (check(sensors & AvailableSensors::HAVE_AP)) {
+        if (haveAP) {
             out << delim
                 << rcIn1 << delim
                 << rcIn2 << delim
@@ -348,7 +349,7 @@ Logger::writeData(void)
                 << rcOut8;
         }
         out << '\n';
-        apDataUpdate = false;
+        newAPData = false;
     }
     if (settings->debugSerial()) {
         qDebug() << "Logger:writeData";
