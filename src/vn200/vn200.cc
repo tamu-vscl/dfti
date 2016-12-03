@@ -128,9 +128,9 @@ validateVN200Checksum(QByteArray pkt)
     quint16 crc = 0;
     // Calculate checksum.
     for (quint8 i = 1; i < pkt.size(); ++i) {
-        crc = (quint8) (crc >> 8) | (crc << 8);
-        crc ^= pkt[i];
-        crc ^= (quint8) (crc & 0xff) >> 4;
+        crc = static_cast<quint8>(crc >> 8) | (crc << 8);
+        crc ^= static_cast<quint8>(pkt[i]);
+        crc ^= static_cast<quint8>(crc & 0xff) >> 4;
         crc ^= crc << 12;
         crc ^= (crc & 0x00ff) << 5;
     }
