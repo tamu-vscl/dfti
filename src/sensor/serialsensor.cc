@@ -48,12 +48,12 @@ SerialSensor::init()
             _port->setStopBits(QSerialPort::OneStop) &&
             _port->setFlowControl(QSerialPort::NoFlowControl)) {
             if (settings->debugSerial()) {
-                qDebug() << "[INFO]    port settings successful";
+                qDebug() << "[INFO ]  port settings successful";
             }
             _valid_serial = true;
         } else {
             _valid_serial = false;
-            qWarning() << "[ERROR]   port settings failed";
+            qWarning() << "[ERROR]  port settings failed";
         }
     }
     return;
@@ -87,6 +87,20 @@ SerialSensor::isOpen(void)
     return _port != nullptr ? _port->isOpen() : false;
 }
 
+
+void
+SerialSensor::setBaudRate(quint32 rate)
+{
+    switch (rate) {
+        case 115200:
+            baudRate = QSerialPort::Baud115200;
+            break;
+        case 57600:  // fallthrough
+        default:
+            baudRate = QSerialPort::Baud57600;
+            break;
+    }
+}
 
 
 void

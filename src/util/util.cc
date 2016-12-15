@@ -55,7 +55,7 @@ validateSerialPort(QString _port)
             return _port;
         }
     }
-    qWarning() << "[WARN]  validation of serial port" << _port << "failed!";
+    qWarning() << "[WARN ]  validation of serial port" << _port << "failed!";
     return QString{""};
 }
 

@@ -187,7 +187,7 @@ Logger::gpsAvailable(bool flag)
                         qDebug() << "Set system time.";
                     }
                 } else {
-                    qWarning() << "[WARN] Failed to set system time.";
+                    qWarning() << "[WARN ]  Failed to set system time.";
                     // If we detect we failed to set the system time, reset the
                     // flag.
                     setSystemTime = false;

@@ -15,6 +15,17 @@ namespace dfti {
 // ----------------------------------------------------------------------------
 //  Constructors/destructors
 // ----------------------------------------------------------------------------
+VN200::VN200(Settings *_settings, QObject* _parent) :
+SerialSensor(_settings, _parent)
+{
+    if (settings->vn200BaudRate()) {
+        setBaudRate(settings->vn200BaudRate());
+        if (settings->debugSerial()) {
+            qDebug() << "[INFO ]  overrode VN-200 to"
+                     << settings->vn200BaudRate() << "baud";
+        }
+    }
+}
 
 // ----------------------------------------------------------------------------
 //  Public functions
@@ -76,7 +87,7 @@ VN200::readData(void)
             }
         } else {
             if (settings->debugData()) {
-                qDebug() << "[INFO]    packet failed validation";
+                qDebug() << "[INFO ]  packet failed validation";
             }
         }
         // We remove everything up to the next packet.

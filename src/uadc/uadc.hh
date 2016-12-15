@@ -123,8 +123,7 @@ public:
      *  \param _settings Pointer to settings object.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit uADC(Settings *_settings, QObject* _parent = nullptr) :
-        SerialSensor(_settings, _parent) { };
+    explicit uADC(Settings *_settings, QObject* _parent = nullptr);
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.

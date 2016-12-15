@@ -15,6 +15,18 @@ namespace dfti {
 // ----------------------------------------------------------------------------
 //  Constructors/destructors
 // ----------------------------------------------------------------------------
+Autopilot::Autopilot(Settings *_settings, QObject* _parent) :
+SerialSensor(_settings, _parent)
+{
+    lastStatus.packet_rx_drop_count = 0;
+    if (settings->autopilotBaudRate()) {
+        setBaudRate(settings->autopilotBaudRate());
+        if (settings->debugSerial()) {
+            qDebug() << "[INFO ]  overrode MAVLink autopilot to"
+                     << settings->autopilotBaudRate() << "baud";
+        }
+    }
+}
 
 // ----------------------------------------------------------------------------
 //  Public functions

@@ -78,11 +78,7 @@ public:
      *  \param _settings Pointer to Settings object.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit Autopilot(Settings *_settings, QObject* _parent = nullptr) :
-        SerialSensor(_settings, _parent)
-    {
-        lastStatus.packet_rx_drop_count = 0;
-    };
+    explicit Autopilot(Settings *_settings, QObject* _parent = nullptr);
 
     //! Opens the serial port.
     /*!

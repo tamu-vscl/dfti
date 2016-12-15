@@ -15,6 +15,17 @@ namespace dfti {
 // ----------------------------------------------------------------------------
 //  Constructors/destructors
 // ----------------------------------------------------------------------------
+uADC::uADC(Settings *_settings, QObject* _parent) :
+SerialSensor(_settings, _parent)
+{
+    if (settings->uADCBaudRate()) {
+        setBaudRate(settings->uADCBaudRate());
+        if (settings->debugSerial()) {
+            qDebug() << "[INFO ]  overrode uADC to"
+                     << settings->uADCBaudRate() << "baud";
+        }
+    }
+}
 
 // ----------------------------------------------------------------------------
 //  Public functions
@@ -83,7 +94,7 @@ uADC::readData(void)
             }
         } else {
             if (settings->debugData()) {
-                qDebug() << "[INFO]    packet failed validation";
+                qDebug() << "[INFO ]  packet failed validation";
             }
         }
     }

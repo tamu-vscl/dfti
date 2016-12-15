@@ -97,40 +97,45 @@ Settings::loadRCFile(QString _fn)
 
     // MAVLink parameters.
     m_settings->beginGroup("mavlink");
+    m_autopilotBaudRate = m_settings->value("baud_rate", 0).toInt();
+    m_autopilotSerialPort = m_settings->value("serial_port", "").toString();
+    m_streamRate = m_settings->value("stream_rate", 10).toInt();
     m_useMessageInterval = m_settings->value("use_message_interval",
         false).toBool();
-    m_streamRate = m_settings->value("stream_rate", 10).toInt();
     m_waitForMavInit = m_settings->value("wait_for_init", false).toBool();
-    m_autopilotSerialPort = m_settings->value("serial_port", "").toString();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [mavlink] settings group:";
-        qDebug() << "\tuse_message_interval:  " << m_useMessageInterval;
+        qDebug() << "\tbaud_rate:             " << m_autopilotBaudRate;
         qDebug() << "\tserial_port:           " << m_autopilotSerialPort;
         qDebug() << "\tstream_rate:           " << m_streamRate;
+        qDebug() << "\tuse_message_interval:  " << m_useMessageInterval;
         qDebug() << "\twait_for_init:         " << m_waitForMavInit;
     }
 
     // uADC parameters.
     m_settings->beginGroup("uadc");
+    m_uADCBaudRate = m_settings->value("baud_rate", 0).toInt();
     m_uADCSerialPort = m_settings->value("serial_port", "").toString();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [uadc] settings group:";
+        qDebug() << "\tbaud_rate:             " << m_uADCBaudRate;
         qDebug() << "\tserial_port:           " << m_uADCSerialPort;
     }
 
     // VN-200 parameters.
     m_settings->beginGroup("vn200");
+    m_vn200BaudRate = m_settings->value("baud_rate", 0).toInt();
     m_vn200SerialPort = m_settings->value("serial_port", "").toString();
     m_waitForVN200GPS = m_settings->value("wait_for_gps", false).toBool();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [vn200] settings group:";
+        qDebug() << "\tbaud_rate:             " << m_vn200BaudRate;
         qDebug() << "\tserial_port:           " << m_vn200SerialPort;
         qDebug() << "\twait_for_gps:          " << m_waitForVN200GPS;
     }
-
 
     return;
 }

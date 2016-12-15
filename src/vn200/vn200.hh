@@ -133,8 +133,7 @@ public:
      *  \param _settings Pointer to settings object.
      *  \param _parent Pointer to parent QObject.
      */
-    explicit VN200(Settings *_settings, QObject* _parent = nullptr) :
-        SerialSensor(_settings, _parent) { };
+    explicit VN200(Settings *_settings, QObject* _parent = nullptr);
 
     //! VN-200 packet header bytes.
     /*!

@@ -98,6 +98,15 @@ public:
     //! Overridden VN-200 serial port.
     QString vn200SerialPort(void) const { return m_vn200SerialPort; };
 
+    //! Overridden Autopilot baud rate.
+    quint32 autopilotBaudRate(void) const { return m_autopilotBaudRate; };
+
+    //! Overridden uADC baud rate.
+    quint32 uADCBaudRate(void) const { return m_uADCBaudRate; };
+
+    //! Overridden VN-200 baud rate.
+    quint32 vn200BaudRate(void) const { return m_vn200BaudRate; };
+
 private:
     //! Settings file name.
     QString m_rcfile;
@@ -157,6 +166,14 @@ private:
     //! Overridden VN-200 serial port.
     QString m_vn200SerialPort{""};
 
+    //! Overridden Autopilot baud rate.
+    quint32 m_autopilotBaudRate{0};
+
+    //! Overridden uADC baud rate.
+    quint32 m_uADCBaudRate{0};
+
+    //! Overridden VN-200 baud rate.
+    quint32 m_vn200BaudRate{0};
 };
 
 };  // namespace dfti

@@ -67,14 +67,20 @@ public:
      */
     virtual void open(void);
 
+    //! Set the serial port baud rate.
+    /*!
+     *  \param rate The serial port baud rate. Must be one of 57600, 115200.
+     *  \remark If an unsupported baud rate is given, the sensor falls back to
+     *      57600 baud.
+     */
+    void setBaudRate(quint32 rate);
+
     //! Start the sensor in a thread.
     void threadStart(void);
-
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.
     virtual void readData(void) = 0;
-
 
 protected:
     //! Settings object.
