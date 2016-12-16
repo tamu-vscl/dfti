@@ -89,6 +89,15 @@ public slots:
     void writeData(void);
 
 private:
+    //! Function to open a log file.
+    /*!
+     *  \param fd Reference to QFile.
+     *  \param flag Reference to file open flag.
+     *  \param time Sensor type.
+     *  \param timestamp Formatted current timestamp.
+     */
+    void openLogFile(QFile &fd, bool &flag, QString type, QString timestamp);
+
     //! Pointer to settings object.
     Settings *settings{nullptr};
 
@@ -110,8 +119,14 @@ private:
     //! VN-200 available.
     bool haveVN200{false};
 
-    //! Flag to indicate log file is opened.
-    bool logFileOpen{false};
+    //! Flag to indicate autopilot log file is opened.
+    bool apLogFileOpen{false};
+
+    //! Flag to indicate uADC log file is opened.
+    bool uADCLogFileOpen{false};
+
+    //! Flag to indicate VN-200 log file is opened.
+    bool vn200LogFileOpen{false};
 
     //! Flag to indicate if this is our first write.
     bool firstWrite{true};
@@ -131,8 +146,14 @@ private:
     //! Flag to indicate we have set the system time.
     bool setSystemTime{false};
 
-    //! Log file.
-    QFile logFile;
+    //! Autopilot log file.
+    QFile apLogFile;
+
+    //! uADC log file
+    QFile uADCLogFile;
+
+    //! VN-200 log file.
+    QFile vn200LogFile;
 
     //! RC input channel 1 PPM value.
     quint16 rcIn1{0};
