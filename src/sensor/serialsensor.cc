@@ -28,10 +28,9 @@ SerialSensor::~SerialSensor(void)
 //  Public functions
 // ----------------------------------------------------------------------------
 void
-SerialSensor::configureSerial(QString _portName, QSerialPort::BaudRate _baud)
+SerialSensor::configureSerial(QString _portName)
 {
     portName = _portName;
-    baudRate = _baud;
 }
 
 
