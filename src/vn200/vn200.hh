@@ -68,7 +68,7 @@ struct VN200Data
      *
      *  Order is lat, long, alt.
      */
-    float posDegDegM[3] = {0};
+    double posDegDegM[3] = {0};
     //! NED Velocity
     /*!
      *  Stores the estimated velocity in the North-East-Down frame in m/s.
