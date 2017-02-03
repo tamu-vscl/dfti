@@ -155,6 +155,9 @@ private:
     //! VN-200 log file.
     QFile vn200LogFile;
 
+    //! RC input timestamp.
+    quint32 rcInTime{0};
+
     //! RC input channel 1 PPM value.
     quint16 rcIn1{0};
 
@@ -179,28 +182,31 @@ private:
     //! RC input channel 8 PPM value.
     quint16 rcIn8{0};
 
-    //! RC Output channel 1 PPM value.
+    //! RC output timestamp.
+    quint32 rcOutTime{0};
+
+    //! RC output channel 1 PPM value.
     quint16 rcOut1{0};
 
-    //! RC Output channel 2 PPM value.
+    //! RC output channel 2 PPM value.
     quint16 rcOut2{0};
 
-    //! RC Output channel 3 PPM value.
+    //! RC output channel 3 PPM value.
     quint16 rcOut3{0};
 
-    //! RC Output channel 4 PPM value.
+    //! RC output channel 4 PPM value.
     quint16 rcOut4{0};
 
-    //! RC Output channel 5 PPM value.
+    //! RC output channel 5 PPM value.
     quint16 rcOut5{0};
 
-    //! RC Output channel 6 PPM value.
+    //! RC output channel 6 PPM value.
     quint16 rcOut6{0};
 
-    //! RC Output channel 7 PPM value.
+    //! RC output channel 7 PPM value.
     quint16 rcOut7{0};
 
-    //! RC Output channel 8 PPM value.
+    //! RC output channel 8 PPM value.
     quint16 rcOut8{0};
 
     //! uADC packet ID.

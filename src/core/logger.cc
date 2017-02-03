@@ -101,6 +101,7 @@ Logger::flush(void)
 void
 Logger::getAPData(APData data)
 {
+    rcInTime = data.rcInTime;
     rcIn1 = data.rcIn1;
     rcIn2 = data.rcIn2;
     rcIn3 = data.rcIn3;
@@ -109,6 +110,7 @@ Logger::getAPData(APData data)
     rcIn6 = data.rcIn6;
     rcIn7 = data.rcIn7;
     rcIn8 = data.rcIn8;
+    rcOutTime = data.rcOutTime;
     rcOut1 = data.rcOut1;
     rcOut2 = data.rcOut2;
     rcOut3 = data.rcOut3;
@@ -251,6 +253,7 @@ Logger::writeData(void)
         // Autopilot data.
         if (apLogFileOpen && haveAP) {
             apOut << "unix_time" << delim
+                  << "rc_in_time" << delim
                   << "rc_in_1_pwm" << delim
                   << "rc_in_2_pwm" << delim
                   << "rc_in_3_pwm" << delim
@@ -259,6 +262,7 @@ Logger::writeData(void)
                   << "rc_in_6_pwm" << delim
                   << "rc_in_7_pwm" << delim
                   << "rc_in_8_pwm" << delim
+                  << "rc_out_time" << delim
                   << "rc_out_1_pwm" << delim
                   << "rc_out_2_pwm" << delim
                   << "rc_out_3_pwm" << delim
@@ -325,6 +329,7 @@ Logger::writeData(void)
     // Autopilot data.
     if (apLogFileOpen && haveAP && (!settings->waitForUpdate() || newAPData)) {
         apOut << ts << delim
+              << rcInTime << delim
               << rcIn1 << delim
               << rcIn2 << delim
               << rcIn3 << delim
@@ -333,6 +338,7 @@ Logger::writeData(void)
               << rcIn6 << delim
               << rcIn7 << delim
               << rcIn8 << delim
+              << rcOutTime << delim
               << rcOut1 << delim
               << rcOut2 << delim
               << rcOut3 << delim

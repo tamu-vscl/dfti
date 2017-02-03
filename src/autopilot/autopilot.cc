@@ -187,6 +187,7 @@ Autopilot::readData(void)
                 case MAVLINK_MSG_ID_RC_CHANNELS_RAW: {
                     mavlink_rc_channels_raw_t rcIn;
                     mavlink_msg_rc_channels_raw_decode(&message, &rcIn);
+                    data.rcInTime = rcIn.time_boot_ms;
                     data.rcIn1 = rcIn.chan1_raw;
                     data.rcIn2 = rcIn.chan2_raw;
                     data.rcIn3 = rcIn.chan3_raw;
@@ -204,6 +205,7 @@ Autopilot::readData(void)
                 case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW: {
                     mavlink_servo_output_raw_t rcOut;
                     mavlink_msg_servo_output_raw_decode(&message, &rcOut);
+                    data.rcOutTime = rcOut.time_usec;
                     data.rcOut1 = rcOut.servo1_raw;
                     data.rcOut2 = rcOut.servo2_raw;
                     data.rcOut3 = rcOut.servo3_raw;
@@ -277,22 +279,24 @@ Autopilot::readData(void)
 
         if (settings->debugData()) {
             qDebug() << "MAVLink:\n"
-                     << "\tRCIN1 :  " << data.rcIn1 << "\n"
-                     << "\tRCIN2 :  " << data.rcIn2 << "\n"
-                     << "\tRCIN3 :  " << data.rcIn3 << "\n"
-                     << "\tRCIN4 :  " << data.rcIn4 << "\n"
-                     << "\tRCIN5 :  " << data.rcIn5 << "\n"
-                     << "\tRCIN6 :  " << data.rcIn6 << "\n"
-                     << "\tRCIN7 :  " << data.rcIn7 << "\n"
-                     << "\tRCIN8 :  " << data.rcIn8 << "\n"
-                     << "\tRCOUT1:  " << data.rcOut1 << "\n"
-                     << "\tRCOUT2:  " << data.rcOut2 << "\n"
-                     << "\tRCOUT3:  " << data.rcOut3 << "\n"
-                     << "\tRCOUT4:  " << data.rcOut4 << "\n"
-                     << "\tRCOUT5:  " << data.rcOut5 << "\n"
-                     << "\tRCOUT6:  " << data.rcOut6 << "\n"
-                     << "\tRCOUT7:  " << data.rcOut7 << "\n"
-                     << "\tRCOUT8:  " << data.rcOut8 << "\n";
+                     << "\tRCIN TIME: " << data.rcInTime << "\n"
+                     << "\tRCIN1 :    " << data.rcIn1 << "\n"
+                     << "\tRCIN2 :    " << data.rcIn2 << "\n"
+                     << "\tRCIN3 :    " << data.rcIn3 << "\n"
+                     << "\tRCIN4 :    " << data.rcIn4 << "\n"
+                     << "\tRCIN5 :    " << data.rcIn5 << "\n"
+                     << "\tRCIN6 :    " << data.rcIn6 << "\n"
+                     << "\tRCIN7 :    " << data.rcIn7 << "\n"
+                     << "\tRCIN8 :    " << data.rcIn8 << "\n"
+                     << "\tRCIN TIME: " << data.rcOutTime << "\n"
+                     << "\tRCOUT1:    " << data.rcOut1 << "\n"
+                     << "\tRCOUT2:    " << data.rcOut2 << "\n"
+                     << "\tRCOUT3:    " << data.rcOut3 << "\n"
+                     << "\tRCOUT4:    " << data.rcOut4 << "\n"
+                     << "\tRCOUT5:    " << data.rcOut5 << "\n"
+                     << "\tRCOUT6:    " << data.rcOut6 << "\n"
+                     << "\tRCOUT7:    " << data.rcOut7 << "\n"
+                     << "\tRCOUT8:    " << data.rcOut8 << "\n";
         }
     }
 

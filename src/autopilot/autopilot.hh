@@ -32,6 +32,8 @@ namespace dfti {
  */
 struct APData
 {
+    //! RC input timestamp.
+    quint32 rcInTime;
     //! RC input channel 1 PPM value.
     quint16 rcIn1;
     //! RC input channel 2 PPM value.
@@ -48,17 +50,19 @@ struct APData
     quint16 rcIn7;
     //! RC input channel 8 PPM value.
     quint16 rcIn8;
-    //! RC Output channel 1 PPM value.
+    //! RC output timestamp.
+    quint32 rcOutTime;
+    //! RC output channel 1 PPM value.
     quint16 rcOut1;
-    //! RC Output channel 2 PPM value.
+    //! RC output channel 2 PPM value.
     quint16 rcOut2;
-    //! RC Output channel 3 PPM value.
+    //! RC output channel 3 PPM value.
     quint16 rcOut3;
-    //! RC Output channel 4 PPM value.
+    //! RC output channel 4 PPM value.
     quint16 rcOut4;
-    //! RC Output channel 5 PPM value.
+    //! RC output channel 5 PPM value.
     quint16 rcOut5;
-    //! RC Output channel 6 PPM value.
+    //! RC output channel 6 PPM value.
     quint16 rcOut6;
     //! RC Output channel 7 PPM value.
     quint16 rcOut7;
