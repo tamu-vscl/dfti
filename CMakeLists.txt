@@ -38,7 +38,9 @@ set(CMAKE_INSTALL_PREFIX /usr)
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-if(${CMAKE_SYSTEM_PROCESSOR} EQUAL "arm")
+# Set library path based on arch.
+string(COMPARE EQUAL "arm" ${CMAKE_SYSTEM_PROCESSOR} _cmp)
+if(_cmp)
   set(dfti_TARGET_LIB_DIRECTORY "lib")
 else()
   set(dfti_TARGET_LIB_DIRECTORY "lib64")
