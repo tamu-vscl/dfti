@@ -275,7 +275,8 @@ Logger::writeData(void)
     quint64 ts = getTimeUsec();
 
     // VN-200 data.
-    if (vn200LogFileOpen && haveVN200) {
+    if (vn200LogFileOpen && haveVN200 &&
+          (!settings->waitForUpdate() || newVN200Data)) {
         vn200Out.setRealNumberPrecision(7);  // float
         vn200Out << ts << delim
                  << gpsTimeNs << delim
@@ -306,7 +307,8 @@ Logger::writeData(void)
     }
 
     // Air data system data.
-    if (uADCLogFileOpen && haveUADC) {
+    if (uADCLogFileOpen && haveUADC &&
+          (!settings->waitForUpdate() || newUADCData)) {
         // We get two decimal places from the uADC...
         uADCOut.setRealNumberPrecision(2);
         uADCOut << ts << delim
@@ -321,7 +323,7 @@ Logger::writeData(void)
     }
 
     // Autopilot data.
-    if (apLogFileOpen && haveAP) {
+    if (apLogFileOpen && haveAP && (!settings->waitForUpdate() || newAPData)) {
         apOut << ts << delim
               << rcIn1 << delim
               << rcIn2 << delim

@@ -89,6 +89,9 @@ public:
     //! Should we wait for all sensors to get data before writing?
     bool waitForAllSensors(void) const { return m_waitForAllSensors; };
 
+    //! Should we wait for a data update to write to the log?
+    bool waitForUpdate(void) const { return m_waitForUpdate; };
+
     //! Overridden Autopilot serial port.
     QString autopilotSerialPort(void) const { return m_autopilotSerialPort; };
 
@@ -156,6 +159,9 @@ private:
 
     //! Should we wait for all sensors to get data before writing?
     bool m_waitForAllSensors{false};
+
+    //! Should we wait for a data update to write to the log?
+    bool m_waitForUpdate{true};
 
     //! Overridden Autopilot serial port.
     QString m_autopilotSerialPort{""};
