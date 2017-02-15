@@ -23,8 +23,8 @@ void loop() {
 
   // map to degrees
   for(i = 0; i < 7; i++) {
-    // read encoder
-    enc[i] = map(enc[i], 0, 1023, 0, 360);
+    // apparently there's a dead band  before 39 and after 982 on the pots
+    enc[i] = map(enc[i], 39, 982, 0, 360);
   }
 
   // send over serial (test on terminal)
