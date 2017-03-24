@@ -21,7 +21,10 @@ Logger::Logger(Settings *_settings, QObject* _parent)
     // Get ISO date timestamp.
     QDateTime local(QDateTime::currentDateTime());
     QDateTime UTC(local.toTimeSpec(Qt::UTC));
-    QString timestamp = UTC.toString(Qt::ISODate);
+    // QDateTime format doesn't support formatters without separators, so use
+    // a dummy value 'R' and then replace it.
+    QString timestamp = UTC.toString("yyyy'R'MM'R'dd'T'HH'R'mm");
+    timestamp.replace(QString("R"), QString(""));
     // Open log files.
     openLogFile(apLogFile, apLogFileOpen, "autopilot", timestamp);
     openLogFile(uADCLogFile, uADCLogFileOpen, "uadc", timestamp);
