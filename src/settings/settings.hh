@@ -68,6 +68,9 @@ public:
     //! Should we set the system time from GPS?
     bool setSystemTime(void) const { return m_setSystemTime; };
 
+    //! Do we have control effector logging?
+    bool useEffectors(void) const { return m_useEffectors; };
+
     //! Do we have a MAVLink-based autopilot?
     bool useMavlink(void) const { return m_useMavlink; };
 
@@ -79,6 +82,9 @@ public:
 
     //! Timeout for waitForReadyRead in identifySerialPorts.
     quint16 idTimeout(void) const { return m_idTimeout; };
+
+    //! Should we wait for the control effectors before logging?
+    bool waitForEffectors(void) const { return m_waitForEffectors; };
 
     //! Should we wait for the MAVLink init message before logging?
     bool waitForMavInit(void) const { return m_waitForMavInit; };
@@ -95,6 +101,9 @@ public:
     //! Overridden Autopilot serial port.
     QString autopilotSerialPort(void) const { return m_autopilotSerialPort; };
 
+    //! Overridden Effectors serial port.
+    QString effectorsSerialPort(void) const { return m_effectorsSerialPort; };
+
     //! Overridden uADC serial port.
     QString uADCSerialPort(void) const { return m_uADCSerialPort; };
 
@@ -103,6 +112,9 @@ public:
 
     //! Overridden Autopilot baud rate.
     quint32 autopilotBaudRate(void) const { return m_autopilotBaudRate; };
+
+    //! Overridden Effectors baud rate.
+    quint32 effectorsBaudRate(void) const { return m_effectorsBaudRate; };
 
     //! Overridden uADC baud rate.
     quint32 uADCBaudRate(void) const { return m_uADCBaudRate; };
@@ -135,6 +147,9 @@ private:
     //! Do we use a MAVLink-based autopilot?
     bool m_useMavlink{false};
 
+    //! Do we have control effector loggers?
+    bool m_useEffectors{false};
+
     //! Do we have a uADC?
     bool m_useUADC{false};
 
@@ -154,6 +169,9 @@ private:
     //! Should we wait for the MAVLink init message before logging?
     bool m_waitForMavInit{false};
 
+    //! Should we wait for control effector logging before logging?
+    bool m_waitForEffectors{false};
+
     //! Should we wait for VN200 GPS before logging?
     bool m_waitForVN200GPS{false};
 
@@ -166,6 +184,9 @@ private:
     //! Overridden Autopilot serial port.
     QString m_autopilotSerialPort{""};
 
+    //! Overridden Effectors serial port.
+    QString m_effectorsSerialPort{""};
+
     //! Overridden uADC serial port.
     QString m_uADCSerialPort{""};
 
@@ -174,6 +195,9 @@ private:
 
     //! Overridden Autopilot baud rate.
     quint32 m_autopilotBaudRate{0};
+
+    //! Overridden Effectors baud rate.
+    quint32 m_effectorsBaudRate{0};
 
     //! Overridden uADC baud rate.
     quint32 m_uADCBaudRate{0};

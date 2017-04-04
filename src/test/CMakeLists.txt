@@ -10,6 +10,7 @@ target_link_libraries(${PROJECT_NAME}
   dftisensor
   dftisettings
   dftiap
+  dftieffectors
   dftiuadc
   dftiutil
   dftivn200

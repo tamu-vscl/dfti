@@ -80,6 +80,7 @@ Settings::loadRCFile(QString _fn)
     m_idTimeout = m_settings->value("id_timeout", 2000).toInt();
     m_setSystemTime = m_settings->value("set_system_time", false).toBool();
     m_useMavlink = m_settings->value("use_mavlink", false).toBool();
+    m_useEffectors = m_settings->value("use_effectors", false).toBool();
     m_useUADC = m_settings->value("use_uadc", false).toBool();
     m_useVN200 = m_settings->value("use_vn200", false).toBool();
     m_waitForAllSensors = m_settings->value("wait_for_all_sensors",
@@ -91,6 +92,7 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "\tid_timeout:            " << m_idTimeout;
         qDebug() << "\tset_system_time:       " << m_setSystemTime;
         qDebug() << "\tuse_mavlink:           " << m_useMavlink;
+        qDebug() << "\tuse_effectors:         " << m_useEffectors;
         qDebug() << "\tuse_uadc:              " << m_useUADC;
         qDebug() << "\tuse_vn200:             " << m_useVN200;
         qDebug() << "\twait_for_all_sensors:  " << m_waitForAllSensors;
@@ -113,6 +115,17 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "\tstream_rate:           " << m_streamRate;
         qDebug() << "\tuse_message_interval:  " << m_useMessageInterval;
         qDebug() << "\twait_for_init:         " << m_waitForMavInit;
+    }
+
+    // Control effector parameters.
+    m_settings->beginGroup("controls");
+    m_effectorsBaudRate = m_settings->value("baud_rate", 0).toInt();
+    m_effectorsSerialPort = m_settings->value("serial_port", "").toString();
+    m_settings->endGroup();
+    if (debugRC()) {
+        qDebug() << "Loaded [controls] settings group:";
+        qDebug() << "\tbaud_rate:             " << m_effectorsBaudRate;
+        qDebug() << "\tserial_port:           " << m_effectorsSerialPort;
     }
 
     // uADC parameters.

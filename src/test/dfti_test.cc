@@ -17,6 +17,7 @@
 // project
 #include "autopilot/autopilot.hh"
 #include "core/consts.hh"
+#include "effectors/effectors.hh"
 #include "uadc/uadc.hh"
 #include "util/util.hh"
 #include "vn200/vn200.hh"
@@ -45,10 +46,10 @@ main(int argc, char* argv[])
     // Positional Arguments
     parser.addPositionalArgument("sensor",
         QCoreApplication::translate("main",
-            "Sensor to test, one of (ap|uadc|vn200)."));
+            "Sensor to test, one of (ap|controls|uadc|vn200)."));
     parser.addPositionalArgument("port",
         QCoreApplication::translate("main",
-            "Serial port name to connect to the autopilot."));
+            "Serial port name to connect to."));
     // Options
     parser.addHelpOption();
     parser.addVersionOption();
@@ -68,12 +69,12 @@ main(int argc, char* argv[])
 
     // Get positional arguments.
     QStringList validArgs;
-    validArgs << "ap" << "uadc" << "vn200";
+    validArgs << "ap" << "controls" << "uadc" << "vn200";
     QStringList args = parser.positionalArguments();
     if (!args.isEmpty()) {
         sensor_name = args.first();
         if (!validArgs.contains(sensor_name)) {
-            qWarning() << "Sensor name must be one of {ap, uadc, vn200}";
+            qWarning() << "Sensor name must be one of {ap, controls, uadc, vn200}";
             exit(-1);
         }
         if (args.size() > 1) {
@@ -96,6 +97,7 @@ main(int argc, char* argv[])
 
     // Create sensor object pointers.
     dfti::Autopilot *pixhawk = nullptr;
+    dfti::Effectors *controls = nullptr;
     dfti::uADC *uadc = nullptr;
     dfti::VN200 *vn200 = nullptr;
 
@@ -106,6 +108,14 @@ main(int argc, char* argv[])
         pixhawk->threadStart();
         if (!pixhawk->isOpen()) {
             qDebug() << "failed to open autopilot serial port" << serial_port;
+            exit(-1);
+        }
+    } else if (sensor_name == "controls") {
+        controls = new dfti::Effectors(&settings);
+        controls->configureSerial(serial_port);
+        controls->threadStart();
+        if (!controls->isOpen()) {
+            qDebug() << "failed to open controls serial port" << serial_port;
             exit(-1);
         }
     } else if (sensor_name == "uadc") {
