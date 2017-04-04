@@ -25,8 +25,8 @@ quint64
 gpsToUnixUsec(quint64 gpsTime)
 {
     const float nsToUs = 1e-3;
-    const quint64 gpsEpochFromUnixEpochNs = 315964800000000;
-    return static_cast<quint64>(gpsEpochFromUnixEpochNs + gpsTime * nsToUs);
+    const quint64 gpsEpochFromUnixEpochUs = 315964800000000;
+    return static_cast<quint64>(gpsEpochFromUnixEpochUs + gpsTime * nsToUs);
 }
 
 
