@@ -20,6 +20,8 @@ void loop() {
   for(i = 0; i < n_enc; i++) {
     // read encoder
     enc[i] = analogRead(i);
+    // add delay to settle adc
+    delay(2);
   }
 
   // map to degrees
@@ -36,7 +38,4 @@ void loop() {
   }
   Serial.println();
   //Serial.println(enc[6]);
-
-  // add delay to settle adc
-  delay(2);
 }
