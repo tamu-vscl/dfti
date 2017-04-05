@@ -2,7 +2,7 @@
  *  \file util.hh
  *  \brief Utility functions.
  *  \author Joshua Harris
- *  \copyright Copyright © 2016 Vehicle Systems & Control Laboratory,
+ *  \copyright Copyright © 2016-2017 Vehicle Systems & Control Laboratory,
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
  */

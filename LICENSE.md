@@ -1,6 +1,6 @@
 # ISC License
 
-Copyright © 2016, Vehicle Systems & Control Laboratory
+Copyright © 2016-2017, Vehicle Systems & Control Laboratory
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
