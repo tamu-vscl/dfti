@@ -21,6 +21,7 @@
 #include "autopilot/autopilot.hh"
 #include "consts.hh"
 #include "logger.hh"
+#include "rio/rio.hh"
 #include "uadc/uadc.hh"
 #include "util/util.hh"
 #include "vn200/vn200.hh"
@@ -43,6 +44,7 @@ main(int argc, char* argv[])
 
     // Register meta types.
     qRegisterMetaType<dfti::APData>("APData");
+    qRegisterMetaType<dfti::RIOData>("RIOData");
     qRegisterMetaType<dfti::uADCData>("uADCData");
     qRegisterMetaType<dfti::VN200Data>("VN200Data");
 
@@ -78,23 +80,32 @@ main(int argc, char* argv[])
     dfti::Settings settings(parser.value("config"), debug);
     dfti::Logger *logger = new dfti::Logger(&settings);
     dfti::Autopilot *pixhawk = nullptr;
+    dfti::RIO *rio = nullptr;
     dfti::uADC *uadc = nullptr;
     dfti::VN200 *vn200 = nullptr;
 
     // Instantiate sensor classes if sensors are available.
     if (settings.useMavlink()) {
         pixhawk = new dfti::Autopilot(&settings);
+        pixhawk->configureSerial(settings.autopilotSerialPort());
+    }
+    if (settings.useRIO()) {
+        rio = new dfti::RIO(&settings);
+        rio->configureSerial(settings.rioSerialPort());
     }
     if (settings.useUADC()) {
         uadc = new dfti::uADC(&settings);
+        uadc->configureSerial(settings.uADCSerialPort());
     }
     if (settings.useVN200()) {
         vn200 = new dfti::VN200(&settings);
+        vn200->configureSerial(settings.vn200SerialPort());
     }
 
     // Set up threads.
     QThread *loggingThread = new QThread();
     QThread *pixhawkThread = nullptr;
+    QThread *rioThread = nullptr;
     QThread *uadcThread = nullptr;
     QThread *vn200Thread = nullptr;
 
@@ -103,6 +114,10 @@ main(int argc, char* argv[])
     if (settings.useMavlink()) {
         pixhawkThread = new QThread();
         pixhawk->moveToThread(pixhawkThread);
+    }
+    if (settings.useRIO()) {
+        rioThread = new QThread();
+        rio->moveToThread(rioThread);
     }
     if (settings.useUADC()) {
         uadcThread = new QThread();
@@ -116,22 +131,21 @@ main(int argc, char* argv[])
     // Connect everything.
     if (settings.useMavlink()) {
         logger->enableAutopilot(pixhawk);
-    }
-    if (settings.useUADC()) {
-        logger->enableUADC(uadc);
-    }
-    if (settings.useVN200()) {
-        logger->enableVN200(vn200);
-    }
-    if (settings.useMavlink()) {
         QObject::connect(pixhawkThread, &QThread::started, pixhawk,
             &dfti::Autopilot::threadStart);
     }
+    if (settings.useRIO()) {
+        logger->enableRIO(rio);
+        QObject::connect(rioThread, &QThread::started, rio,
+            &dfti::RIO::threadStart);
+    }
     if (settings.useUADC()) {
+        logger->enableUADC(uadc);
         QObject::connect(uadcThread, &QThread::started, uadc,
             &dfti::uADC::threadStart);
     }
     if (settings.useVN200()) {
+        logger->enableVN200(vn200);
         QObject::connect(vn200Thread, &QThread::started, vn200,
             &dfti::VN200::threadStart);
     }
@@ -141,6 +155,9 @@ main(int argc, char* argv[])
     // Start the threads.
     if (settings.useMavlink()) {
         pixhawkThread->start();
+    }
+    if (settings.useRIO()) {
+        rioThread->start();
     }
     if (settings.useUADC()) {
         uadcThread->start();

@@ -9,6 +9,8 @@
 #pragma once
 
 
+// stdlib
+#include <vector>
 // 3rd party
 #include <QDateTime>
 #include <QDebug>
@@ -20,6 +22,7 @@
 // dfti
 #include "autopilot/autopilot.hh"
 #include "core/consts.hh"
+#include "rio/rio.hh"
 #include "settings/settings.hh"
 #include "uadc/uadc.hh"
 #include "util/util.hh"
@@ -57,6 +60,12 @@ public:
      */
     void enableUADC(uADC *adc);
 
+    //! Enable Remote I/O unit.
+    /*!
+     * \param rio Pointer to RIO object.
+     */
+    void enableRIO(RIO *rio);
+
     //! Enable VN-200 INS Sensor.
     /*!
      * \param ins Pointer to VN200 object.
@@ -75,6 +84,9 @@ public slots:
 
     //! Slot to receive data from the autopilot.
     void getAPData(APData data);
+
+    //! Slot to receive data from the RIO.
+    void getRIOData(RIOData data);
 
     //! Slot to receive data from the Micro Air Data Computer.
     void getUADCData(uADCData data);
@@ -113,6 +125,9 @@ private:
     //! Autopilot available.
     bool haveAP{false};
 
+    //! RIO available.
+    bool haveRIO{false};
+
     //! uADC available.
     bool haveUADC{false};
 
@@ -121,6 +136,9 @@ private:
 
     //! Flag to indicate autopilot log file is opened.
     bool apLogFileOpen{false};
+
+    //! Flag to indicate RIO log file is opened.
+    bool rioLogFileOpen{false};
 
     //! Flag to indicate uADC log file is opened.
     bool uADCLogFileOpen{false};
@@ -133,6 +151,9 @@ private:
 
     //! Flag to indicate an A/P data update.
     bool newAPData{false};
+
+    //! Flag to indicate a RIO data update.
+    bool newRIOData{false};
 
     //! Flag to indicate a uADC data update.
     bool newUADCData{false};
@@ -148,6 +169,9 @@ private:
 
     //! Autopilot log file.
     QFile apLogFile;
+
+    //! RIO log file
+    QFile rioLogFile;
 
     //! uADC log file
     QFile uADCLogFile;
@@ -208,6 +232,9 @@ private:
 
     //! RC output channel 8 PPM value.
     quint16 rcOut8{0};
+
+    //! RIO data vector.
+    std::vector<float> rioData;
 
     //! uADC packet ID.
     /*!

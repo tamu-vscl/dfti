@@ -2,7 +2,7 @@
  *  \file dfti_test.cc
  *  \brief DFTI component test program.
  *  \author Joshua Harris
- *  \copyright Copyright © 2016 Vehicle Systems & Control Laboratory,
+ *  \copyright Copyright © 2016-2017 Vehicle Systems & Control Laboratory,
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
  */
@@ -17,7 +17,7 @@
 // project
 #include "autopilot/autopilot.hh"
 #include "core/consts.hh"
-#include "effectors/effectors.hh"
+#include "rio/rio.hh"
 #include "uadc/uadc.hh"
 #include "util/util.hh"
 #include "vn200/vn200.hh"
@@ -46,7 +46,7 @@ main(int argc, char* argv[])
     // Positional Arguments
     parser.addPositionalArgument("sensor",
         QCoreApplication::translate("main",
-            "Sensor to test, one of (ap|controls|uadc|vn200)."));
+            "Sensor to test, one of (ap|rio|uadc|vn200)."));
     parser.addPositionalArgument("port",
         QCoreApplication::translate("main",
             "Serial port name to connect to."));
@@ -69,12 +69,12 @@ main(int argc, char* argv[])
 
     // Get positional arguments.
     QStringList validArgs;
-    validArgs << "ap" << "controls" << "uadc" << "vn200";
+    validArgs << "ap" << "rio" << "uadc" << "vn200";
     QStringList args = parser.positionalArguments();
     if (!args.isEmpty()) {
         sensor_name = args.first();
         if (!validArgs.contains(sensor_name)) {
-            qWarning() << "Sensor name must be one of {ap, controls, uadc, vn200}";
+            qWarning() << "Sensor name must be one of {ap, rio, uadc, vn200}";
             exit(-1);
         }
         if (args.size() > 1) {
@@ -97,7 +97,7 @@ main(int argc, char* argv[])
 
     // Create sensor object pointers.
     dfti::Autopilot *pixhawk = nullptr;
-    dfti::Effectors *controls = nullptr;
+    dfti::RIO *rio = nullptr;
     dfti::uADC *uadc = nullptr;
     dfti::VN200 *vn200 = nullptr;
 
@@ -110,12 +110,12 @@ main(int argc, char* argv[])
             qDebug() << "failed to open autopilot serial port" << serial_port;
             exit(-1);
         }
-    } else if (sensor_name == "controls") {
-        controls = new dfti::Effectors(&settings);
-        controls->configureSerial(serial_port);
-        controls->threadStart();
-        if (!controls->isOpen()) {
-            qDebug() << "failed to open controls serial port" << serial_port;
+    } else if (sensor_name == "rio") {
+        rio = new dfti::RIO(&settings);
+        rio->configureSerial(serial_port);
+        rio->threadStart();
+        if (!rio->isOpen()) {
+            qDebug() << "failed to open RIO serial port" << serial_port;
             exit(-1);
         }
     } else if (sensor_name == "uadc") {

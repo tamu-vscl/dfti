@@ -27,6 +27,7 @@ Logger::Logger(Settings *_settings, QObject* _parent)
     timestamp.replace(QString("R"), QString(""));
     // Open log files.
     openLogFile(apLogFile, apLogFileOpen, "autopilot", timestamp);
+    openLogFile(rioLogFile, rioLogFileOpen, "rio", timestamp);
     openLogFile(uADCLogFile, uADCLogFileOpen, "uadc", timestamp);
     openLogFile(vn200LogFile, vn200LogFileOpen, "vn200", timestamp);
 }
@@ -52,6 +53,14 @@ Logger::enableAutopilot(Autopilot *ap)
 {
     haveAP = true;
     connect(ap, &Autopilot::measurementUpdate, this, &Logger::getAPData);
+}
+
+
+void
+Logger::enableRIO(RIO *rio)
+{
+    haveRIO = true;
+    connect(rio, &RIO::measurementUpdate, this, &Logger::getRIOData);
 }
 
 
@@ -92,6 +101,9 @@ Logger::flush(void)
     if (apLogFileOpen) {
         apLogFile.flush();
     }
+    if (rioLogFileOpen) {
+        rioLogFile.flush();
+    }
     if (uADCLogFileOpen) {
         uADCLogFile.flush();
     }
@@ -125,6 +137,17 @@ Logger::getAPData(APData data)
     newAPData = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getAPData";
+    }
+}
+
+
+void
+Logger::getRIOData(RIOData data)
+{
+    rioData = data.values;
+    newRIOData = true;
+    if (settings->debugSerial()) {
+        qDebug() << "Logger::getRIOData";
     }
 }
 
@@ -209,15 +232,18 @@ void
 Logger::writeData(void)
 {
     QTextStream apOut(&apLogFile);
+    QTextStream rioOut(&rioLogFile);
     QTextStream uADCOut(&uADCLogFile);
     QTextStream vn200Out(&vn200LogFile);
     apOut.setRealNumberNotation(QTextStream::FixedNotation);
+    rioOut.setRealNumberNotation(QTextStream::FixedNotation);
     uADCOut.setRealNumberNotation(QTextStream::FixedNotation);
     vn200Out.setRealNumberNotation(QTextStream::FixedNotation);
 
     if (firstWrite) {
         // VN-200 data.
-        if (vn200LogFileOpen && haveVN200) {
+        if (vn200LogFileOpen && haveVN200 &&
+              (!settings->waitForUpdate() || newVN200Data)) {
             vn200Out << "unix_time" << delim
                      << "gps_time_ns" << delim
                      << "quat_w" << delim
@@ -241,9 +267,21 @@ Logger::writeData(void)
                      << "Mz_gauss" << delim
                      << "temp_c" << delim
                      << "pressure_kpa" << '\n';
+          firstWrite = false;
+        }
+        // RIO data.
+        if (rioLogFileOpen && haveRIO&&
+            (!settings->waitForUpdate() || newRIOData)){
+          rioOut << "unix_time";
+          for (quint8 i = 0; i < rioData.size(); ++i) {
+            rioOut << delim << "rio_value_" << i;
+          }
+          rioOut << '\n';
+          firstWrite = false;
         }
         // Air data system data.
-        if (uADCLogFileOpen && haveUADC) {
+        if (uADCLogFileOpen && haveUADC &&
+              (!settings->waitForUpdate() || newUADCData)) {
             uADCOut << "unix_time" << delim
                     << "uadc_id" << delim
                     << "ias_mps" << delim
@@ -252,9 +290,11 @@ Logger::writeData(void)
                     << "alt_m" << delim
                     << "pt_pa" << delim
                     << "ps_pa" << '\n';
+          firstWrite = false;
         }
         // Autopilot data.
-        if (apLogFileOpen && haveAP) {
+        if (apLogFileOpen && haveAP &&
+              (!settings->waitForUpdate() || newAPData)) {
             apOut << "unix_time" << delim
                   << "rc_in_time" << delim
                   << "rc_in_1_pwm" << delim
@@ -274,8 +314,8 @@ Logger::writeData(void)
                   << "rc_out_6_pwm" << delim
                   << "rc_out_7_pwm" << delim
                   << "rc_out_8_pwm" << '\n';
+          firstWrite = false;
         }
-        firstWrite = false;
     }
 
     // System time in microseconds.
@@ -311,6 +351,17 @@ Logger::writeData(void)
                  << tempC << delim
                  << pressureKpa << '\n';
         newVN200Data = false;
+    }
+
+    // RIO data.
+    if (rioLogFileOpen && haveRIO&&
+          (!settings->waitForUpdate() || newRIOData)) {
+      rioOut << ts;
+      for (auto value : rioData) {
+        rioOut << delim << value;
+      }
+      rioOut << '\n';
+      newRIOData = false;
     }
 
     // Air data system data.
