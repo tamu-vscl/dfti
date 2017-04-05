@@ -45,6 +45,12 @@ struct VN200Data
      *  the GPS epoch, January 6, 1980 at 0000 UTC.
      */
     quint64 gpsTimeNs = 0;
+    //! Euler Angles
+    /*!
+     *  Stores the 3-2-1 Euler angles psi, theta, phi in degrees. Order is yaw,
+     *  pitch, roll.
+     */
+    float eulerDeg[3] = {0};
     //! Quaternion
     /*!
      *  Stores the attitude quaternion giving the body frame with respect to
@@ -81,21 +87,6 @@ struct VN200Data
      *  bias compensated by the EKF. Order is Ax, Ay, Az.
      */
     float accelMps2[3] = {0};
-    //! Magnetic field, temperature, and pressure.
-    /*!
-     *  Compensated magnetic field from the IMU in Gauss.
-     */
-    float mag[3] = {0};
-    //! Temperature
-    /*!
-     *  IMU temperature measurement in Celsius.
-     */
-    float tempC = 0;
-    //! Pressure
-    /*!
-     *  IMU pressure measurement in kPA.
-     */
-    float pressureKpa = 0;
 };
 
 
@@ -113,12 +104,12 @@ struct VN200Data
  *  In the configuration this code assumes, Output Group 1 is selected, and the
  *
  *  - TimeGps
+ *  - Yaw, Pitch, Roll
  *  - Quaternion
  *  - AngularRate
  *  - Position
  *  - Velocity
  *  - Accel
- *  - MagPres
  *
  *  fields are selected.
  *  The last two bytes are the checksum.
@@ -141,7 +132,7 @@ public:
      *      last three header bytes here change depending on the VN-200
      *      payload.
      */
-    const QByteArray header{"\xfa\x01\xf2\x05"};
+    const QByteArray header{"\xfa\x01\xfa\x01"};
 
 public slots:
     //! Slot to read in data over serial and parse complete packets.
@@ -168,7 +159,7 @@ private:
     void copyPacketToData(void);
 
     //! Expected packet size.
-    static const quint8 packetSize{110};
+    static const quint8 packetSize{102};
 
 #pragma pack(push, 1)  // change structure packing to 1 byte
     //! Packet format.
@@ -182,14 +173,12 @@ private:
         quint8 outputGroups = 0;
         quint16 outputFields = 0;
         quint64 timeGPS = 0;
+        float euler[3] = {0};
         float quaternion[4] = {0};
         float angularRate[3] = {0};
         double position[3] = {0};
         float velocity[3] = {0};
         float accel[3] = {0};
-        float mag[3] = {0};
-        float temp = 0;
-        float pressure = 0;
     };
 #pragma pack(pop)  // reset structure packing
 

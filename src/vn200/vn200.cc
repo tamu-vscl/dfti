@@ -62,6 +62,9 @@ VN200::readData(void)
             // If we are in the verbose debugging mode, print the parsed data.
             if (settings->debugData()) {
                 qDebug() << "TimeGPS :" << data.gpsTimeNs
+                         << "Yaw" << data.eulerDeg[0]
+                         << "Pitch" << data.eulerDeg[1]
+                         << "Roll" << data.eulerDeg[2]
                          << "Quaternion: {"
                          << data.quaternion[0] << ","
                          << data.quaternion[1] << ","
@@ -78,12 +81,7 @@ VN200::readData(void)
                          << "Vz:" << data.velNedMps[2]
                          << "Ax:" << data.accelMps2[0]
                          << "Ay:" << data.accelMps2[1]
-                         << "Az:" << data.accelMps2[2]
-                         << "Mx:" << data.mag[0]
-                         << "My:" << data.mag[1]
-                         << "Mz:" << data.mag[2]
-                         << "Temp:" << data.tempC
-                         << "Pressure:" << data.pressureKpa;
+                         << "Az:" << data.accelMps2[2];
             }
         } else {
             if (settings->debugData()) {
@@ -117,15 +115,12 @@ VN200::copyPacketToData(void)
     data.quaternion[3] = packet->quaternion[2];  // vector 2
     // Angular Rates, Pos, Vel, Accel, Mag.
     for (quint8 i = 0; i < 3; ++i) {
+        data.eulerDeg[i] = packet->euler[i];
         data.angularRatesRPS[i] = packet->angularRate[i];
         data.posDegDegM[i] = packet->position[i];
         data.velNedMps[i] = packet->velocity[i];
         data.accelMps2[i] = packet->accel[i];
-        data.mag[i] = packet->mag[i];
     }
-    // Temp
-    data.tempC = packet->temp;
-    data.pressureKpa = packet->pressure;
     return;
 }
 

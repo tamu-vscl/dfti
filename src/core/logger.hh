@@ -278,6 +278,13 @@ private:
      */
     quint64 gpsTimeNs{0};
 
+    //! Euler Angles
+    /*!
+     *  Stores the 3-2-1 Euler angles psi, theta, phi in degrees. Order is yaw,
+     *  pitch, roll.
+     */
+    float eulerDeg[3] = {0};
+
     //! Quaternion
     /*!
      *  Stores the attitude quaternion giving the body frame with respect to
@@ -318,24 +325,6 @@ private:
      *  bias compensated by the EKF. Order is Ax, Ay, Az.
      */
     float accelMps2[3]{0};
-
-    //! Magnetic field, temperature, and pressure.
-    /*!
-     *  Compensated magnetic field from the IMU in Gauss.
-     */
-    float mag[3]{0};
-
-    //! Temperature
-    /*!
-     *  IMU temperature measurement in Celsius.
-     */
-    float tempC{0};
-
-    //! Pressure
-    /*!
-     *  IMU pressure measurement in kPA.
-     */
-    float pressureKpa{0};
 };
 
 

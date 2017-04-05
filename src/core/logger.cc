@@ -174,16 +174,14 @@ Logger::getVN200Data(VN200Data data)
 {
     gpsTimeNs = data.gpsTimeNs;
     for (quint8 i = 0; i < 3; ++i) {
+        eulerDeg[i] = data.eulerDeg[i];
         quaternion[i] = data.quaternion[i];
         angularRatesRPS[i] = data.angularRatesRPS[i];
         posDegDegM[i] = data.posDegDegM[i];
         velNedMps[i] = data.velNedMps[i];
         accelMps2[i] = data.accelMps2[i];
-        mag[i] = data.mag[i];
     }
     quaternion[3] = data.quaternion[3];
-    tempC = data.tempC;
-    pressureKpa = data.pressureKpa;
     newVN200Data = true;
     if (settings->debugSerial()) {
         qDebug() << "Logger::getVN200Data";
@@ -246,6 +244,9 @@ Logger::writeData(void)
               (!settings->waitForUpdate() || newVN200Data)) {
             vn200Out << "unix_time" << delim
                      << "gps_time_ns" << delim
+                     << "psi_deg" << delim
+                     << "theta_deg" << delim
+                     << "phi_deg" << delim
                      << "quat_w" << delim
                      << "quat_x" << delim
                      << "quat_y" << delim
@@ -261,12 +262,7 @@ Logger::writeData(void)
                      << "Vz_mps" << delim
                      << "Ax_mps2" << delim
                      << "Ay_mps2" << delim
-                     << "Az_mps2" << delim
-                     << "Mx_gauss" << delim
-                     << "My_gauss" << delim
-                     << "Mz_gauss" << delim
-                     << "temp_c" << delim
-                     << "pressure_kpa" << '\n';
+                     << "Az_mps2" << '\n';
           firstWrite = false;
         }
         // RIO data.
@@ -327,6 +323,9 @@ Logger::writeData(void)
         vn200Out.setRealNumberPrecision(7);  // float
         vn200Out << ts << delim
                  << gpsTimeNs << delim
+                 << eulerDeg[0] << delim
+                 << eulerDeg[1] << delim
+                 << eulerDeg[2] << delim
                  << quaternion[0] << delim
                  << quaternion[1] << delim
                  << quaternion[2] << delim
@@ -344,12 +343,7 @@ Logger::writeData(void)
                  << velNedMps[2] << delim
                  << accelMps2[0] << delim
                  << accelMps2[1] << delim
-                 << accelMps2[2] << delim
-                 << mag[0] << delim
-                 << mag[1] << delim
-                 << mag[2] << delim
-                 << tempC << delim
-                 << pressureKpa << '\n';
+                 << accelMps2[2] << '\n';
         newVN200Data = false;
     }
 
