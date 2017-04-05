@@ -77,7 +77,6 @@ Settings::loadRCFile(QString _fn)
 
     // DFTI parameters.
     m_settings->beginGroup("dfti");
-    m_idTimeout = m_settings->value("id_timeout", 2000).toInt();
     m_setSystemTime = m_settings->value("set_system_time", false).toBool();
     m_useMavlink = m_settings->value("use_mavlink", false).toBool();
     m_useRIO = m_settings->value("use_rio", false).toBool();
@@ -89,7 +88,6 @@ Settings::loadRCFile(QString _fn)
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [dfti] settings group:";
-        qDebug() << "\tid_timeout:            " << m_idTimeout;
         qDebug() << "\tset_system_time:       " << m_setSystemTime;
         qDebug() << "\tuse_mavlink:           " << m_useMavlink;
         qDebug() << "\tuse_rio:               " << m_useRIO;

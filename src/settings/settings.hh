@@ -80,9 +80,6 @@ public:
     //! Do we have a VN-200 INS?
     bool useVN200(void) const { return m_useVN200; };
 
-    //! Timeout for waitForReadyRead in identifySerialPorts.
-    quint16 idTimeout(void) const { return m_idTimeout; };
-
     //! Should we wait for the RIO values before logging?
     bool waitForRIO(void) const { return m_waitForRIO; };
 
@@ -158,13 +155,6 @@ private:
 
     //! Should we set the system time?
     bool m_setSystemTime{false};
-
-    //! How long should we wait for a blocking serial read?
-    /*!
-     *  \remark This parameter controls how long the identifySerialPorts
-     *      function waits for the readyRead signal.
-     */
-    quint16 m_idTimeout{2000};
 
     //! Should we wait for the MAVLink init message before logging?
     bool m_waitForMavInit{false};
