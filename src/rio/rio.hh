@@ -21,7 +21,8 @@
 #include "util/util.hh"
 
 
-#define ONE_BYTE 2  // Byte length for hex characters.
+//! Byte length for hex characters (1 byte is two hex chars, e.g. 0xFF).
+#define ONE_BYTE 2
 
 
 namespace dfti {

@@ -30,7 +30,6 @@ namespace dfti {
  *  should evaluate to 0.
  *
  *  \param pkt A full VN-200 packet to validate.
- *  \param pktLen The length of the packet.
  *  \return True if the packet checksum is correct.
 */
 bool validateVN200Checksum(QByteArray pkt);
