@@ -39,3 +39,6 @@ lib/*
 # Doxygen
 docs/html/*
 docs/latex/*
+
+# PlatformIO
+.pioenvs
