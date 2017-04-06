@@ -6,6 +6,8 @@
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license ISC License
 */
+#include <SoftwareSerial.h>
+#include <FreqCount.h>
 
 // initialize readings
 int n_enc = 5; // number of encoder
@@ -15,9 +17,19 @@ int i = 0;
 // temporary array to store formatted checksum byte
 char tmp[3];
 
+// rpm constants and initialization
+float rpm_ratio = 1.0; // this is the ratio between the sensor and the
+                       // final stage. example: gear boxes, etc
+float mistery_factor = 308880/43600; // correction factor calculated comparing
+                                     // tachometer reading and sensor value.
+static unsigned long rpm_freq = 0;
+uint32_t             rpm_send = 0;
+
+
 void setup() {
-  // initialize serial communication
+  // initialize serial communication and FreqCount for rpm
   Serial.begin(112500);
+  FreqCount.begin(1000);
 }
 
 void loop() {
@@ -41,6 +53,17 @@ void loop() {
     msg_str.concat(enc[i]);
     msg_str.concat("$");
   }
+
+  // read rpm
+  rpm_freq = FreqCount.read();
+
+  // the brushless sensor triggers 1~10 pulses per second when no RPM is detected. erase them.
+  rpm_send = (rpm_freq > 10) ? rpm_freq * 60.0 / rpm_ratio : 0;
+
+  // apply mistery factor to match tacho reading and append to message
+  rpm_send = rpm_send / mistery_factor;
+  msg_str.concat(rpm_send);
+  msg_str.concat("$");
 
   // get message string as byte array to calculate checksum
   const char *msg = msg_str.c_str();
