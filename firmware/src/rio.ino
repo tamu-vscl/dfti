@@ -13,6 +13,7 @@
 int n_enc = 5; // number of encoder
 int enc[5] = {0,0,0,0,0};
 int i = 0;
+int starting_analog_pin = 1;
 
 // temporary array to store formatted checksum byte
 char tmp[3];
@@ -36,7 +37,7 @@ void loop() {
   // read the input on analog pin
   for(i = 0; i < n_enc; i++) {
     // read encoder
-    enc[i] = analogRead(i);
+    enc[i] = analogRead(i + starting_analog_pin);
     // add delay to settle adc
     delay(2);
   }
