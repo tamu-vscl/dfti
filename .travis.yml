@@ -1,0 +1,37 @@
+# Travis CI build for DFTI.
+language: cpp
+compiler: gcc
+sudo: required
+dist: trusty
+# Build for Linux .
+os:
+  - linux
+env:
+  global:
+    # Set to true for CMake to use for Linux prefix stuff.
+    - TRAVISCI=true
+
+# For now, build only the master branch.
+branches:
+  - master
+
+# Install Qt5.3.2 (latest on Debian Jessie target)
+# Based on opencor/opencor Travis config.
+install:
+  - sudo add-apt-repository -y ppa:beineri/opt-qt532-trusty
+    && sudo apt-get -qq update
+    && sudo apt-get -qq install qt53base qt53serialport
+
+# Build script
+script:
+  - mkdir build
+    && cd build
+    && cmake ..
+    && make -j4
+
+# Build notifications.
+notifications:
+  email:
+    secure: Mt+vyHXw4xkVaYN6DEuFWpOLNI9uiLWpVfCnLh/Ycfok0Zqmr0DWbWf+9mkndhj3W4lsGp8lSKok3rmluxCIeLgW4qXz+9v/603r0reKLAKiMFYlb+3lyhs/xy6bppHlJiDzySokQQk9J/Jn6splHptjAB4TRyd/Apln+zfqp8qyD7Ak1smZIcuQ/3MG4Ckqdl0AWsn3gh9xXjJtlZoxMh9PTiZ6V/gjAN+iv77SMNp00b+N5x1AWige4m30BjZwwWWZekeMlvEc1BajoXFneynLijkYTRNMqz2SXhLgnU6FFx5Q2u7bpDW1mGObur0NRkZu/rJKYKmnsAQ/daAnkcVeNMsj3CWp+AmBXVi0wsjjLEByebeYVNdG9bvmB/3EiLaApv336W58N8ajbLsAPlmasEWbteogNy0fh3XowqMCHLBbh/lsyZEJIUvL2cXaQ+/nyfkwu8VRzUUMoD30qHPmiG/146tN+Xj07z408Zgv6idvtecwEcQQxQPvxlolBqa6Tg+6yxVO2EnC7EFvytpSlK8N4fAIrgRofQ90bvAPnf5svCDwia2W0ag9G6SGEC3N18kDKpZruCnX8QSDWPF0QZRBCgvsEzQaJlYg44VDRgA43x5OVwVr9JFMPIO32oNmxej11qE5y05ZU8rsw+W7ksu1MnW71YMYN3YYz+g=
+  slack:
+    secure: fHxjbwB3YBQXqNYMmD2jDVcAyuhc1lCMynmkcX7KA7yLPdVgtXGayZYcl+1+iHEyZaeYA7kX9LJseEjta+LNwUOxEaX8cVP1rbI5OvOi6rbnItLsdt3LZ1EobNjx7UCS0FkYp6tJN9t1UUZvBO7mcrJRMMaGH1VFaSr8/XLSHq1W/H8AB9Nf3EyTt0nWyrISzOuO0GIPZrOD9e1Gf99ZLW/H7FmOCu192u71fviNJsebb/dE5GWPbdD291Q5FojQzZVeUSMzmbapdehePqTVTEajkp9Ubv9255guejnDr+/cTyk1/tDT9bx7dJS2Skr5dOvKkv3Ai0X6x5NVNWqgUNlxbvcuntrV1dxF5Nbi0FhBn5aCNlOCh1nNRJ7URrXHzImsvgrQTNuEwEayhnBdfc31RdN+NycyBWhqJ3/L/Hhy9IH7HXAIvEdLqUaXogV+HmmHhve4NADOA4io1YwiYo5tDr/3fvChoqw7+PJJR4hTZ26e2xjNLIa3iQBYU4rszNhVFC49VodCZ0Zd9h5UG0QJTFOfQzuX4N3Ns5mXr4fp6KvJPvrQCNyc5idnQZi6KmomhePH0wqxewGqIGIfbczBgrUvNjkgzmSBY+qyy66jFxaJpfUooRpYceLmdedt4gWHS03ewX1JNQP0RiGlmPK8N17HgCB84u7C7N2QEx4=

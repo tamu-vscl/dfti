@@ -155,11 +155,11 @@ add_custom_target(release
 ################################################################################
 # Project Dependencies:
 ################################################################################
-# Qt5 via Homebrew on OS X requires some fancy PREFIX_PATH changes
-if(APPLE)
-  set(CMAKE_PREFIX_PATH /usr/local/opt/qt5)
-elseif(UNIX)
-  set(CMAKE_PREFIX_PATH /opt/qt5/5.5/gcc_64)
+if(UNIX)
+  # TravisCI Path
+  if(DEFINED ENV{TRAVISCI})
+    set(CMAKE_PREFIX_PATH /opt/qt56/lib/cmake)
+  endif()
 endif()
 find_package(Qt5Core       REQUIRED)
 find_package(Qt5Network    REQUIRED)
