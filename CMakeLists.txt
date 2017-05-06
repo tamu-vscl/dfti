@@ -158,7 +158,7 @@ add_custom_target(release
 if(UNIX)
   # TravisCI Path
   if(DEFINED ENV{TRAVISCI})
-    set(CMAKE_PREFIX_PATH /opt/qt56/lib/cmake)
+    set(CMAKE_PREFIX_PATH /opt/qt53/lib/cmake)
     message(STATUS "Set CMAKE_PREFIX_PATH to ${CMAKE_PREFIX_PATH}")
   endif()
 endif()
