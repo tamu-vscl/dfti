@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg?style=flat-square)](./LICENSE.md)
 [![TravisCI Status](https://img.shields.io/travis/tamu-vscl/dfti/master.svg?style=flat-square)](https://travis-ci.org/tamu-vscl/dfti)
-[![Coverity Scan Status](https://img.shields.io/coverity/scan/8942.svg?style=flat-square)](https://scan.coverity.com/projects/tamu-vscl-dfti)
+[![Coverity Scan Status](https://img.shields.io/coverity/scan/12636.svg?style=flat-square)](https://scan.coverity.com/projects/tamu-vscl-dfti)
 [![Issues](http://img.shields.io/github/issues/tamu-vscl/dfti.svg?style=flat-square)](https://github.com/tamu-vscl/dfti/issues)
 [![Release](https://img.shields.io/github/release/tamu-vscl/dfti.svg?style=flat-square)](https://github.com/tamu-vscl/dfti/releases)
 
