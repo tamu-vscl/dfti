@@ -1,0 +1,59 @@
+{
+    "doi": "10.5281/zenodo.572272",
+    "links": {
+        "doi": "https://doi.org/10.5281/zenodo.572272",
+        "badge": "https://zenodo.org/badge/doi/10.5281/zenodo.572272.svg"
+    },
+    "created": "2017-05-06T03:23:08.060203+00:00",
+    "title": "VSCL Developmental Flight Test Instrumentation",
+    "modified": "2017-05-06T03:38:23.136218+00:00",
+    "submitted": true,
+    "record_id": 572272,
+    "state": "done",
+    "doi_url": "https://doi.org/10.5281/zenodo.572272",
+    "owner": 31137,
+    "metadata": {
+        "doi": "10.5281/zenodo.572272",
+        "description": "<p>Small Unmanned Aircraft System developmental flight test instrumentation software.</p>\n\n<p>Supports data logging at 100 Hz of air data, inertial navigation data, and control effector positions for aircraft parameter and system identification flight test.</p>",
+        "license": "other-open",
+        "title": "VSCL Developmental Flight Test Instrumentation",
+        "upload_type": "software",
+        "prereserve_doi": {
+            "doi": "10.5281/zenodo.572272",
+            "recid": 572272
+        },
+        "keywords": [
+            "system identification",
+            "parameter identification",
+            "flight test",
+            "UAS"
+        ],
+        "publication_date": "2017-05-06",
+        "creators": [
+            {
+                "affiliation": "Vehicle Systems & Control Laboratory, Department of Aerospace Engineering, Texas A&M University",
+                "name": "Joshua Harris"
+            },
+            {
+                "affiliation": "Vehicle Systems & Control Laboratory, Department of Aerospace Engineering, Texas A&M University",
+                "name": "Vinicius Guimaraes Goecks"
+            },
+            {
+                "affiliation": "Vehicle Systems & Control Laboratory, Department of Aerospace Engineering, Texas A&M University",
+                "name": "Han-Hsun Lu"
+            },
+            {
+                "affiliation": "Vehicle Systems & Control Laboratory, Department of Aerospace Engineering, Texas A&M University",
+                "name": "John Valasek"
+            }
+        ],
+        "access_right": "open",
+        "related_identifiers": [
+            {
+                "scheme": "url",
+                "identifier": "https://github.com/tamu-vscl/dfti/tree/2.1.0",
+                "relation": "isSupplementTo"
+            }
+        ]
+    }
+}
