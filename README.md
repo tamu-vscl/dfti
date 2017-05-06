@@ -5,6 +5,7 @@
 [![Coverity Scan Status](https://img.shields.io/coverity/scan/12636.svg?style=flat-square)](https://scan.coverity.com/projects/tamu-vscl-dfti)
 [![Issues](http://img.shields.io/github/issues/tamu-vscl/dfti.svg?style=flat-square)](https://github.com/tamu-vscl/dfti/issues)
 [![Release](https://img.shields.io/github/release/tamu-vscl/dfti.svg?style=flat-square)](https://github.com/tamu-vscl/dfti/releases)
+[![DOI](https://zenodo.org/badge/90431398.svg?style=flat-square)](https://zenodo.org/badge/latestdoi/90431398)
 
 The VSCL Developmental Flight Test Instrumentation (DFTI) is an embedded 
 software package that handles flight test data recording for Small UAS 
