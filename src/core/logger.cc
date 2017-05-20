@@ -240,8 +240,7 @@ Logger::writeData(void)
 
     if (firstWrite) {
         // VN-200 data.
-        if (vn200LogFileOpen && haveVN200 &&
-              (!settings->waitForUpdate() || newVN200Data)) {
+        if (logVN200()) {
             vn200Out << "unix_time" << delim
                      << "gps_time_ns" << delim
                      << "psi_deg" << delim
@@ -266,8 +265,7 @@ Logger::writeData(void)
           firstWrite = false;
         }
         // RIO data.
-        if (rioLogFileOpen && haveRIO&&
-            (!settings->waitForUpdate() || newRIOData)){
+        if (logRIO()){
           rioOut << "unix_time";
           for (quint8 i = 0; i < rioData.size(); ++i) {
             rioOut << delim << "rio_value_" << i;
@@ -276,8 +274,7 @@ Logger::writeData(void)
           firstWrite = false;
         }
         // Air data system data.
-        if (uADCLogFileOpen && haveUADC &&
-              (!settings->waitForUpdate() || newUADCData)) {
+        if (logUADC()) {
             uADCOut << "unix_time" << delim
                     << "uadc_id" << delim
                     << "ias_mps" << delim
@@ -289,8 +286,7 @@ Logger::writeData(void)
           firstWrite = false;
         }
         // Autopilot data.
-        if (apLogFileOpen && haveAP &&
-              (!settings->waitForUpdate() || newAPData)) {
+        if (logAP()) {
             apOut << "unix_time" << delim
                   << "rc_in_time" << delim
                   << "rc_in_1_pwm" << delim
@@ -318,8 +314,7 @@ Logger::writeData(void)
     quint64 ts = getTimeUsec();
 
     // VN-200 data.
-    if (vn200LogFileOpen && haveVN200 &&
-          (!settings->waitForUpdate() || newVN200Data)) {
+    if (logVN200()) {
         vn200Out.setRealNumberPrecision(7);  // float
         vn200Out << ts << delim
                  << gpsTimeNs << delim
@@ -348,8 +343,7 @@ Logger::writeData(void)
     }
 
     // RIO data.
-    if (rioLogFileOpen && haveRIO&&
-          (!settings->waitForUpdate() || newRIOData)) {
+    if (logRIO()) {
       rioOut << ts;
       for (auto value : rioData) {
         rioOut << delim << value;
@@ -359,8 +353,7 @@ Logger::writeData(void)
     }
 
     // Air data system data.
-    if (uADCLogFileOpen && haveUADC &&
-          (!settings->waitForUpdate() || newUADCData)) {
+    if (logUADC()) {
         // We get two decimal places from the uADC...
         uADCOut.setRealNumberPrecision(2);
         uADCOut << ts << delim
@@ -375,7 +368,7 @@ Logger::writeData(void)
     }
 
     // Autopilot data.
-    if (apLogFileOpen && haveAP && (!settings->waitForUpdate() || newAPData)) {
+    if (logAP()) {
         apOut << ts << delim
               << rcInTime << delim
               << rcIn1 << delim
@@ -404,7 +397,7 @@ Logger::writeData(void)
 }
 
 // ----------------------------------------------------------------------------
-//  Public functions
+//  Private functions
 // ----------------------------------------------------------------------------
 void
 Logger::openLogFile(QFile &fd, bool &flag, QString type, QString timestamp)
@@ -420,6 +413,33 @@ Logger::openLogFile(QFile &fd, bool &flag, QString type, QString timestamp)
         exit(-1);
     }
 }
+
+
+bool
+Logger::logAP(void) {
+  return apLogFileOpen && haveAP && (!settings->waitForUpdate() || newAPData);
+};
+
+
+bool
+Logger::logRIO(void) {
+  return rioLogFileOpen && haveRIO &&
+    (!settings->waitForUpdate() || newRIOData);
+};
+
+
+bool
+Logger::logUADC(void) {
+  return uADCLogFileOpen && haveUADC &&
+    (!settings->waitForUpdate() || newUADCData);
+};
+
+
+bool
+Logger::logVN200(void) {
+  return vn200LogFileOpen && haveVN200 &&
+    (!settings->waitForUpdate() || newVN200Data);
+};
 
 // ----------------------------------------------------------------------------
 //  Functions

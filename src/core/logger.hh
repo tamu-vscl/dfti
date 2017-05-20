@@ -110,6 +110,18 @@ private:
      */
     void openLogFile(QFile &fd, bool &flag, QString type, QString timestamp);
 
+    //! Function to determine if MAVLink data should be logged.
+    bool logAP(void);
+
+    //! Function to determine if RIO data should be logged.
+    bool logRIO(void);
+
+    //! Function to determine if uADC data should be logged.
+    bool logUADC(void);
+
+    //! Function to determine if VN-200 data should be logged.
+    bool logVN200(void);
+
     //! Pointer to settings object.
     Settings *settings{nullptr};
 
