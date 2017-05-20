@@ -23,13 +23,8 @@ Logger::Logger(Settings *_settings, QObject* _parent)
     QDateTime UTC(local.toTimeSpec(Qt::UTC));
     // QDateTime format doesn't support formatters without separators, so use
     // a dummy value 'R' and then replace it.
-    QString timestamp = UTC.toString("yyyy'R'MM'R'dd'T'HH'R'mm");
+    timestamp = UTC.toString("yyyy'R'MM'R'dd'T'HH'R'mm");
     timestamp.replace(QString("R"), QString(""));
-    // Open log files.
-    openLogFile(apLogFile, apLogFileOpen, "autopilot", timestamp);
-    openLogFile(rioLogFile, rioLogFileOpen, "rio", timestamp);
-    openLogFile(uADCLogFile, uADCLogFileOpen, "uadc", timestamp);
-    openLogFile(vn200LogFile, vn200LogFileOpen, "vn200", timestamp);
 }
 
 
@@ -53,6 +48,7 @@ Logger::enableAutopilot(Autopilot *ap)
 {
     haveAP = true;
     connect(ap, &Autopilot::measurementUpdate, this, &Logger::getAPData);
+    openLogFile(apLogFile, apLogFileOpen, "autopilot", timestamp);
 }
 
 
@@ -61,6 +57,7 @@ Logger::enableRIO(RIO *rio)
 {
     haveRIO = true;
     connect(rio, &RIO::measurementUpdate, this, &Logger::getRIOData);
+    openLogFile(rioLogFile, rioLogFileOpen, "rio", timestamp);
 }
 
 
@@ -69,6 +66,7 @@ Logger::enableUADC(uADC *adc)
 {
     haveUADC = true;
     connect(adc, &uADC::measurementUpdate, this, &Logger::getUADCData);
+    openLogFile(uADCLogFile, uADCLogFileOpen, "uadc", timestamp);
 }
 
 
@@ -78,6 +76,7 @@ Logger::enableVN200(VN200 *ins)
     haveVN200 = true;
     connect(ins, &VN200::measurementUpdate, this, &Logger::getVN200Data);
     connect(ins, &VN200::gpsAvailable, this, &Logger::gpsAvailable);
+    openLogFile(vn200LogFile, vn200LogFileOpen, "vn200", timestamp);
 }
 
 

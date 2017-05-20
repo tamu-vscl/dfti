@@ -131,6 +131,9 @@ private:
     //! QTimer for flushing log file.
     QTimer *flushTimer{nullptr};
 
+    //! Log file timestamp.
+    QString timestamp{""};
+
     //! CSV file delimeter.
     const QString delim{","};
 
