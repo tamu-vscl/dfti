@@ -39,9 +39,23 @@ gpsToUnixSec(quint64 gpsTime)
 
 
 float
+hzToMsec(quint8 rate)
+{
+    return 1e3 / static_cast<float>(rate);
+}
+
+
+float
 hzToUsec(quint8 rate)
 {
     return 1e6 / static_cast<float>(rate);
+}
+
+
+float
+secToMsec(quint8 period)
+{
+    return 1e3 * static_cast<float>(period);
 }
 
 

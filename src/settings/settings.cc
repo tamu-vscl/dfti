@@ -82,12 +82,18 @@ Settings::loadRCFile(QString _fn)
     m_useRIO = m_settings->value("use_rio", false).toBool();
     m_useUADC = m_settings->value("use_uadc", false).toBool();
     m_useVN200 = m_settings->value("use_vn200", false).toBool();
+    quint16 logRateHz = m_settings->value("log_rate_hz", 100).toInt();
+    m_logRateMs = hzToMsec(logRateHz);
+    quint16 flushTimeSec = m_settings->value("flush_time_sec", 10).toInt();
+    m_flushRateMs = secToMsec(flushTimeSec);
     m_waitForAllSensors = m_settings->value("wait_for_all_sensors",
         false).toBool();
     m_waitForUpdate = m_settings->value("wait_for_update", true).toBool();
     m_settings->endGroup();
     if (debugRC()) {
         qDebug() << "Loaded [dfti] settings group:";
+        qDebug() << "\tlog_rate_hz:           " << logRateHz;
+        qDebug() << "\tflush_time_sec:        " << flushTimeSec;
         qDebug() << "\tset_system_time:       " << m_setSystemTime;
         qDebug() << "\tuse_mavlink:           " << m_useMavlink;
         qDebug() << "\tuse_rio:               " << m_useRIO;

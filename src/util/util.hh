@@ -46,6 +46,13 @@ quint64 gpsToUnixUsec(quint64 gpsTime);
  */
 quint64 gpsToUnixSec(quint64 gpsTime);
 
+//! Convert Hertz rate to millisecond sampling time.
+/*!
+ *  \param rate Sampling rate in Hz.
+ *  \return Sampling period in milliseconds.
+ */
+float hzToMsec(quint8 rate);
+
 
 //! Convert Hertz rate to microsecond sampling time.
 /*!
@@ -53,6 +60,14 @@ quint64 gpsToUnixSec(quint64 gpsTime);
  *  \return Sampling period in microseconds.
  */
 float hzToUsec(quint8 rate);
+
+
+//! Convert seconds to microseconds.
+/*!
+ *  \param period Time in seconds.
+ *  \return Period in  microseconds.
+ */
+float secToMsec(quint8 period);
 
 
 //! Validates a proposed serial port.

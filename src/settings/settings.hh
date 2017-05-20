@@ -19,6 +19,7 @@
 #include <QVector>
 // project
 #include "core/consts.hh"
+#include "util/util.hh"
 
 
 namespace dfti {
@@ -53,6 +54,12 @@ public:
      *  \param _fn Filename for settings file.
      */
     void loadRCFile(QString _fn);
+
+    //! Return the log sampling time in ms.
+    float logRateMs(void) const { return m_logRateMs; };
+
+    //! Return the log flush timer period in ms.
+    float flushRateMs(void) const { return m_flushRateMs; };
 
     //! Should we prefer the MESSAGE_INTERVAL interface?
     /*!
@@ -134,6 +141,12 @@ private:
 
     //! Debug settings.
     DebugMode m_debug{DebugMode::DEBUG_NONE};
+
+    //! Log sample time in ms.
+    float m_logRateMs{10};
+
+    //! Flush timer in ms.
+    float m_flushRateMs{1e4};
 
     //! Prefer MESSAGE_INTERVAL to REQUEST_DATA_STREAM?
     bool m_useMessageInterval{false};

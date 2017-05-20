@@ -87,8 +87,8 @@ Logger::start(void)
     connect(writeTimer, &QTimer::timeout, this, &Logger::writeData);
     flushTimer = new QTimer(this);
     connect(flushTimer, &QTimer::timeout, this, &Logger::flush);
-    writeTimer->start(10);  // 10 ms = 100 Hz
-    flushTimer->start(1e4);  // 1e4 ms = 10 s
+    writeTimer->start(settings->logRateMs());
+    flushTimer->start(settings->flushRateMs());
 }
 
 // ----------------------------------------------------------------------------
