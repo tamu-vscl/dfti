@@ -1,0 +1,6 @@
+<map id="rio.hh" name="rio.hh">
+<area shape="rect" id="node6" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="383,80,537,107"/>
+<area shape="rect" id="node10" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="636,155,772,181"/>
+<area shape="rect" id="node18" href="$util_8hh.html" title="Utility functions. " alt="" coords="1073,229,1151,256"/>
+<area shape="rect" id="node17" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="457,229,565,256"/>
+</map>

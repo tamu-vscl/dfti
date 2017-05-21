@@ -1,0 +1,6 @@
+<map id="dfti::SerialSensor" name="dfti::SerialSensor">
+<area shape="rect" id="node3" href="$classdfti_1_1Autopilot.html" title="Serial driver to acquire data from a MAVLink&#45;based autopilot. " alt="" coords="5,155,104,181"/>
+<area shape="rect" id="node4" href="$classdfti_1_1RIO.html" title="Serial driver to acquire data from a generic Remote I/O device. " alt="" coords="128,155,200,181"/>
+<area shape="rect" id="node5" href="$classdfti_1_1uADC.html" title="Serial driver to acquire data from a Micro Air Data Computer. " alt="" coords="225,155,309,181"/>
+<area shape="rect" id="node6" href="$classdfti_1_1VN200.html" title="Serial driver to acquire data from a VN&#45;200 Inertial Navigation System. " alt="" coords="333,155,421,181"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classdfti_1_1Logger.html" title="Receives data and logs to file. " alt="" coords="142,31,229,57"/>
+<area shape="rect" id="node3" href="$classdfti_1_1SerialSensor.html" title="Base class for interfacing with sensors over a serial port (UART/RS&#45;232). " alt="" coords="124,81,247,108"/>
+<area shape="rect" id="node8" href="$classdfti_1_1Server.html" title="UDP server for vehicle state data. " alt="" coords="142,132,229,159"/>
+<area shape="rect" id="node9" href="$classdfti_1_1Settings.html" title="Settings manager. " alt="" coords="137,183,233,209"/>
+<area shape="rect" id="node4" href="$classdfti_1_1Autopilot.html" title="Serial driver to acquire data from a MAVLink&#45;based autopilot. " alt="" coords="295,5,393,32"/>
+<area shape="rect" id="node5" href="$classdfti_1_1RIO.html" title="Serial driver to acquire data from a generic Remote I/O device. " alt="" coords="308,56,380,83"/>
+<area shape="rect" id="node6" href="$classdfti_1_1uADC.html" title="Serial driver to acquire data from a Micro Air Data Computer. " alt="" coords="302,107,386,133"/>
+<area shape="rect" id="node7" href="$classdfti_1_1VN200.html" title="Serial driver to acquire data from a VN&#45;200 Inertial Navigation System. " alt="" coords="300,157,388,184"/>
+</map>

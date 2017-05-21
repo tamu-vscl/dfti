@@ -1,0 +1,8 @@
+<map id="autopilot.cc" name="autopilot.cc">
+<area shape="rect" id="node2" href="$autopilot_8hh.html" title="MAVLink&#45;supporting autopilot interface. " alt="" coords="830,80,920,107"/>
+<area shape="rect" id="node6" href="$mavlink__info_8hh.html" title="MAVLink message information. " alt="" coords="1309,155,1422,181"/>
+<area shape="rect" id="node8" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="798,155,952,181"/>
+<area shape="rect" id="node13" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="482,229,618,256"/>
+<area shape="rect" id="node21" href="$util_8hh.html" title="Utility functions. " alt="" coords="938,304,1017,331"/>
+<area shape="rect" id="node20" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="265,304,373,331"/>
+</map>

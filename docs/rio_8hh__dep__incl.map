@@ -1,0 +1,9 @@
+<map id="rio.hh" name="rio.hh">
+<area shape="rect" id="node2" href="$logger_8hh.html" title="DFTI logging interface. " alt="" coords="16,80,91,107"/>
+<area shape="rect" id="node4" href="$main_8cc.html" title="DFTI main program. " alt="" coords="105,155,173,181"/>
+<area shape="rect" id="node5" href="$rio_8cc.html" title="Remote I/O implementation. " alt="" coords="166,80,221,107"/>
+<area shape="rect" id="node6" href="$server_8hh.html" title="Data server class interface. " alt="" coords="245,80,321,107"/>
+<area shape="rect" id="node8" href="$dfti__test_8cc.html" title="DFTI component test program. " alt="" coords="345,80,431,107"/>
+<area shape="rect" id="node3" href="$logger_8cc.html" title="DFTI logging interface implementation. " alt="" coords="5,155,80,181"/>
+<area shape="rect" id="node7" href="$server_8cc.html" title="Data server interface implementation. " alt="" coords="245,155,321,181"/>
+</map>

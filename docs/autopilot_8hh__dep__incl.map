@@ -1,0 +1,7 @@
+<map id="autopilot.hh" name="autopilot.hh">
+<area shape="rect" id="node2" href="$autopilot_8cc.html" title="MAVLink&#45;based autopilot interface implementation. " alt="" coords="5,80,95,107"/>
+<area shape="rect" id="node3" href="$logger_8hh.html" title="DFTI logging interface. " alt="" coords="119,80,194,107"/>
+<area shape="rect" id="node5" href="$main_8cc.html" title="DFTI main program. " alt="" coords="197,155,265,181"/>
+<area shape="rect" id="node6" href="$dfti__test_8cc.html" title="DFTI component test program. " alt="" coords="269,80,356,107"/>
+<area shape="rect" id="node4" href="$logger_8cc.html" title="DFTI logging interface implementation. " alt="" coords="98,155,173,181"/>
+</map>
