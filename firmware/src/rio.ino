@@ -4,7 +4,7 @@
  *  \author Vinicius Goecks and Joshua Harris
  *  \copyright Copyright © 2017 Vehicle Systems & Control Laboratory,
  *  Department of Aerospace Engineering, Texas A&M University
- *  \license ISC License
+ *  \license BSD 2-Clause License
 */
 #include <SoftwareSerial.h>
 #include <FreqCount.h>
