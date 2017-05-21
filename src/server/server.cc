@@ -44,21 +44,21 @@ Server::start(void)
 
 
 void
-Server::enableRIO(QPointer<RIO>rio)
+Server::enableRIO(RIO *rio)
 {
     connect(rio, &RIO::measurementUpdate, this, &Server::getRIOData);
 }
 
 
 void
-Server::enableUADC(QPointer<uADC>adc)
+Server::enableUADC(uADC *adc)
 {
     connect(adc, &uADC::measurementUpdate, this, &Server::getUADCData);
 }
 
 
 void
-Server::enableVN200(QPointer<VN200>ins)
+Server::enableVN200(VN200 *ins)
 {
     connect(ins, &VN200::measurementUpdate, this, &Server::getVN200Data);
 }

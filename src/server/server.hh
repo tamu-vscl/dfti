@@ -140,19 +140,19 @@ public:
     /*!
      * \param adc QPointer to uADC object.
      */
-    void enableUADC(QPointer<uADC> adc);
+    void enableUADC(uADC *adc);
 
     //! Enable Remote I/O unit.
     /*!
      * \param rio QPointer to RIO object.
      */
-    void enableRIO(QPointer<RIO> rio);
+    void enableRIO(RIO *rio);
 
     //! Enable VN-200 INS Sensor.
     /*!
      * \param ins QPointer to VN200 object.
      */
-    void enableVN200(QPointer<VN200> ins);
+    void enableVN200(VN200 *ins);
 
     //! Start server.
     /*!
