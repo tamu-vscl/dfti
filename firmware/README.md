@@ -39,6 +39,14 @@ The PlatformIO build is configured in the `platformio.ini` file for a
 basic Arduino Uno build with `-Wall`; additional `CFLAGS` can be 
 specified for a stricter build.
 
+**NOTE**: Currently the PlatformIO FreqCount library install is broken.
+To sucessfully use the FreqCount library, the following step is 
+required:
+```
+mv .piolibdeps/FreqCount_ID72/FreqCount/* .piolibdeps/FreqCount_ID72
+rmdir .piolibdeps/FreqCount_ID72/FreqCount/
+```
+
 To build (compile) the firmware, run
 ```
 platformio run
