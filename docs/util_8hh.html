@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Developmental Flight Test Instrumentation: /home/jah/code/vscl/uas/dfti-rebase/src/util/util.hh File Reference</title>
+<title>Developmental Flight Test Instrumentation: /home/jah/code/vscl/uas/dfti-oss/src/util/util.hh File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -114,9 +114,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a75dc8f33d8475862b4b4b6ac5d3ea000"><td class="memItemLeft" align="right" valign="top">quint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cc.html#a75dc8f33d8475862b4b4b6ac5d3ea000">dfti::gpsToUnixSec</a> (quint64 gpsTime)</td></tr>
 <tr class="memdesc:a75dc8f33d8475862b4b4b6ac5d3ea000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert GPS timestamp in nanoseconds to Unix timestamp in seconds.  <a href="util_8cc.html#a75dc8f33d8475862b4b4b6ac5d3ea000">More...</a><br /></td></tr>
 <tr class="separator:a75dc8f33d8475862b4b4b6ac5d3ea000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c176d3f60cbc2ee653fd1b235214222"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cc.html#a5c176d3f60cbc2ee653fd1b235214222">dfti::hzToMsec</a> (quint8 rate)</td></tr>
+<tr class="memdesc:a5c176d3f60cbc2ee653fd1b235214222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert Hertz rate to millisecond sampling time.  <a href="util_8cc.html#a5c176d3f60cbc2ee653fd1b235214222">More...</a><br /></td></tr>
+<tr class="separator:a5c176d3f60cbc2ee653fd1b235214222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d02388a132db15c7295110ce927c051"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cc.html#a1d02388a132db15c7295110ce927c051">dfti::hzToUsec</a> (quint8 rate)</td></tr>
 <tr class="memdesc:a1d02388a132db15c7295110ce927c051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert Hertz rate to microsecond sampling time.  <a href="util_8cc.html#a1d02388a132db15c7295110ce927c051">More...</a><br /></td></tr>
 <tr class="separator:a1d02388a132db15c7295110ce927c051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32cbcaf61433b2eb30553f1af87b6ded"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cc.html#a32cbcaf61433b2eb30553f1af87b6ded">dfti::secToMsec</a> (quint8 period)</td></tr>
+<tr class="memdesc:a32cbcaf61433b2eb30553f1af87b6ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert seconds to microseconds.  <a href="util_8cc.html#a32cbcaf61433b2eb30553f1af87b6ded">More...</a><br /></td></tr>
+<tr class="separator:a32cbcaf61433b2eb30553f1af87b6ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add196ff7ac625d50e948a6056d84ea08"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8cc.html#add196ff7ac625d50e948a6056d84ea08">dfti::validateSerialPort</a> (QString _port)</td></tr>
 <tr class="memdesc:add196ff7ac625d50e948a6056d84ea08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates a proposed serial port.  <a href="util_8cc.html#add196ff7ac625d50e948a6056d84ea08">More...</a><br /></td></tr>
 <tr class="separator:add196ff7ac625d50e948a6056d84ea08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +202,31 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="file_a5c176d3f60cbc2ee653fd1b235214222"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float dfti::hzToMsec </td>
+          <td>(</td>
+          <td class="paramtype">quint8&#160;</td>
+          <td class="paramname"><em>rate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert Hertz rate to millisecond sampling time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rate</td><td>Sampling rate in Hz. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Sampling period in milliseconds. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="file_a1d02388a132db15c7295110ce927c051"></a>
 <div class="memitem">
 <div class="memproto">
@@ -218,6 +249,31 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sampling period in microseconds. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="file_a32cbcaf61433b2eb30553f1af87b6ded"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float dfti::secToMsec </td>
+          <td>(</td>
+          <td class="paramtype">quint8&#160;</td>
+          <td class="paramname"><em>period</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert seconds to microseconds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">period</td><td>Time in seconds. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Period in microseconds. </dd></dl>
 
 </div>
 </div>

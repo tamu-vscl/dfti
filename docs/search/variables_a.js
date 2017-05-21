@@ -1,25 +1,4 @@
 var searchData=
 [
-  ['rcin1',['rcIn1',['../structdfti_1_1APData.html#a7212c666cc2864580eeab8a3d5a30835',1,'dfti::APData']]],
-  ['rcin2',['rcIn2',['../structdfti_1_1APData.html#a142f4ef3544cd01623de93c8d8273ff4',1,'dfti::APData']]],
-  ['rcin3',['rcIn3',['../structdfti_1_1APData.html#afe4202217864e2c4996f5c5bb2a7de17',1,'dfti::APData']]],
-  ['rcin4',['rcIn4',['../structdfti_1_1APData.html#ab667a7dffa4b4e89a1271a88cea0dd6f',1,'dfti::APData']]],
-  ['rcin5',['rcIn5',['../structdfti_1_1APData.html#a99a1adb00fd3df3439ea9c829c8b4afb',1,'dfti::APData']]],
-  ['rcin6',['rcIn6',['../structdfti_1_1APData.html#a5112744d4fb80d52d9997301c621c37a',1,'dfti::APData']]],
-  ['rcin7',['rcIn7',['../structdfti_1_1APData.html#accfe6a23b2ba5524050c5fa5a4eb501b',1,'dfti::APData']]],
-  ['rcin8',['rcIn8',['../structdfti_1_1APData.html#a7c62ca68ceee87ab280a772021a3f069',1,'dfti::APData']]],
-  ['rcintime',['rcInTime',['../structdfti_1_1APData.html#a5ba647045646a850eec855017ee3b8dd',1,'dfti::APData']]],
-  ['rcout1',['rcOut1',['../structdfti_1_1APData.html#adbd7851b315fe78733db9862b08eb153',1,'dfti::APData']]],
-  ['rcout2',['rcOut2',['../structdfti_1_1APData.html#ad2936e30309164d47b767771f9088acd',1,'dfti::APData']]],
-  ['rcout3',['rcOut3',['../structdfti_1_1APData.html#a35866eaeb9c463344e59090364458fbd',1,'dfti::APData']]],
-  ['rcout4',['rcOut4',['../structdfti_1_1APData.html#a443c2b39ed9ca42780bd10ae9c5f38bc',1,'dfti::APData']]],
-  ['rcout5',['rcOut5',['../structdfti_1_1APData.html#abf12807fd1c85c822ce606138d36f95a',1,'dfti::APData']]],
-  ['rcout6',['rcOut6',['../structdfti_1_1APData.html#a9edcec8ed437145b7d64087a4cc5005f',1,'dfti::APData']]],
-  ['rcout7',['rcOut7',['../structdfti_1_1APData.html#ad5db1ccf7d695bbca7cc51ee11327367',1,'dfti::APData']]],
-  ['rcout8',['rcOut8',['../structdfti_1_1APData.html#a6e18635bb52b08c3097512199672e79b',1,'dfti::APData']]],
-  ['rcouttime',['rcOutTime',['../structdfti_1_1APData.html#a40e472014665016845b9d7a9b70cfc25',1,'dfti::APData']]],
-  ['riosep',['rioSep',['../rio_8hh.html#ab6e2df7ef1853899944ad996fe1880d7',1,'dfti']]],
-  ['riostart',['rioStart',['../rio_8hh.html#aeae770914558f89a1a75ac39dd30ef30',1,'dfti']]],
-  ['rioterm',['rioTerm',['../rio_8hh.html#a3b814be9c5ae7d2e8d1a3585ed326888',1,'dfti']]],
-  ['riotermstr',['rioTermStr',['../rio_8hh.html#a441309552ce7c8f98e54756b00877000',1,'dfti']]]
+  ['quaternion',['quaternion',['../structdfti_1_1StateData.html#a20d229c734c168a038ed92edeae16664',1,'dfti::StateData::quaternion()'],['../structdfti_1_1VN200Data.html#ab2eb518cb67d3f0ef156969174983376',1,'dfti::VN200Data::quaternion()']]]
 ];

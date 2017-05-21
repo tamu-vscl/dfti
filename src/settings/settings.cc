@@ -103,6 +103,28 @@ Settings::loadRCFile(QString _fn)
         qDebug() << "\twait_for_update:       " << m_waitForUpdate;
     }
 
+    // Server parameters.
+    m_settings->beginGroup("server");
+    m_serverEnabled = m_settings->value("enabled", false).toBool();
+    m_serverAddress = QHostAddress(m_settings->value("address",
+        "127.0.0.1").toString());
+    m_serverPort = static_cast<quint16>(m_settings->value("port",
+        2701).toInt());
+    // Get the server rate and make it at most 1/2 of the log rate.
+    quint8 serverRateHz = m_settings->value("rate_hz", 50).toInt();
+    if (2 * serverRateHz > logRateHz) {
+        serverRateHz = static_cast<quint8>(0.5 * logRateHz);
+    }
+    m_sendRateMs = hzToMsec(serverRateHz);
+    m_settings->endGroup();
+    if (debugRC()) {
+        qDebug() << "Loaded [server] settings group:";
+        qDebug() << "\tenabled:              " << m_serverEnabled;
+        qDebug() << "\taddress:              " << m_serverAddress;
+        qDebug() << "\tport:                 " << m_serverPort;
+        qDebug() << "\trate_hz:              " << serverRateHz;
+    }
+
     // MAVLink parameters.
     m_settings->beginGroup("mavlink");
     m_autopilotBaudRate = m_settings->value("baud_rate", 0).toInt();

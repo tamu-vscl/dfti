@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QHostAddress>
 #include <QObject>
 #include <QSettings>
 #include <QString>
@@ -60,6 +61,18 @@ public:
 
     //! Return the log flush timer period in ms.
     float flushRateMs(void) const { return m_flushRateMs; };
+
+    //! Return the server sampling time in ms.
+    float sendRateMs(void) const { return m_sendRateMs; };
+
+    //! Return the server status.
+    bool serverEnabled(void) const { return m_serverEnabled; };
+
+    //! Return the server address.
+    QHostAddress serverAddress(void) const { return m_serverAddress; };
+
+    //! Return the server port.
+    quint16 serverPort(void) const { return m_serverPort; };
 
     //! Should we prefer the MESSAGE_INTERVAL interface?
     /*!
@@ -147,6 +160,18 @@ private:
 
     //! Flush timer in ms.
     float m_flushRateMs{1e4};
+
+    //! Server status.
+    bool m_serverEnabled{false};
+
+    //! Server sample time in ms.
+    float m_sendRateMs{20};
+
+    //! Server address.
+    QHostAddress m_serverAddress{QHostAddress::LocalHost};
+
+    //! Server port.
+    quint16 m_serverPort{2701};
 
     //! Prefer MESSAGE_INTERVAL to REQUEST_DATA_STREAM?
     bool m_useMessageInterval{false};

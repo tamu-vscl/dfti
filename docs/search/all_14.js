@@ -1,9 +1,16 @@
 var searchData=
 [
-  ['waitforallsensors',['waitForAllSensors',['../classdfti_1_1Settings.html#adb313f6c2e6b8cae2190163dee520da9',1,'dfti::Settings']]],
-  ['waitformavinit',['waitForMavInit',['../classdfti_1_1Settings.html#a77f1e1862bcff4e43f6b91680fd966e7',1,'dfti::Settings']]],
-  ['waitforrio',['waitForRIO',['../classdfti_1_1Settings.html#ae5a7a45ee7c990df58c8e1f6e2c670f8',1,'dfti::Settings']]],
-  ['waitforupdate',['waitForUpdate',['../classdfti_1_1Settings.html#a78aa0a2aa198eab2706f967e16d6ba90',1,'dfti::Settings']]],
-  ['waitforvn200gps',['waitForVN200GPS',['../classdfti_1_1Settings.html#a55b92dc2aab4dfd0e34b49f44ba558e6',1,'dfti::Settings']]],
-  ['writedata',['writeData',['../classdfti_1_1Logger.html#aa4647dbfadc892e6d6027b57fa0d32ef',1,'dfti::Logger']]]
+  ['validateriochecksum',['validateRIOChecksum',['../rio_8cc.html#a172fa5eee2d5a1a710fc7977db882e68',1,'dfti']]],
+  ['validateserialport',['validateSerialPort',['../util_8cc.html#add196ff7ac625d50e948a6056d84ea08',1,'dfti']]],
+  ['validateuadcchecksum',['validateUADCChecksum',['../uadc_8cc.html#abae11c5e7ab7c39983363da2245a9fc4',1,'dfti']]],
+  ['validatevn200checksum',['validateVN200Checksum',['../vn200_8cc.html#a9cf3e01b8ad64edbd08cec5a06b1c0a7',1,'dfti']]],
+  ['values',['values',['../structdfti_1_1RIOData.html#a9c6a983d530b371d3721bfecfae63d29',1,'dfti::RIOData']]],
+  ['velnedmps',['velNedMps',['../structdfti_1_1VN200Data.html#affc8ba61c8e532040378e391f4b576c7',1,'dfti::VN200Data']]],
+  ['vn200',['VN200',['../classdfti_1_1VN200.html',1,'dfti']]],
+  ['vn200',['VN200',['../classdfti_1_1VN200.html#a777c444deb43ab094a99599ec7def759',1,'dfti::VN200']]],
+  ['vn200_2ecc',['vn200.cc',['../vn200_8cc.html',1,'']]],
+  ['vn200_2ehh',['vn200.hh',['../vn200_8hh.html',1,'']]],
+  ['vn200baudrate',['vn200BaudRate',['../classdfti_1_1Settings.html#a0932c5c85b8b8a973e4521857ee4e6e1',1,'dfti::Settings']]],
+  ['vn200data',['VN200Data',['../structdfti_1_1VN200Data.html',1,'dfti']]],
+  ['vn200serialport',['vn200SerialPort',['../classdfti_1_1Settings.html#a8a910ca247b3ed5a36ce503a8aa68d1c',1,'dfti::Settings']]]
 ];

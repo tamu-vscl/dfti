@@ -21,6 +21,7 @@ target_link_libraries(${PROJECT_NAME}
   dftiap
   dftirio
   dftisensor
+  dftiserver
   dftisettings
   dftiuadc
   dftiutil

@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QMetaType>
 #include <QObject>
+#include <QPointer>
 #include <QString>
 #include <QThread>
 // dfti
@@ -22,6 +23,7 @@
 #include "consts.hh"
 #include "logger.hh"
 #include "rio/rio.hh"
+#include "server/server.hh"
 #include "uadc/uadc.hh"
 #include "util/util.hh"
 #include "vn200/vn200.hh"
@@ -79,10 +81,16 @@ main(int argc, char* argv[])
     // Create classes.
     dfti::Settings settings(parser.value("config"), debug);
     dfti::Logger *logger = new dfti::Logger(&settings);
+    QPointer<dfti::Server> server = nullptr;
     dfti::Autopilot *pixhawk = nullptr;
     dfti::RIO *rio = nullptr;
     dfti::uADC *uadc = nullptr;
     dfti::VN200 *vn200 = nullptr;
+
+    // Instantiate server if enabled.
+    if (settings.serverEnabled()) {
+        server = new dfti::Server(&settings);
+    }
 
     // Instantiate sensor classes if sensors are available.
     if (settings.useMavlink()) {
@@ -104,6 +112,7 @@ main(int argc, char* argv[])
 
     // Set up threads.
     QThread *loggingThread = new QThread();
+    QPointer<QThread> serverThread = nullptr;
     QThread *pixhawkThread = nullptr;
     QThread *rioThread = nullptr;
     QThread *uadcThread = nullptr;
@@ -111,6 +120,10 @@ main(int argc, char* argv[])
 
     // Move objects to threads, and initialize sensor threads.
     logger->moveToThread(loggingThread);
+    if (settings.serverEnabled()) {
+        serverThread = new QThread();
+        server->moveToThread(serverThread);
+    }
     if (settings.useMavlink()) {
         pixhawkThread = new QThread();
         pixhawk->moveToThread(pixhawkThread);
@@ -136,21 +149,26 @@ main(int argc, char* argv[])
     }
     if (settings.useRIO()) {
         logger->enableRIO(rio);
+        server->enableRIO(rio);
         QObject::connect(rioThread, &QThread::started, rio,
             &dfti::RIO::threadStart);
     }
     if (settings.useUADC()) {
         logger->enableUADC(uadc);
+        server->enableUADC(uadc);
         QObject::connect(uadcThread, &QThread::started, uadc,
             &dfti::uADC::threadStart);
     }
     if (settings.useVN200()) {
         logger->enableVN200(vn200);
+        server->enableVN200(vn200);
         QObject::connect(vn200Thread, &QThread::started, vn200,
             &dfti::VN200::threadStart);
     }
     QObject::connect(loggingThread, &QThread::started, logger,
         &dfti::Logger::start);
+    QObject::connect(serverThread, &QThread::started, server,
+        &dfti::Server::start);
 
     // Start the threads.
     if (settings.useMavlink()) {
@@ -166,6 +184,9 @@ main(int argc, char* argv[])
         vn200Thread->start();
     }
     loggingThread->start();
+    if (settings.serverEnabled()) {
+        serverThread->start();
+    }
 
     return app.exec();
 }

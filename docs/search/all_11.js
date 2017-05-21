@@ -1,4 +1,26 @@
 var searchData=
 [
-  ['threadstart',['threadStart',['../classdfti_1_1SerialSensor.html#aa566507eceb9fb9e6ccd62c8b2218f14',1,'dfti::SerialSensor']]]
+  ['sectomsec',['secToMsec',['../util_8cc.html#a32cbcaf61433b2eb30553f1af87b6ded',1,'dfti']]],
+  ['sendratems',['sendRateMs',['../classdfti_1_1Settings.html#a084b4c04d5dc91e16f87af2bc14132dc',1,'dfti::Settings']]],
+  ['serialsensor',['SerialSensor',['../classdfti_1_1SerialSensor.html',1,'dfti']]],
+  ['serialsensor',['SerialSensor',['../classdfti_1_1SerialSensor.html#ad4f68784b8585cd6d0d8bdc8ed6d554f',1,'dfti::SerialSensor']]],
+  ['serialsensor_2ecc',['serialsensor.cc',['../serialsensor_8cc.html',1,'']]],
+  ['serialsensor_2ehh',['serialsensor.hh',['../serialsensor_8hh.html',1,'']]],
+  ['server',['Server',['../classdfti_1_1Server.html',1,'dfti']]],
+  ['server',['Server',['../classdfti_1_1Server.html#a7cd4e65dcc78aab9e4a9d7e8211e4b31',1,'dfti::Server']]],
+  ['server_2ecc',['server.cc',['../server_8cc.html',1,'']]],
+  ['server_2ehh',['server.hh',['../server_8hh.html',1,'']]],
+  ['serveraddress',['serverAddress',['../classdfti_1_1Settings.html#a041172e85eff1f9381897c3968d14b2e',1,'dfti::Settings']]],
+  ['serverenabled',['serverEnabled',['../classdfti_1_1Settings.html#a613ea351ad57693fd8e8623f3daff377',1,'dfti::Settings']]],
+  ['serverport',['serverPort',['../classdfti_1_1Settings.html#a6ed2a328e1312f5fee67f0d257d9821d',1,'dfti::Settings']]],
+  ['setbaudrate',['setBaudRate',['../classdfti_1_1SerialSensor.html#af2a2853f3a7d295b26913a8b9b457b0f',1,'dfti::SerialSensor']]],
+  ['setdatarate',['setDataRate',['../classdfti_1_1Autopilot.html#a096499024d1fd1c3a5373ff4a1f3f4da',1,'dfti::Autopilot']]],
+  ['setsystemtime',['setSystemTime',['../classdfti_1_1Settings.html#ab31aba889aab97b206e19533fe78925a',1,'dfti::Settings']]],
+  ['settings',['Settings',['../classdfti_1_1Settings.html#ad824e6cf7c05d551c8452e7153626015',1,'dfti::Settings::Settings()'],['../classdfti_1_1SerialSensor.html#a1c4dbba917cc5637a303ac1e5e8e64c3',1,'dfti::SerialSensor::settings()']]],
+  ['settings',['Settings',['../classdfti_1_1Settings.html',1,'dfti']]],
+  ['settings_2ecc',['settings.cc',['../settings_8cc.html',1,'']]],
+  ['settings_2ehh',['settings.hh',['../settings_8hh.html',1,'']]],
+  ['start',['start',['../classdfti_1_1Logger.html#ac62b098ec02bdd89712940aee4f90610',1,'dfti::Logger::start()'],['../classdfti_1_1Server.html#ab4966d7d3e653151137e329ea0a89d3e',1,'dfti::Server::start()']]],
+  ['statedata',['StateData',['../structdfti_1_1StateData.html',1,'dfti']]],
+  ['streamrate',['streamRate',['../classdfti_1_1Settings.html#a397948d175d96deb62496891f32d67b6',1,'dfti::Settings']]]
 ];
