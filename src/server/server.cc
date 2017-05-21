@@ -29,6 +29,10 @@ Server::Server(Settings *_settings, QObject* _parent)
 
 Server::~Server()
 {
+    if (writeTimer != nullptr) {
+        delete writeTimer;
+        writeTimer = nullptr;
+    }
 }
 
 // ----------------------------------------------------------------------------

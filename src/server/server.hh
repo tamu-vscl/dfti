@@ -187,7 +187,7 @@ private:
     quint16 port{2701};
 
     //! QTimer for writing.
-    QPointer<QTimer> writeTimer;
+    QTimer *writeTimer{nullptr};
 
     //! Server state data structure.
     StateData stateData;
