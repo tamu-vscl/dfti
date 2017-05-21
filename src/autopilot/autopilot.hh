@@ -17,7 +17,6 @@
 #include "mavlink_info.hh"
 #include "sensor/serialsensor.hh"
 #include "settings/settings.hh"
-#include "util/util.hh"
 
 
 namespace dfti {
