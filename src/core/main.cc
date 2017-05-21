@@ -15,7 +15,6 @@
 #include <QDebug>
 #include <QMetaType>
 #include <QObject>
-#include <QPointer>
 #include <QString>
 #include <QThread>
 // dfti
@@ -81,7 +80,7 @@ main(int argc, char* argv[])
     // Create classes.
     dfti::Settings settings(parser.value("config"), debug);
     dfti::Logger *logger = new dfti::Logger(&settings);
-    QPointer<dfti::Server> server = nullptr;
+    dfti::Server *server = nullptr;
     dfti::Autopilot *pixhawk = nullptr;
     dfti::RIO *rio = nullptr;
     dfti::uADC *uadc = nullptr;
@@ -112,7 +111,7 @@ main(int argc, char* argv[])
 
     // Set up threads.
     QThread *loggingThread = new QThread();
-    QPointer<QThread> serverThread = nullptr;
+    QThread *serverThread = nullptr;
     QThread *pixhawkThread = nullptr;
     QThread *rioThread = nullptr;
     QThread *uadcThread = nullptr;
