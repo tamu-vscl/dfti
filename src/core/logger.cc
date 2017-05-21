@@ -30,14 +30,6 @@ Logger::Logger(Settings *_settings, QObject* _parent)
 
 Logger::~Logger()
 {
-    if (writeTimer != nullptr) {
-        delete writeTimer;
-        writeTimer = nullptr;
-    }
-    if (flushTimer != nullptr) {
-        delete flushTimer;
-        flushTimer = nullptr;
-    }
 }
 
 // ----------------------------------------------------------------------------
@@ -84,9 +76,9 @@ void
 Logger::start(void)
 {
     writeTimer = new QTimer(this);
-    connect(writeTimer, &QTimer::timeout, this, &Logger::writeData);
+    connect(QTIMERPTR(writeTimer), &QTimer::timeout, this, &Logger::writeData);
     flushTimer = new QTimer(this);
-    connect(flushTimer, &QTimer::timeout, this, &Logger::flush);
+    connect(QTIMERPTR(flushTimer), &QTimer::timeout, this, &Logger::flush);
     writeTimer->start(settings->logRateMs());
     flushTimer->start(settings->flushRateMs());
 }

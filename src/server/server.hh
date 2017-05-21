@@ -21,6 +21,7 @@
 #include <QUdpSocket>
 // dfti
 #include "core/consts.hh"
+#include "core/qptrutil.hh"
 #include "rio/rio.hh"
 #include "settings/settings.hh"
 #include "uadc/uadc.hh"
@@ -187,7 +188,7 @@ private:
     quint16 port{2701};
 
     //! QTimer for writing.
-    QTimer *writeTimer{nullptr};
+    QPointer<QTimer> writeTimer{nullptr};
 
     //! Server state data structure.
     StateData stateData;

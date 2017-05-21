@@ -14,9 +14,11 @@
 #include <QDebug>
 #include <QIODevice>
 #include <QObject>
+#include <QPointer>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 // dfti
+#include "core/qptrutil.hh"
 #include "settings/settings.hh"
 #include "util/util.hh"
 
@@ -82,7 +84,7 @@ public slots:
 
 protected:
     //! Settings object.
-    Settings *settings = nullptr;
+    QPointer<Settings> settings = nullptr;
 
     //! Serial port name.
     QString portName{""};
@@ -94,7 +96,7 @@ protected:
     bool _valid_serial = false;
 
     //! Serial port object.
-    QSerialPort* _port = nullptr;
+    QPointer<QSerialPort> _port = nullptr;
 
     //! Validates a proposed serial port.
     /*!

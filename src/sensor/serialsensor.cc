@@ -20,7 +20,6 @@ SerialSensor::~SerialSensor(void)
     if (_port->isOpen()) {
         _port->close();
     }
-    delete _port;
 }
 
 
@@ -74,7 +73,7 @@ SerialSensor::open(void)
                          << _port->errorString();
             }
         };
-        connect(_port, &QIODevice::readyRead, this,
+        connect(QSERIALPORTPTR(_port), &QIODevice::readyRead, this,
             &SerialSensor::readData);
     }
 }
