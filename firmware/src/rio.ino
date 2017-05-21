@@ -10,9 +10,9 @@
 #include <FreqCount.h>
 
 // initialize readings
-int n_enc = 5; // number of encoder
+unsigned int n_enc = 5; // number of encoder
 int enc[5] = {0,0,0,0,0};
-int i = 0;
+unsigned int i = 0;
 int starting_analog_pin = 1;
 
 // temporary array to store formatted checksum byte
