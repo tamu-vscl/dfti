@@ -143,25 +143,25 @@ main(int argc, char* argv[])
 
     // Connect everything.
     if (settings.useMavlink()) {
-        logger->enableAutopilot(pixhawk);
+        logger->enableAutopilot(APPTR(pixhawk));
         QObject::connect(QTHREADPTR(pixhawkThread), &QThread::started,
             APPTR(pixhawk), &dfti::Autopilot::threadStart);
     }
     if (settings.useRIO()) {
-        logger->enableRIO(rio);
-        server->enableRIO(rio);
+        logger->enableRIO(RIOPTR(rio));
+        server->enableRIO(RIOPTR(rio));
         QObject::connect(QTHREADPTR(rioThread), &QThread::started, RIOPTR(rio),
             &dfti::RIO::threadStart);
     }
     if (settings.useUADC()) {
-        logger->enableUADC(uadc);
-        server->enableUADC(uadc);
+        logger->enableUADC(UADCPTR(uadc));
+        server->enableUADC(UADCPTR(uadc));
         QObject::connect(QTHREADPTR(uadcThread), &QThread::started,
             UADCPTR(uadc), &dfti::uADC::threadStart);
     }
     if (settings.useVN200()) {
-        logger->enableVN200(vn200);
-        server->enableVN200(vn200);
+        logger->enableVN200(VN200PTR(vn200));
+        server->enableVN200(VN200PTR(vn200));
         QObject::connect(QTHREADPTR(vn200Thread), &QThread::started,
             VN200PTR(vn200), &dfti::VN200::threadStart);
     }
