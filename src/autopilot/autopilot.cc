@@ -184,6 +184,7 @@ Autopilot::readData(void)
                     if (settings->debugData()) {
                         qDebug() << "got HEARTBEAT";
                     }
+                    break;
                 case MAVLINK_MSG_ID_RC_CHANNELS_RAW: {
                     mavlink_rc_channels_raw_t rcIn;
                     mavlink_msg_rc_channels_raw_decode(&message, &rcIn);

@@ -32,41 +32,41 @@ namespace dfti {
 struct APData
 {
     //! RC input timestamp.
-    quint32 rcInTime;
+    quint32 rcInTime{0};
     //! RC input channel 1 PPM value.
-    quint16 rcIn1;
+    quint16 rcIn1{0};
     //! RC input channel 2 PPM value.
-    quint16 rcIn2;
+    quint16 rcIn2{0};
     //! RC input channel 3 PPM value.
-    quint16 rcIn3;
+    quint16 rcIn3{0};
     //! RC input channel 4 PPM value.
-    quint16 rcIn4;
+    quint16 rcIn4{0};
     //! RC input channel 5 PPM value.
-    quint16 rcIn5;
+    quint16 rcIn5{0};
     //! RC input channel 6 PPM value.
-    quint16 rcIn6;
+    quint16 rcIn6{0};
     //! RC input channel 7 PPM value.
-    quint16 rcIn7;
+    quint16 rcIn7{0};
     //! RC input channel 8 PPM value.
-    quint16 rcIn8;
+    quint16 rcIn8{0};
     //! RC output timestamp.
-    quint32 rcOutTime;
+    quint32 rcOutTime{0};
     //! RC output channel 1 PPM value.
-    quint16 rcOut1;
+    quint16 rcOut1{0};
     //! RC output channel 2 PPM value.
-    quint16 rcOut2;
+    quint16 rcOut2{0};
     //! RC output channel 3 PPM value.
-    quint16 rcOut3;
+    quint16 rcOut3{0};
     //! RC output channel 4 PPM value.
-    quint16 rcOut4;
+    quint16 rcOut4{0};
     //! RC output channel 5 PPM value.
-    quint16 rcOut5;
+    quint16 rcOut5{0};
     //! RC output channel 6 PPM value.
-    quint16 rcOut6;
+    quint16 rcOut6{0};
     //! RC Output channel 7 PPM value.
-    quint16 rcOut7;
+    quint16 rcOut7{0};
     //! RC Output channel 8 PPM value.
-    quint16 rcOut8;
+    quint16 rcOut8{0};
 };
 
 
@@ -143,14 +143,14 @@ private:
     quint8 thisId{255};
 
     //! Current MAVLink message.
-    mavlink_message_t message;
+    mavlink_message_t message = {0};
 
     //! Last MAVLink message status.
     /*!
      *  The last MAVLink message status is kept to determine if we have packet
      *  loss by comparing the packet_rx_drop_count field.
      */
-    mavlink_status_t lastStatus;
+    mavlink_status_t lastStatus = {0};
 
     //! Hold timestamps for MAVLink messages we want to make sure we get both.
     struct MavlinkTimestamps {
