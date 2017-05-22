@@ -13,6 +13,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QDebug>
+#include <QPointer>
 #include <QString>
 // project
 #include "autopilot/autopilot.hh"
@@ -96,10 +97,10 @@ main(int argc, char* argv[])
     dfti::Settings settings(parser.value("config"), debug);
 
     // Create sensor object pointers.
-    dfti::Autopilot *pixhawk = nullptr;
-    dfti::RIO *rio = nullptr;
-    dfti::uADC *uadc = nullptr;
-    dfti::VN200 *vn200 = nullptr;
+    QPointer<dfti::Autopilot> pixhawk = nullptr;
+    QPointer<dfti::RIO> rio = nullptr;
+    QPointer<dfti::uADC> uadc = nullptr;
+    QPointer<dfti::VN200> vn200 = nullptr;
 
     // Instantiate the chosen sensor based on the argument name.
     if (sensor_name == "ap") {

@@ -18,7 +18,6 @@
 // dfti
 #include "sensor/serialsensor.hh"
 #include "settings/settings.hh"
-#include "util/util.hh"
 
 
 //! Byte length for hex characters (1 byte is two hex chars, e.g. 0xFF).

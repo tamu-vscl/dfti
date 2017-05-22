@@ -46,7 +46,7 @@ Autopilot::open(void)
                          << _port->errorString();
             }
         };
-        connect(_port, &QIODevice::readyRead, this,
+        connect(QSERIALPORTPTR(_port), &QIODevice::readyRead, this,
             &Autopilot::readData);
     }
 }

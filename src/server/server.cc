@@ -29,10 +29,6 @@ Server::Server(Settings *_settings, QObject* _parent)
 
 Server::~Server()
 {
-    if (writeTimer != nullptr) {
-        delete writeTimer;
-        writeTimer = nullptr;
-    }
 }
 
 // ----------------------------------------------------------------------------
@@ -42,7 +38,7 @@ void
 Server::start(void)
 {
     writeTimer = new QTimer(this);
-    connect(writeTimer, &QTimer::timeout, this, &Server::writeData);
+    connect(QTIMERPTR(writeTimer), &QTimer::timeout, this, &Server::writeData);
     writeTimer->start(settings->sendRateMs());
 }
 

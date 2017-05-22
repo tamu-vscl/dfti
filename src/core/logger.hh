@@ -22,6 +22,7 @@
 // dfti
 #include "autopilot/autopilot.hh"
 #include "core/consts.hh"
+#include "core/qptrutil.hh"
 #include "rio/rio.hh"
 #include "settings/settings.hh"
 #include "uadc/uadc.hh"
@@ -123,13 +124,13 @@ private:
     bool logVN200(void);
 
     //! Pointer to settings object.
-    Settings *settings{nullptr};
+    QPointer<Settings> settings{nullptr};
 
     //! QTimer for writing.
-    QTimer *writeTimer{nullptr};
+    QPointer<QTimer> writeTimer{nullptr};
 
     //! QTimer for flushing log file.
-    QTimer *flushTimer{nullptr};
+    QPointer<QTimer> flushTimer{nullptr};
 
     //! Log file timestamp.
     QString timestamp{""};

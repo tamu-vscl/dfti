@@ -20,7 +20,6 @@ SerialSensor::~SerialSensor(void)
     if (_port->isOpen()) {
         _port->close();
     }
-    delete _port;
 }
 
 
@@ -74,7 +73,7 @@ SerialSensor::open(void)
                          << _port->errorString();
             }
         };
-        connect(_port, &QIODevice::readyRead, this,
+        connect(QSERIALPORTPTR(_port), &QIODevice::readyRead, this,
             &SerialSensor::readData);
     }
 }
@@ -107,6 +106,21 @@ SerialSensor::threadStart(void)
 {
     init();
     open();
+}
+
+
+QString
+SerialSensor::validateSerialPort(QString _port)
+{
+    for (auto port : QSerialPortInfo::availablePorts()) {
+        QString candidate = port.portName();
+        candidate.prepend("/dev/");
+        if (_port == candidate) {
+            return _port;
+        }
+    }
+    qWarning() << "[WARN ]  validation of serial port" << _port << "failed!";
+    return QString{""};
 }
 
 

@@ -9,6 +9,7 @@ env:
   - TRAVISCI=true
 branches:
 - master
+- refactor
 install:
 - sudo add-apt-repository -y ppa:beineri/opt-qt532-trusty && sudo apt-get -qq update
   && sudo apt-get -qq install qt53base qt53serialport

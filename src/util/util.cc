@@ -59,19 +59,4 @@ secToMsec(quint8 period)
 }
 
 
-QString
-validateSerialPort(QString _port)
-{
-    for (auto port : QSerialPortInfo::availablePorts()) {
-        QString candidate = port.portName();
-        candidate.prepend("/dev/");
-        if (_port == candidate) {
-            return _port;
-        }
-    }
-    qWarning() << "[WARN ]  validation of serial port" << _port << "failed!";
-    return QString{""};
-}
-
-
 };  // namespace dfti
