@@ -1,6 +1,7 @@
 <map id="vn200.hh" name="vn200.hh">
-<area shape="rect" id="node6" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="842,80,995,107"/>
-<area shape="rect" id="node11" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="576,155,712,181"/>
-<area shape="rect" id="node19" href="$util_8hh.html" title="Utility functions. " alt="" coords="1089,229,1167,256"/>
-<area shape="rect" id="node18" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="781,229,889,256"/>
+<area shape="rect" id="node6" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="621,80,774,107"/>
+<area shape="rect" id="node13" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="275,155,411,181"/>
+<area shape="rect" id="node12" href="$qptrutil_8hh.html" title="QPointer Utility functions. " alt="" coords="1006,155,1114,181"/>
+<area shape="rect" id="node21" href="$util_8hh.html" title="Utility functions. " alt="" coords="962,229,1041,256"/>
+<area shape="rect" id="node20" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="782,229,890,256"/>
 </map>

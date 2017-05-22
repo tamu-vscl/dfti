@@ -1,6 +1,7 @@
 <map id="uadc.hh" name="uadc.hh">
-<area shape="rect" id="node5" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="332,80,485,107"/>
-<area shape="rect" id="node9" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="526,155,662,181"/>
-<area shape="rect" id="node17" href="$util_8hh.html" title="Utility functions. " alt="" coords="963,229,1041,256"/>
-<area shape="rect" id="node16" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="347,229,455,256"/>
+<area shape="rect" id="node5" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="459,80,612,107"/>
+<area shape="rect" id="node11" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="233,155,369,181"/>
+<area shape="rect" id="node10" href="$qptrutil_8hh.html" title="QPointer Utility functions. " alt="" coords="739,155,847,181"/>
+<area shape="rect" id="node19" href="$util_8hh.html" title="Utility functions. " alt="" coords="768,229,847,256"/>
+<area shape="rect" id="node18" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="636,229,744,256"/>
 </map>

@@ -1,7 +1,8 @@
 <map id="vn200.cc" name="vn200.cc">
-<area shape="rect" id="node2" href="$vn200_8hh.html" title="VectorNav VN&#45;200 Inertial Navigation System interface. " alt="" coords="223,80,297,107"/>
-<area shape="rect" id="node7" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="842,155,995,181"/>
-<area shape="rect" id="node12" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="576,229,712,256"/>
-<area shape="rect" id="node20" href="$util_8hh.html" title="Utility functions. " alt="" coords="1089,304,1167,331"/>
-<area shape="rect" id="node19" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="781,304,889,331"/>
+<area shape="rect" id="node2" href="$vn200_8hh.html" title="VectorNav VN&#45;200 Inertial Navigation System interface. " alt="" coords="200,80,275,107"/>
+<area shape="rect" id="node7" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="621,155,774,181"/>
+<area shape="rect" id="node14" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="275,229,411,256"/>
+<area shape="rect" id="node13" href="$qptrutil_8hh.html" title="QPointer Utility functions. " alt="" coords="1006,229,1114,256"/>
+<area shape="rect" id="node22" href="$util_8hh.html" title="Utility functions. " alt="" coords="962,304,1041,331"/>
+<area shape="rect" id="node21" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="782,304,890,331"/>
 </map>

@@ -1,12 +1,13 @@
 <map id="logger.cc" name="logger.cc">
-<area shape="rect" id="node2" href="$logger_8hh.html" title="DFTI logging interface. " alt="" coords="717,80,792,107"/>
-<area shape="rect" id="node11" href="$autopilot_8hh.html" title="MAVLink&#45;supporting autopilot interface. " alt="" coords="326,155,469,181"/>
-<area shape="rect" id="node20" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="641,304,777,331"/>
-<area shape="rect" id="node26" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="391,379,499,405"/>
-<area shape="rect" id="node27" href="$util_8hh.html" title="Utility functions. " alt="" coords="1306,379,1385,405"/>
-<area shape="rect" id="node30" href="$rio_8hh.html" title="Remote I/O logging interface. " alt="" coords="1373,155,1445,181"/>
-<area shape="rect" id="node31" href="$uadc_8hh.html" title="Aeroprobe Micro Air Data Computer interface. " alt="" coords="927,155,1027,181"/>
-<area shape="rect" id="node32" href="$vn200_8hh.html" title="VectorNav VN&#45;200 Inertial Navigation System interface. " alt="" coords="1617,155,1732,181"/>
-<area shape="rect" id="node13" href="$mavlink__info_8hh.html" title="MAVLink message information. " alt="" coords="337,229,450,256"/>
-<area shape="rect" id="node15" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="1250,229,1403,256"/>
+<area shape="rect" id="node2" href="$logger_8hh.html" title="DFTI logging interface. " alt="" coords="1619,80,1693,107"/>
+<area shape="rect" id="node11" href="$autopilot_8hh.html" title="MAVLink&#45;supporting autopilot interface. " alt="" coords="1469,155,1611,181"/>
+<area shape="rect" id="node21" href="$qptrutil_8hh.html" title="QPointer Utility functions. " alt="" coords="725,304,833,331"/>
+<area shape="rect" id="node22" href="$settings_8hh.html" title="DFTI settings manager interface. " alt="" coords="412,304,548,331"/>
+<area shape="rect" id="node28" href="$consts_8hh.html" title="DFTI constants. " alt="" coords="1911,379,2019,405"/>
+<area shape="rect" id="node29" href="$util_8hh.html" title="Utility functions. " alt="" coords="93,379,171,405"/>
+<area shape="rect" id="node32" href="$rio_8hh.html" title="Remote I/O logging interface. " alt="" coords="307,155,379,181"/>
+<area shape="rect" id="node33" href="$uadc_8hh.html" title="Aeroprobe Micro Air Data Computer interface. " alt="" coords="594,155,694,181"/>
+<area shape="rect" id="node34" href="$vn200_8hh.html" title="VectorNav VN&#45;200 Inertial Navigation System interface. " alt="" coords="1715,155,1829,181"/>
+<area shape="rect" id="node13" href="$mavlink__info_8hh.html" title="MAVLink message information. " alt="" coords="1570,229,1683,256"/>
+<area shape="rect" id="node15" href="$serialsensor_8hh.html" title="Serial IO Sensor interface. " alt="" coords="874,229,1027,256"/>
 </map>
