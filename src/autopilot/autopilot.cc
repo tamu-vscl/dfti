@@ -157,7 +157,7 @@ void
 Autopilot::readData(void)
 {
     quint8 ch;
-    mavlink_status_t status;
+    mavlink_status_t status = {0};
     quint8 msgReceived = false;
 
     // Read in a single byte.
