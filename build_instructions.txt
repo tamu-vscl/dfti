@@ -1,0 +1,29 @@
+Instructions for building DFTI
+-------------------------------
+
+1) Clone the dfti git repo into whatever environment you want
+2) Now there are certain dependencies that are required in order to build the repo. They are listed below:
+
+a) g++
+b) cmake
+c) mavlink/c_library_v1 * this is a git repo that neeeds to be cloned into /usr/include/mavlink/v1
+d) gcc, for dependencies
+e) qt5-default
+f) qt5base-dev
+g) libqt5serialport
+h) libqt5core
+
+* You can usually follow what is needed by the cmake configuration file. That should tell you if you are missing a file or a library.
+
+3) Navigate to the home libary of the cloned repo
+
+4) In the main directory enter:
+	> cmake .
+5) If there are configurations or dependencies missing you need to fix them. You can find most of them in part 2 of this guide
+
+6) After configuration you need to run the following command to build and install the package:
+> make install
+
+7) You should get a message telling you which build you got as well as the other configurations
+
+8) Congratulations! You just built DFTI. 
