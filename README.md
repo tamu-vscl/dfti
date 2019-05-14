@@ -183,33 +183,41 @@ This architecture is shown below.
 
 ![picture](https://github.com/tamu-vscl/dfti/blob/master/SoftwareArchitecture.png)
 
-Sensor Modules
+## Sensor Modules
 The sensor modules each provide an abstraction of the communication with the actual hardware sensor. The sensor modules are responsible for establishing connection to a sensor through a serial port (configurable in the config file). The sensor modules read incoming data from their respective sensor, parse the data into a known structure, and emit a signal to the logger and server containing the processed data. 
-Server
+
+### Server
 The server’s job is to keep track of the most recent data from each of the sensors and to provide this data at a specified rate over a UDP connection. It does this by using a socket to write data to a specified address and port. The address, port, and reporting rate are all configurable via the config file. 
 
 The server has slots that respond to the corresponding signals from each one of the sensors. When a sensor emits a signal, the server receives it in the correct slot and updates the state data. This state data is then sent to the client at the specified reporting rate. 
-Logger
+
+### Logger
 The logger behaves in a similar manner to the server. It has slots corresponding to the sensor signals. Upon receiving new data from one of the sensors, it updates its own local data with the most recent data. That is, the logger keeps a single data structure and only updates a particular data field whenever a sensor provides the logger with new data for that field. 
 
 The differences though is that the logger logs out the data to a CSV rather than sending it over a UDP connection. The logger does NOT log out data as the sensors read it in. Instead, the logger runs on a timer and at specified time intervals logs out its current local data. 
 
-Class Hierarchy 
+### Class Hierarchy 
 All of the classes inherit from QObject. This is what allows the different modules to communicate via signals and slots. The serial sensor class abstracts away much of the generic communication needed by each of the sensors. This allows them to communicate with the logger and server in the same generic way.
 
-Hardware Architecture
+![picture](https://github.com/tamu-vscl/dfti/blob/master/ClassHierarchy.png)
+
+## Hardware Architecture
 The hardware for DFTI currently consists of a BeagleBone Black, an Arduino Uno, a VN-200, five feedback servos, and an rpm sensor. The DFTI software runs on the BeagleBone Black and reads data from the VN-200 directly via serial communication. The feedback servos and rpm sensor both emit analog signals and thus, are connected to the Arduino which reads in the analog signals, converts them into a digital format, and sends the data to the DFTI software on the BeagleBone. Again, this is done via serial  (UART) communication. 
-BeagleBone Stack
+
+### BeagleBone Stack
 The hardware stack containing the BeagleBone (BB) is fairly straightforward. It consists of the actual BeagleBone board, a USB shield (cape in BB terminology), and a protoshield. The USB shield may actually not be necessary, as I have not yet found anything that needs to attach to it. For this reason, it is left off of the current DFTI stack in order to reduce weight and volume. The protoshield however, contains all of the connectors that connect the sensors to the BB’s UART ports and is very much necessary as all communication goes through these ports.
 
 Note: The UART 5 connector (and possibly the UART 4) on the beaglebone shield is currently soldered incorrectly. However, it is not in use so I have not fixed it. 
 
 The setup for the BB stack is simply the protoshield stacked on top of the BB. However, the wiring of the protoshield is a bit more complex and is outlined below.
-Protoshield Wiring
+
+#### Protoshield Wiring
 The protoshield basically just provides easy, plug-in connectors for our serial communication. The sensors have custom made cables that plug directly into the connectors on the shield. 
 
 Pictures of the protoshield included below.
 
+![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.png)
+![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.png)
 
 The BB communicates with the sensors over serial communication using UART protocol. 
 
@@ -222,7 +230,7 @@ Note: The UART4 connector (top in picture) has the Rx and Tx pins soldered backw
 The important point is not so much that the Tx and Rx pins go to the left and right pins of the connector, but instead that the BB Tx pin connects to the sensor’s Rx wire and the BB’s Rx pin to the sensor’s Tx. I attempted to standardize all of our cables so that the sensor’s Rx goes to the left pin in the connector and the sensor’s Tx to the right.
 
 
-Pinout for BeagleBone Black. Note the serial pins, these are the ones we’re using.
+Pinout for BeagleBone Black can be found online. Note the serial pins, these are the ones we’re using.
 
 
 
