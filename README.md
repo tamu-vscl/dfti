@@ -169,5 +169,60 @@ https://cmake.org/cmake/help/v3.6/manual/cmake-toolchains.7.html
 7. Use `rsync -r debian@192.168.7.2:bin/ destination/` to copy all the files from the BBB bin directory to the destination directory
 Done
 
+# DFTI Architecture
+
+This section provides an explanation of the system architecture for DFTI. The intent is to provide a new developer with a document that explains, in general, how the system works, what the different modules are, and how they interact with one another. Additionally, this document will provide a brief explanation of some of the supporting libraries used (i.e. Qt). 
+
+## Overview
+In general, the system consists of a data logger, server, and (presently) four serial sensors. Each module runs in a separate thread. The serial sensors collect data from the various sensors and report that data back to the logger and server. The logger simply writes out all incoming sensor data into a csv file. The server acts as a UDP server which will serve up the latest data.
+
+## Software Architecture
+The software architecture consists of a logger and server, which each independently communicate with each of the sensor modules. This communication is carried out by using signals and slots provided by the Qt library. Each of the sensor modules communicates with the actual hardware sensors via serial ports (by use of the Qt serial port class). 
+
+This architecture is shown below.
+
+
+Sensor Modules
+The sensor modules each provide an abstraction of the communication with the actual hardware sensor. The sensor modules are responsible for establishing connection to a sensor through a serial port (configurable in the config file). The sensor modules read incoming data from their respective sensor, parse the data into a known structure, and emit a signal to the logger and server containing the processed data. 
+Server
+The server’s job is to keep track of the most recent data from each of the sensors and to provide this data at a specified rate over a UDP connection. It does this by using a socket to write data to a specified address and port. The address, port, and reporting rate are all configurable via the config file. 
+
+The server has slots that respond to the corresponding signals from each one of the sensors. When a sensor emits a signal, the server receives it in the correct slot and updates the state data. This state data is then sent to the client at the specified reporting rate. 
+Logger
+The logger behaves in a similar manner to the server. It has slots corresponding to the sensor signals. Upon receiving new data from one of the sensors, it updates its own local data with the most recent data. That is, the logger keeps a single data structure and only updates a particular data field whenever a sensor provides the logger with new data for that field. 
+
+The differences though is that the logger logs out the data to a CSV rather than sending it over a UDP connection. The logger does NOT log out data as the sensors read it in. Instead, the logger runs on a timer and at specified time intervals logs out its current local data. 
+
+Class Hierarchy 
+All of the classes inherit from QObject. This is what allows the different modules to communicate via signals and slots. The serial sensor class abstracts away much of the generic communication needed by each of the sensors. This allows them to communicate with the logger and server in the same generic way.
+
+Hardware Architecture
+The hardware for DFTI currently consists of a BeagleBone Black, an Arduino Uno, a VN-200, five feedback servos, and an rpm sensor. The DFTI software runs on the BeagleBone Black and reads data from the VN-200 directly via serial communication. The feedback servos and rpm sensor both emit analog signals and thus, are connected to the Arduino which reads in the analog signals, converts them into a digital format, and sends the data to the DFTI software on the BeagleBone. Again, this is done via serial  (UART) communication. 
+BeagleBone Stack
+The hardware stack containing the BeagleBone (BB) is fairly straightforward. It consists of the actual BeagleBone board, a USB shield (cape in BB terminology), and a protoshield. The USB shield may actually not be necessary, as I have not yet found anything that needs to attach to it. For this reason, it is left off of the current DFTI stack in order to reduce weight and volume. The protoshield however, contains all of the connectors that connect the sensors to the BB’s UART ports and is very much necessary as all communication goes through these ports.
+
+Note: The UART 5 connector (and possibly the UART 4) on the beaglebone shield is currently soldered incorrectly. However, it is not in use so I have not fixed it. 
+
+The setup for the BB stack is simply the protoshield stacked on top of the BB. However, the wiring of the protoshield is a bit more complex and is outlined below.
+Protoshield Wiring
+The protoshield basically just provides easy, plug-in connectors for our serial communication. The sensors have custom made cables that plug directly into the connectors on the shield. 
+
+Pictures of the protoshield included below.
+
+
+The BB communicates with the sensors over serial communication using UART protocol. 
+
+Each of the connectors has Vcc connected to the leftmost pin and ground connected to the rightmost. The middle two pins are the Rx and Tx pins of the UART communication. Ideally, the left should be connected to the BB Tx pin and the right to the BB Rx pin. 
+
+For example, the connector for UART1 (third from the top in the picture) has pin 24 (BeagleBone Tx) connected to the middle-left pin of the connector and pin 26 (BeagleBone Rx) to the middle-right.
+
+Note: The UART4 connector (top in picture) has the Rx and Tx pins soldered backward according to the above description.
+
+The important point is not so much that the Tx and Rx pins go to the left and right pins of the connector, but instead that the BB Tx pin connects to the sensor’s Rx wire and the BB’s Rx pin to the sensor’s Tx. I attempted to standardize all of our cables so that the sensor’s Rx goes to the left pin in the connector and the sensor’s Tx to the right.
+
+
+Pinout for BeagleBone Black. Note the serial pins, these are the ones we’re using.
+
+
 
 
