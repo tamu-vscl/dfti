@@ -216,8 +216,8 @@ The protoshield basically just provides easy, plug-in connectors for our serial 
 
 Pictures of the protoshield included below.
 
-![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.png)
-![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.png)
+![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.JPG)
+![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.JPG)
 
 The BB communicates with the sensors over serial communication using UART protocol. 
 
