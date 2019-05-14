@@ -214,10 +214,10 @@ The setup for the BB stack is simply the protoshield stacked on top of the BB. H
 #### Protoshield Wiring
 The protoshield basically just provides easy, plug-in connectors for our serial communication. The sensors have custom made cables that plug directly into the connectors on the shield. 
 
-Pictures of the protoshield included below.
+Pictures of the protoshield can be found below.
 
-![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.JPG = 250x250)
-![picture](https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.jpg = 250x250)
+(https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.JPG )
+(https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.jpg)
 
 The BB communicates with the sensors over serial communication using UART protocol. 
 
