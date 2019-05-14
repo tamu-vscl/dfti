@@ -111,62 +111,62 @@ This has to do with the CMakeLists.txt file. It sends them to lib or lib64 based
 DFTI is typically developed in Ubuntu Linux. However, it runs on a BeagleBone Black using Debian Linux running on an ARM architecture. This causes problems when trying to compile, as you cannot (easily) install the dependencies in Debian needed to build from source. Nor can you compile directly on your dev machine and copy over the binaries. For this reason, you must perform a cross-platform compilation. The instructions to do so are as follows:
 
 * Install the gcc and g++ arm compilers.
-  * sudo apt-get install gcc-arm*
-  * sudo apt-get install g++-arm*
+  * `sudo apt-get install gcc-arm*`
+  * `sudo apt-get install g++-arm*`
 * Install the dependency packages (Qt) for arm
   * Add arm architecture packages to apt-get
-    *  Run the command “sudo dpkg --add-architecture armhf”
+    *  Run the command `sudo dpkg --add-architecture armhf`
   * Updated sources.list file
-    * “sudo gedit /etc/apt/sources.list”
+    * `sudo gedit /etc/apt/sources.list`
     * For each non-commented line that lists a url (something about archive.ubuntu.com or something), add beneath it the exact same line with the url “http://ports.ubuntu.com/ubuntu-ports”
-  *  Run “sudo apt-get update” and confirm that there are no errors
+  *  Run `sudo apt-get update` and confirm that there are no errors
 
-At this point, we have installed all the necessary software to perform cross-compiling, we now need to perform the compilation
-Return to the dfti base directory and delete the CMakeCache.txt file
-Run “cmake -DCMAKE_TOOLCHAIN_FILE=config/armhf.cmake”
-Run “sudo make install”
-This will compile the code with the newly installed compiler and arm libraries
-Now, we have successfully, compiled the code, but we still need to copy over the files to the beaglebone.
-Connect to the beaglebone via ssh
-Create a temporary directory to store the files
-Use rsync to transfer over the following files to the temp directory. Then use mv to move them to the given location (format is dev_machine_file_location -> bb_file_location):
-/usr/bin/dfti -> /usr/bin
-/usr/lib/libdfti* -> /usr/lib
-/usr/lib/arm-linux-gnueabihf/lib* -> /usr/lib
-Your .ini file, wherever you keep that -> wherever you want to keep it on the bb
-You should now be able to run dfti by the command:
-dfti -c your_config_file.ini
+* At this point, we have installed all the necessary software to perform cross-compiling, we now need to perform the compilation
+* Return to the dfti base directory and delete the CMakeCache.txt file
+* Run `cmake -DCMAKE_TOOLCHAIN_FILE=config/armhf.cmake`
+* Run `sudo make install`
+  * This will compile the code with the newly installed compiler and arm libraries
+* Now, we have successfully, compiled the code, but we still need to copy over the files to the beaglebone.
+  * Connect to the beaglebone via ssh
+  * Create a temporary directory to store the files
+  * Use rsync to transfer over the following files to the temp directory. Then use mv to move them to the given location (format is dev_machine_file_location -> bb_file_location):
+    * /usr/bin/dfti -> /usr/bin
+    * /usr/lib/libdfti* -> /usr/lib
+    * /usr/lib/arm-linux-gnueabihf/lib* -> /usr/lib
+    * Your .ini file, wherever you keep that -> wherever you want to keep it on the bb
+* You should now be able to run dfti by the command:
+  * `dfti -c your_config_file.ini`
 
 
-Debugging resources:
+### Debugging resources:
 https://wiki.debian.org/Multiarch/HOWTO
 https://cmake.org/cmake/help/v3.6/manual/cmake-toolchains.7.html 
 
-Running
-Install bb cape overlays (this was about impossible to find, so it’s possible that this may/used to come standard and my bbb just didn’t have it for some reason).
-On the BeagleBone (connected to the internet via an ethernet cable):
-Run “sudo sudo apt update”
-Run “sudo apt install bb-cape-overlays”
+## Running
+1. Install bb cape overlays (this was about impossible to find, so it’s possible that this may/used to come standard and my bbb just didn’t have it for some reason).
+2. On the BeagleBone (connected to the internet via an ethernet cable):
+3. Run `sudo sudo apt update`
+4. Run `sudo apt install bb-cape-overlays`
 
 
 
-Running DFTI
-Connect to BBB via SSH
-Navigate to bin directory
-Run ‘tmux new -s dfti’
-In the tmux window, run ‘sudo dfti -c test.ini’
-If test.ini is not in this directory (or any ini) you need to place it here (or any valid ini file)
-In the tmux window, ctrl+b d
-Disconnect from ssh
+## Running DFTI
+1. Connect to BBB via SSH
+2. Navigate to bin directory
+3. Run `tmux new -s dfti`
+4. In the tmux window, run `sudo dfti -c test.ini`
+  * If test.ini is not in this directory (or any ini) you need to place it here (or any valid ini file)
+5. In the tmux window, `ctrl+b d`
+6. Disconnect from ssh
 
-Reconnecting and shutting down:
-Conect to BBB via ssh
-Run ‘tmux ls’ to make sure dfti is still running
-If it is, run ‘tmux a -t dfti’
-Use ctrl+c to stop dfti
-Run ‘exit’ to kill tmux window
-Use ‘exit’ to kill ssh window
-Use ‘rsync -r debian@192.168.7.2:bin/ destination/’ to copy all the files from the BBB bin directory to the destination directory
+## Reconnecting and shutting down:
+1. Conect to BBB via ssh
+2. Run `tmux ls` to make sure dfti is still running
+3. If it is, run `tmux a -t dfti`
+4. Use `ctrl+c` to stop dfti
+5. Run `exit` to kill tmux window
+6. Use `exit` to kill ssh window
+7. Use `rsync -r debian@192.168.7.2:bin/ destination/` to copy all the files from the BBB bin directory to the destination directory
 Done
 
 
