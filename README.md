@@ -48,3 +48,6 @@ be added easily.
 
 DFTI is placed under the [BSDv2 license](./LICENSE.md).
 
+# Software Architecture
+
+
