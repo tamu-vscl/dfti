@@ -181,6 +181,7 @@ The software architecture consists of a logger and server, which each independen
 
 This architecture is shown below.
 
+![picture](https://github.com/tamu-vscl/dfti/blob/master/SoftwareArchitecture.png)
 
 Sensor Modules
 The sensor modules each provide an abstraction of the communication with the actual hardware sensor. The sensor modules are responsible for establishing connection to a sensor through a serial port (configurable in the config file). The sensor modules read incoming data from their respective sensor, parse the data into a known structure, and emit a signal to the logger and server containing the processed data. 
