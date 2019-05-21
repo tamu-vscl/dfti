@@ -235,6 +235,11 @@ The important point is not so much that the Tx and Rx pins go to the left and ri
 
 Pinout for BeagleBone Black can be found online. Note the serial pins, these are the ones we’re using.
 
+#### Arduino Protoshield Schematic
+
+Formal Wiring Schematic:
+![picture](https://github.com/tamu-vscl/dfti/blob/master/ArduinoWiringSchematic.PNG)
+
 
 
 
