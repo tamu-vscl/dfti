@@ -219,6 +219,9 @@ Pictures of the protoshield can be found below.
 (https://github.com/tamu-vscl/dfti/blob/master/BBShieldFront.JPG )
 (https://github.com/tamu-vscl/dfti/blob/master/BBShieldBack.jpg)
 
+Formal Wiring Schematic:
+![picture](https://github.com/tamu-vscl/dfti/blob/master/WiringSchematic.PNG)
+
 The BB communicates with the sensors over serial communication using UART protocol. 
 
 Each of the connectors has Vcc connected to the leftmost pin and ground connected to the rightmost. The middle two pins are the Rx and Tx pins of the UART communication. Ideally, the left should be connected to the BB Tx pin and the right to the BB Rx pin. 
