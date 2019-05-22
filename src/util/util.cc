@@ -5,6 +5,11 @@
  *  \copyright Copyright © 2016-2017 Vehicle Systems & Control Laboratory,
  *  Department of Aerospace Engineering, Texas A&M University
  *  \license BSD 2-Clause License
+ *
+ * This file is provided for instructional value only.  It is not guaranteed for any particular purpose.  
+ * The authors do not offer any warranties or representations, nor do they accept any liabilities with respect 
+ * to the information or their use.  This file is distributed with the understanding that the  authors are not engaged 
+ * in rendering engineering or other professional services associate with their use.
  */
 #include "util.hh"
 
