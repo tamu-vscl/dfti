@@ -60,10 +60,10 @@ be added easily.
 * 1 x RPM sensor
 * 1 x Voltage Shifter
 * Connectors:
-  * 	HSG Female 3POS 2.5mm Post Lock
-  * 	HSG Female 4POS 2.5mm Post Lock
-  * 	CONN Header Vert 3POS 2.5mm
-  * 	CONN Header Vert 4POS 2.5mm
+** 	HSG Female 3POS 2.5mm Post Lock
+** 	HSG Female 4POS 2.5mm Post Lock
+** 	CONN Header Vert 3POS 2.5mm
+** 	CONN Header Vert 4POS 2.5mm
 
 
 ## License
