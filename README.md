@@ -46,24 +46,28 @@ be added easily.
 
 ### Bill Of Materials 
 
+Please note that any of the following components can be replaced with a similar component as long as it is compatible and a custom sensor module is written to parse the data (if applicable). In other words, different brands or types of sensors may be used as long as they're integrated properly. There is no dependence of the system to use these particular products.
+
 * 1 x BeagleBone Black
 * 1 x BeagleBone Black Protoshield
 * 1 x Arduino
 * 1 x Arduino Protoshield
 * 4 x Servo Y-harness
 * 1 x Airspeed sensor
+  * Aeroprobe Micro Air Data Computer
 * 1 x Throttle sensor
+  * EagleTree Brushless Motor RPM Sensor
 * 4 x Male to Male Servo Extensions
-* 1 x VN200
-* 1 x VN-C200-0610
-* 1 x Airspeed sensor
-* 1 x RPM sensor
-* 1 x Voltage Shifter
+* 1 x Inertial Navigation System 
+  * VectorNav VN-200
+* 1 x INS Connector Cable 
+  *  VN-C200-0610 Cable
+* 1 x Logic-Level Bidirectional Voltage Shifter
 * Connectors:
-** 	HSG Female 3POS 2.5mm Post Lock
-** 	HSG Female 4POS 2.5mm Post Lock
-** 	CONN Header Vert 3POS 2.5mm
-** 	CONN Header Vert 4POS 2.5mm
+  * HSG Female 3POS 2.5mm Post Lock
+  *	HSG Female 4POS 2.5mm Post Lock
+  *	CONN Header Vert 3POS 2.5mm
+  *	CONN Header Vert 4POS 2.5mm
 
 
 ## License
@@ -228,8 +232,6 @@ The hardware for DFTI currently consists of a BeagleBone Black, an Arduino Uno, 
 
 ### BeagleBone Stack
 The hardware stack containing the BeagleBone (BB) is fairly straightforward. It consists of the actual BeagleBone board, a USB shield (cape in BB terminology), and a protoshield. The USB shield may actually not be necessary, as I have not yet found anything that needs to attach to it. For this reason, it is left off of the current DFTI stack in order to reduce weight and volume. The protoshield however, contains all of the connectors that connect the sensors to the BB’s UART ports and is very much necessary as all communication goes through these ports.
-
-Note: The UART 5 connector (and possibly the UART 4) on the beaglebone shield is currently soldered incorrectly. However, it is not in use so I have not fixed it. 
 
 The setup for the BB stack is simply the protoshield stacked on top of the BB. However, the wiring of the protoshield is a bit more complex and is outlined below.
 
