@@ -44,6 +44,28 @@ production-ready, and is still very much a work in progress.
 DFTI is designed to be modular, so support for additional sensors may
 be added easily.
 
+### Bill Of Materials 
+
+* 1 x BeagleBone Black
+* 1 x BeagleBone Black Protoshield
+* 1 x Arduino
+* 1 x Arduino Protoshield
+* 4 x Servo Y-harness
+* 1 x Airspeed sensor
+* 1 x Throttle sensor
+* 4 x Male to Male Servo Extensions
+* 1 x VN200
+* 1 x VN-C200-0610
+* 1 x Airspeed sensor
+* 1 x RPM sensor
+* 1 x Voltage Shifter
+* Connectors:
+  * 	HSG Female 3POS 2.5mm Post Lock
+  * 	HSG Female 4POS 2.5mm Post Lock
+  * 	CONN Header Vert 3POS 2.5mm
+  * 	CONN Header Vert 4POS 2.5mm
+
+
 ## License
 
 DFTI is placed under the [BSDv2 license](./LICENSE.md).
