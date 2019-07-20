@@ -227,6 +227,18 @@ All of the classes inherit from QObject. This is what allows the different modul
 
 ![picture](https://github.com/tamu-vscl/dfti/blob/master/ClassHierarchy.png)
 
+### RIO Communication
+DFTI makes use of an Ardunio for remote input/output (RIO). While the use of an Arduino is certainly not necessary, there are a few points to make regarding the communication between DFTI and any arbitrary RIO.  DFTI running on the BeagleBone and the RIO sketch running on the Arduino are communicating VIA UART. For serial communication between the two, please see the UART setup description in this documentation for the BBB and the online documentation available for UART communication with Arduino.
+
+DFTI is expecting to read a string of integers from the RIO in the following format:
+$$$value$value$value$...$checksum
+Where each “value” is simply the decimal reading of the corresponding sensor and “checksum” is a bitwise xor of the entire string up to and including the final “$”. 
+
+If you are implementing a new RIO, or are modifying the existing one, you must ensure that the serial communication string follows the structure outlined above. Failure to do so will result in DFTI silently failing to read the string. DFTI will be unable to report or log any values sent from the RIO unless they follow the above format.
+
+The alternative to this is to modify the parsing format in the RIO module in DFTI. However, modifying the RIO is much simpler and likely the easier option.
+
+
 ## Hardware Architecture
 The hardware for DFTI currently consists of a BeagleBone Black, an Arduino Uno, a VN-200, five feedback servos, and an rpm sensor. The DFTI software runs on the BeagleBone Black and reads data from the VN-200 directly via serial communication. The feedback servos and rpm sensor both emit analog signals and thus, are connected to the Arduino which reads in the analog signals, converts them into a digital format, and sends the data to the DFTI software on the BeagleBone. Again, this is done via serial  (UART) communication. 
 
